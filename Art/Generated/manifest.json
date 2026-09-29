@@ -2430,15 +2430,6 @@
    ]
   },
   {
-   "file": "Sprites/Props/Pickup_Pipe.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Pickup_Pipe",
-   "size": [
-    110,
-    30
-   ]
-  },
-  {
    "file": "Sprites/UI/UI_Go.png",
    "package": "/Game/Sprites/UI",
    "name": "UI_Go",

@@ -88,7 +88,6 @@ def gen_props():
     add_sprite(fx.doener(), "Props", "Pickup_Doener")
     add_sprite(fx.currywurst(), "Props", "Pickup_Currywurst")
     add_sprite(fx.money(), "Props", "Pickup_Money")
-    add_sprite(fx.pipe(), "Props", "Pickup_Pipe")
 
 
 def gen_ui():
