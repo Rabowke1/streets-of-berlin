@@ -10,7 +10,7 @@
 #include "AssetRegistry/AssetRegistryModule.h"
 #endif
 
-UPaperSprite* UBrawlerEditorLibrary::CreateSpriteFromTexture(UTexture2D* Texture, const FString& PackagePath, const FString& AssetName, UMaterialInterface* Material)
+UPaperSprite* UBrawlerEditorLibrary::CreateSpriteFromTexture(UTexture2D* Texture, const FString& PackagePath, const FString& AssetName, UMaterialInterface* Material, float PixelsPerUnit)
 {
 #if WITH_EDITOR
 	if (!Texture)
@@ -32,6 +32,8 @@ UPaperSprite* UBrawlerEditorLibrary::CreateSpriteFromTexture(UTexture2D* Texture
 
 	FSpriteAssetInitParameters Params;
 	Params.SetTextureAndFill(Texture);
+	Params.bOverridePixelsPerUnrealUnit = true;
+	Params.PixelsPerUnrealUnit = FMath::Max(PixelsPerUnit, 0.01f);
 	if (Material)
 	{
 		Params.DefaultMaterialOverride = Material;

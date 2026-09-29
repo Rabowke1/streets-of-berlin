@@ -4,7 +4,12 @@ import random
 
 from PIL import Image, ImageDraw, ImageFilter
 
-from common import OUTLINE, SS, draw_inflated, downsample, font, shade, star_points
+from common import OUTLINE, RES, draw_inflated, downsample, font, shade, star_points
+from common import SS as _BASE_SS
+
+# Intern wird mit Supersampling * Ausgabe-Aufloesung gezeichnet; downsample() teilt nur durch das
+# Supersampling -> Ergebnis hat (Welt-Groesse * RES) Pixel.
+SS = _BASE_SS * RES
 
 
 def _canvas(w, h):
@@ -67,10 +72,11 @@ def dust(frames=4, w=160, h=80, seed=3):
 
 
 def shadow(w=110, h=30):
+    w, h = w * RES, h * RES
     img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    d.ellipse([2, 2, w - 2, h - 2], fill=(0, 0, 0, 120))
-    return img.filter(ImageFilter.GaussianBlur(2))
+    d.ellipse([2 * RES, 2 * RES, w - 2 * RES, h - 2 * RES], fill=(0, 0, 0, 120))
+    return img.filter(ImageFilter.GaussianBlur(2 * RES))
 
 
 def special_ring(frames=4, size=256):
@@ -240,4 +246,4 @@ def title_logo():
            stroke_width=14, stroke_fill=OUTLINE)
     d.line([(W - 420, 520), (W + 420, 520)], fill=(255, 40, 80, 255), width=10)
     _ = f1
-    return img.resize((W, H), Image.LANCZOS)
+    return img.resize((W * RES, H * RES), Image.LANCZOS)

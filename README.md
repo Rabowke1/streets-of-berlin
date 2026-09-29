@@ -5,6 +5,7 @@ Spiellogik in C++ (Paper2D), dazu **prozedural erzeugte Grafiken** (Figuren, Geg
 **Sounds und Musik**. Alles lässt sich per Skript neu erzeugen.
 
 ![Szene](Art/Generated/Preview_Scene.png)
+![Straße](Art/Generated/Preview_Street2.png)
 ![U-Bahn](Art/Generated/Preview_UBahn.png)
 
 ## Inhalt
@@ -63,11 +64,20 @@ Danach im Editor die Python-Konsole öffnen und den Import erzwingen:
 import sob_import_assets, importlib; importlib.reload(sob_import_assets); sob_import_assets.run(only_missing=False)
 ```
 
+**Auflösung:** Alle Grafiken entstehen in doppelter Auflösung (`SOB_RES=2`, scharf bis 4K). Die Sprites bekommen
+beim Import `PixelsPerUnrealUnit = 2`, die Spielwelt bleibt also gleich groß. `SOB_RES=1` erzeugt schnelle
+Test-Versionen, `SOB_RES=3` noch schärfere.
+
+**Eigene oder KI-generierte Bilder:** PNGs mit gleichem Namen in `Art/Custom/<Ordner>/` ersetzen die generierten
+Versionen automatisch (Größen und Tipps: [`Art/Custom/README.md`](Art/Custom/README.md)). Nach dem nächsten
+`generate_all.py` erkennt der Editor das geänderte Manifest und importiert alles neu.
+
 | Datei | Inhalt |
 |---|---|
-| `puppet.py` | 2D-Puppet-Renderer: Figuren aus Körperteilen, dicke Konturen, Cel-Shading, 3× Supersampling |
+| `bgkit.py` | Mal-Werkzeuge: Verläufe, Putz-/Materialrauschen, weiches Licht (Glow, Lichtkegel, Schatten), Nacht-Grading mit leuchtenden Flächen, Neon-Schrift, Graffiti, Ziegel, Plakate |
+| `puppet.py` | 2D-Puppet-Renderer: Figuren aus Körperteilen, dicke Konturen, Cel-Shading mit violetten Schatten, Glanzkante, Neon-Randlicht, Stoff-Details |
 | `characters.py` | Aussehen aller Figuren + sämtliche Animationsposen (Gelenkwinkel pro Frame) |
-| `backgrounds.py` | Himmel mit Fernsehturm, Altbau-Fassaden mit Neon-Schildern, U-Bahnhof, Gehweg/Bahnsteig, Laternen |
+| `backgrounds.py` | Gemalte Kulisse: Nachthimmel mit Wolken, Mond, Fernsehturm und Skyline im Dunst; Altbauten mit Stuck, Balkonen, beleuchteten Wohnungen, Schmutzfahnen; Späti, Döner, Kiosk, Club, Litfaßsäule, U-Bahn-Eingang; nasser Gehweg mit Neon-Spiegelungen; U-Bahnhof mit Fliesen, Leuchtröhren, Werbung, Gleisbett |
 | `effects.py` | Trefferfunken, Staub, Spezial-Ring, Schatten, Tonnen/Kisten, Döner/Currywurst/Geld, GO-Pfeil, Logo |
 | `audio.py` | Synthetisierte Treffer-, Wurf-, KO-, Pickup-Sounds und ein Synthwave-Musikloop |
 

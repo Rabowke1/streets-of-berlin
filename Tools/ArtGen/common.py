@@ -10,6 +10,8 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 
 SS = 3  # Supersampling-Faktor
+# Ausgabe-Aufloesung: Pixel pro Unreal-Unit. 2 = scharf bis 4K (Sprites bekommen PixelsPerUnrealUnit=2).
+RES = int(os.environ.get("SOB_RES", "2"))
 OUTLINE = (22, 16, 28, 255)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))

@@ -11,9 +11,13 @@ import math
 
 from PIL import Image, ImageChops, ImageDraw
 
-from common import OUTLINE, SS, add, draw_inflated, mul, norm, rot, shade, sub
+from common import OUTLINE, SS, add, draw_inflated, mix, mul, norm, rot, shade, sub
 
 OL = 2.6  # Konturbreite in finalen Pixeln
+HIGHLIGHT_W = 1.6  # Breite der Glanzkante
+RIM_W = 2.4  # Breite des Randlichts
+RIM_COLOR = (170, 215, 255, 255)
+SHADOW_TINT = (70, 40, 120, 255)  # Schatten leicht violett statt nur dunkler
 
 
 def dir_from_down(deg):
@@ -34,7 +38,7 @@ class Shape:
         self.pts = list(pts)
         self.r = r
         self.fill = fill
-        self.dark = dark if dark is not None else shade(fill, 0.68)
+        self.dark = dark if dark is not None else mix(shade(fill, 0.64), SHADOW_TINT, 0.22)
         self.light_shift = light_shift
         self.outline = outline
         self.details = []  # (kind, data) Zeichnungen ohne Shading (Augen, Linien)
@@ -214,7 +218,18 @@ class Character:
             shapes.append(Shape(pts, self.fist_r * 0.45, fist_c, light_shift=2))
         else:
             c = add(w, mul(d, self.fist_r * 0.55))
-            shapes.append(Shape([c], self.fist_r, fist_c, light_shift=2.5))
+            fist = Shape([c], self.fist_r, fist_c, light_shift=2.5)
+            n = (-d[1], d[0])
+            knuckle = add(c, mul(d, self.fist_r * 0.35))
+            fist.details.append(("line", [add(knuckle, mul(n, self.fist_r * 0.6)),
+                                          sub(knuckle, mul(n, self.fist_r * 0.6))], shade(fist_c, 0.6), 1.0))
+            shapes.append(fist)
+        # Muskel-/Faltenlinie am Oberarm
+        de = norm(sub(e, s))
+        ne = (-de[1], de[0])
+        mid = mul(add(s, e), 0.5)
+        shapes[0].details.append(("line", [add(mid, mul(ne, -2)), add(add(mid, mul(de, 8)), mul(ne, -4))],
+                                  shade(upper_c, 0.7), 1.0))
         return shapes
 
     def _leg(self, j, side, dim):
@@ -229,6 +244,17 @@ class Character:
         if self.shorts:
             # Hosenbein-Abschluss am Knie
             shapes[0] = limb_shape(hp, add(k, mul(norm(sub(k, hp)), 4)), *self.thigh_w, thigh_c)
+        # Naht / Falten
+        seam_c = shade(thigh_c, 0.72)
+        dth = norm(sub(k, hp))
+        nth = (-dth[1], dth[0])
+        shapes[0].details.append(("line", [add(hp, mul(nth, 3)), add(k, mul(nth, 2))], seam_c, 1.0))
+        kf = add(k, mul(nth, -self.thigh_w[2] * 0.4))
+        shapes[0].details.append(("line", [sub(kf, mul(dth, 7)), add(kf, mul(nth, 4))], seam_c, 1.2))
+        if not self.shorts:
+            dsh = norm(sub(a, k))
+            nsh = (-dsh[1], dsh[0])
+            shapes[-1].details.append(("line", [add(k, mul(nsh, 2)), add(a, mul(nsh, 1.5))], seam_c, 1.0))
         if self.stripe is not None:
             s1 = limb_shape(add(hp, (0, 0)), k, 2.0, 2.0, 2.0, f(self.stripe), outline=False, light_shift=0)
             s2 = limb_shape(k, a, 1.8, 1.8, 1.8, f(self.stripe), outline=False, light_shift=0)
@@ -239,7 +265,11 @@ class Character:
         loc = [(-0.28 * L, 0.45 * H), (0.30 * L, 0.35 * H), (0.78 * L, 0.02 * H),
                (0.86 * L, -0.55 * H), (-0.30 * L, -0.55 * H)]
         pts = local_poly(a, fa, loc)
-        shapes.append(Shape(pts, 3.0, f(self.shoe), light_shift=2.5))
+        shoe = Shape(pts, 3.0, f(self.shoe), light_shift=2.5)
+        lace = local_poly(a, fa, [(0.05 * L, 0.30 * H), (0.30 * L, 0.22 * H), (0.12 * L, 0.10 * H),
+                                  (0.40 * L, 0.05 * H)])
+        shoe.details.append(("line", lace, shade(f(self.shoe), 0.6), 1.0))
+        shapes.append(shoe)
         sole = local_poly(a, fa, [(-0.30 * L, -0.42 * H), (0.86 * L, -0.42 * H)])
         shapes.append(Shape(sole, 2.2, f(self.sole), outline=False, light_shift=0))
         return shapes
@@ -262,6 +292,11 @@ class Character:
         ]
         pts = local_poly(j["hip"], -t, loc)
         torso = Shape(pts, r, self.top, light_shift=5.0)
+        fold_c = shade(self.top, 0.68)
+        # Stofffalten
+        for (a0, a1) in (((-cw * 0.5, 0.30 * L), (-cw * 0.1, 0.42 * L)), ((-cw * 0.6, 0.55 * L), (-cw * 0.2, 0.62 * L)),
+                         ((ww * 0.2, 0.18 * L), (ww * 0.7, 0.24 * L))):
+            torso.details.append(("line", local_poly(j["hip"], -t, [a0, a1]), fold_c, 1.1))
         shapes = [torso]
         if self.top_inner is not None:
             inner = [
@@ -269,7 +304,14 @@ class Character:
                 (ww + bl, 0.28 * L), (ww * 0.6, 0.20 * L), (cw * 0.25, 0.55 * L),
             ]
             s = Shape(local_poly(j["hip"], -t, inner), 1.5, self.top_inner, light_shift=4.0, outline=False)
+            # Jackenkante + Kragen
+            s.details.append(("line", local_poly(j["hip"], -t, [(cw * 0.25, 0.55 * L), (ww * 0.6, 0.20 * L)]),
+                              shade(self.top, 0.55), 1.6))
+            s.details.append(("line", local_poly(j["hip"], -t, [(cw * 0.35, 0.93 * L), (cw * 0.25, 0.55 * L)]),
+                              shade(self.top, 0.55), 1.6))
             shapes.append(s)
+            collar = local_poly(j["hip"], -t, [(-cw * 0.55, 0.97 * L), (cw * 0.1, 1.02 * L), (cw * 0.42, 0.88 * L)])
+            shapes.append(Shape(collar, 2.4, shade(self.top, 1.1), light_shift=1.5))
         if self.logo_color is not None:
             c = local_poly(j["hip"], -t, [(cw * 0.25, 0.62 * L)])[0]
             shapes.append(Shape([c], 6.5, self.logo_color, outline=False, light_shift=0))
@@ -478,6 +520,18 @@ def render_shapes(shapes, size, foot, scale=1.0):
             draw_inflated(ImageDraw.Draw(m2), sh, r, 255)
             lit = ImageChops.darker(m, m2)
             img.paste(Image.new("RGBA", (bw, bh), s.fill), (x0, y0, x1, y1), lit)
+            # Glanzkante oben (warmes Licht von oben)
+            hl = HIGHLIGHT_W * k
+            m3 = Image.new("L", (bw, bh), 0)
+            draw_inflated(ImageDraw.Draw(m3), [(q[0], q[1] + hl) for q in lp], r, 255)
+            top_band = ImageChops.subtract(lit, m3).point(lambda v: v * 0.55)
+            img.paste(Image.new("RGBA", (bw, bh), shade(s.fill, 1.22)), (x0, y0, x1, y1), top_band)
+            # Randlicht hinten (kuehles Neon-Gegenlicht wie in naechtlichen SoR4-Stages)
+            rw = RIM_W * k
+            m4 = Image.new("L", (bw, bh), 0)
+            draw_inflated(ImageDraw.Draw(m4), [(q[0] + rw, q[1] + rw * 0.4) for q in lp], r, 255)
+            rim = ImageChops.subtract(m, m4).point(lambda v: v * 0.8)
+            img.paste(Image.new("RGBA", (bw, bh), mix(s.fill, RIM_COLOR, 0.55)), (x0, y0, x1, y1), rim)
         else:
             img.paste(Image.new("RGBA", (bw, bh), s.fill), (x0, y0, x1, y1), m)
         if s.details:

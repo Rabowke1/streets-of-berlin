@@ -1,88 +1,107 @@
-"""Setzt eine Beispielszene (1600x900) aus den generierten Assets zusammen.
+"""Setzt Beispielszenen aus den generierten Assets zusammen (wie die Kamera im Spiel).
 
-Nutzt dasselbe Koordinatensystem wie das Spiel (siehe BrawlerTypes.h):
-Welt-Z 300 = Oberkante Boden, Figuren-Fuesse bei Z = Tiefe.
+Nutzt dasselbe Koordinatensystem und dieselben Layer-Positionen wie ABrawlerStage:
+Welt-Z 300 = Oberkante Boden, Figuren-Fuesse bei Z = Tiefe, Kamera-Mitte bei Z = 340.
+Ausgabe in voller Aufloesung (1600x900 Units * RES Pixel).
 """
 import os
 import sys
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 sys.path.insert(0, os.path.dirname(__file__))
-from common import OUT_DIR  # noqa: E402
+from common import OUT_DIR, RES  # noqa: E402
 
+SCALE = RES  # Pixel pro Unit in der Vorschau
 W, H = 1600, 900
-CAM_Z = 340  # Welt-Z der Bildschirmmitte
+CAM_Z = 340
 
 
 def load(folder, name):
-    return Image.open(os.path.join(OUT_DIR, "Sprites", folder, name + ".png")).convert("RGBA")
+    img = Image.open(os.path.join(OUT_DIR, "Sprites", folder, name + ".png")).convert("RGBA")
+    if SCALE != RES:
+        img = img.resize((max(1, img.width * SCALE // RES), max(1, img.height * SCALE // RES)), Image.LANCZOS)
+    return img
 
 
-def to_screen(x_world, z_world, cam_x):
-    return int(x_world - cam_x + W / 2), int(H / 2 - (z_world - CAM_Z))
+class Scene:
+    def __init__(self, cam_x):
+        self.cam_x = cam_x
+        self.img = Image.new("RGBA", (W * SCALE, H * SCALE), (10, 8, 20, 255))
 
+    def px(self, x, z):
+        return ((x - self.cam_x + W / 2) * SCALE, (H / 2 - (z - CAM_Z)) * SCALE)
 
-def compose(cam_x=900, area="street", out="Preview_Scene.png"):
-    img = Image.new("RGBA", (W, H), (10, 8, 20, 255))
-    if area == "street":
-        sky = load("Backgrounds", "BG_Sky")
-        sx, sy = to_screen(cam_x * 0.15 - 200, 300 + sky.height, cam_x)
-        img.alpha_composite(sky, (sx - int(cam_x * 0.15) + int(cam_x) - int(cam_x), sy))
-        wall = load("Backgrounds", "BG_Street_00")
-        floor = load("Backgrounds", "BG_FloorStreet")
-    else:
-        wall = load("Backgrounds", "BG_UBahn_00")
-        floor = load("Backgrounds", "BG_FloorPlatform")
-    x, y = to_screen(0, 300 + wall.height, cam_x)
-    img.alpha_composite(wall, (x, y))
-    for fx in range(0, 3000, floor.width):
-        x, y = to_screen(fx, 300, cam_x)
-        img.alpha_composite(floor, (x, y))
+    def put_center(self, spr, x, z):
+        cx, cy = self.px(x, z)
+        self.img.alpha_composite(spr, (int(cx - spr.width / 2), int(cy - spr.height / 2)))
 
-    def actor(folder, name, wx, depth, flip=False, height=0):
+    def layer(self, name, base_x, center_z, parallax=1.0):
+        x = self.cam_x + (base_x - self.cam_x) * parallax
+        self.put_center(load("Backgrounds", name), x, center_z)
+
+    def actor(self, folder, name, x, depth, flip=False, height=0):
+        sh = load("Effects", "FX_Shadow")
+        self.put_center(sh, x, depth)
         spr = load(folder, name)
         if flip:
             spr = spr.transpose(Image.FLIP_LEFT_RIGHT)
-        sh = load("Effects", "FX_Shadow")
-        sx, sy = to_screen(wx, depth, cam_x)
-        img.alpha_composite(sh, (sx - sh.width // 2, sy - sh.height // 2))
-        sx, sy = to_screen(wx, depth + height, cam_x)
-        img.alpha_composite(spr, (sx - 160, sy - 312))
+        # Frame 320x320, Fuesse bei y=312 -> Mitte 152 Units ueber den Fuessen
+        self.put_center(spr, x, depth + height + 152)
 
-    scene = [
-        ("Props", "Prop_TrashCan_00", 1340, 200, False, "prop"),
-        ("Brecher", "Brecher_idle_01", 1260, 150, True, None),
-        ("Kalle", "Kalle_hurt_00", 930, 90, True, None),
-        ("Kai", "Kai_attack4_01", 820, 80, False, None),
-        ("Jojo", "Jojo_walk_03", 480, 40, False, None),
-        ("Ronny", "Ronny_fall_01", 1150, 30, True, None),
-    ]
-    scene.sort(key=lambda s: -s[3])
-    for folder, name, wx, depth, flip, kind in scene:
-        if kind == "prop":
-            spr = load(folder, name)
-            sx, sy = to_screen(wx, depth, cam_x)
-            img.alpha_composite(spr, (sx - spr.width // 2, sy - spr.height + 8))
-        else:
-            actor(folder, name, wx, depth, flip, 60 if "fall" in name else 0)
-    spark = load("Effects", "FX_HitBig_01")
-    sx, sy = to_screen(960, 80 + 170, cam_x)
-    img.alpha_composite(spark, (sx - spark.width // 2, sy - spark.height // 2))
+    def prop(self, name, x, depth):
+        spr = load("Props", name)
+        cx, cy = self.px(x, depth)
+        self.img.alpha_composite(spr, (int(cx - spr.width / 2), int(cy - spr.height + 8 * SCALE)))
+
+
+def compose(cam_x, area, out):
+    s = Scene(cam_x)
     if area == "street":
-        lamp = load("Backgrounds", "FG_LampPost")
-        img.alpha_composite(lamp, (1380, 0))
+        s.layer("BG_Sky", 2150, 650, 0.15)
+        for i, n in enumerate(("BG_Street_00", "BG_Street_01")):
+            s.layer(n, 1024 + i * 2048, 580)
+        floor = "BG_FloorStreet"
+    else:
+        s.layer("BG_UBahn_00", 5120, 580)
+        s.layer("BG_UBahn_00", 7168, 580)
+        floor = "BG_FloorPlatform"
+    for i in range(10):
+        s.layer(floor, 512 + i * 1024, 90)
+
+    x0 = cam_x - 800
+    cast = [
+        ("prop", "Prop_TrashCan_00", x0 + 1340, 200),
+        ("Brecher", "Brecher_idle_01", x0 + 1250, 160, True),
+        ("Kalle", "Kalle_hurt_00", x0 + 930, 90, True),
+        ("Kai", "Kai_attack4_01", x0 + 820, 80, False),
+        ("Jojo", "Jojo_walk_03", x0 + 470, 40, False),
+        ("Ronny", "Ronny_fall_01", x0 + 1140, 30, True, 60),
+    ]
+    cast.sort(key=lambda e: -e[3])
+    for e in cast:
+        if e[0] == "prop":
+            s.prop(e[1], e[2], e[3])
+        else:
+            s.actor(e[0], e[1], e[2], e[3], e[4], e[5] if len(e) > 5 else 0)
+    s.put_center(load("Effects", "FX_HitBig_01"), x0 + 950, 80 + 150)
+
+    if area == "street":
+        s.layer("FG_LampPost", cam_x + 560, CAM_Z, 1.0)
+    else:
+        s.layer("FG_Pillar", cam_x + 600, CAM_Z, 1.0)
+
     # HUD-Andeutung
-    por = load("UI", "Portrait_Kai")
-    img.alpha_composite(por, (24, 20))
-    from PIL import ImageDraw
-    d = ImageDraw.Draw(img)
-    d.rectangle([160, 40, 560, 66], fill=(20, 16, 24, 255))
-    d.rectangle([164, 44, 470, 62], fill=(250, 200, 50, 255))
-    d.rectangle([470, 44, 520, 62], fill=(90, 220, 90, 255))
-    img.convert("RGB").save(os.path.join(OUT_DIR, out))
+    k = SCALE
+    s.img.alpha_composite(load("UI", "Portrait_Kai").resize((96 * k, 96 * k)), (24 * k, 18 * k))
+    d = ImageDraw.Draw(s.img)
+    d.rectangle([136 * k, 48 * k, 544 * k, 78 * k], fill=(20, 16, 24, 255))
+    d.rectangle([140 * k, 52 * k, 460 * k, 74 * k], fill=(250, 200, 50, 255))
+    d.rectangle([460 * k, 52 * k, 510 * k, 74 * k], fill=(90, 220, 90, 255))
+    s.img.convert("RGB").save(os.path.join(OUT_DIR, out), quality=92)
 
 
 if __name__ == "__main__":
-    compose()
-    compose(cam_x=800, area="ubahn", out="Preview_UBahn.png")
+    compose(1000, "street", "Preview_Scene.png")
+    compose(5300, "ubahn", "Preview_UBahn.png")
+    compose(2900, "street", "Preview_Street2.png")

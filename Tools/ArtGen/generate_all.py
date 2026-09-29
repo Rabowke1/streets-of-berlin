@@ -20,35 +20,52 @@ import audio  # noqa: E402
 import backgrounds as bg  # noqa: E402
 import effects as fx  # noqa: E402
 from characters import ANIMS_BY_STYLE, make_characters, stance  # noqa: E402
-from common import OUT_DIR, ensure_dir, save  # noqa: E402
+from common import OUT_DIR, RES, ROOT, ensure_dir, save  # noqa: E402
 from puppet import render_pose  # noqa: E402
 
+# Frame-Groesse in Welt-Units (Pixel = Units * RES)
 FRAME = (320, 320)
 FOOT = (160, 312)
 
-manifest = {"frame_size": list(FRAME), "foot": list(FOOT), "sprites": [], "sounds": []}
+# Eigene Grafiken (handgezeichnet oder mit einem Bild-KI-Tool erzeugt) mit gleichem Namen
+# in Art/Custom/<Ordner>/<Name>.png ersetzen die generierte Version automatisch.
+CUSTOM_DIR = os.path.join(ROOT, "Art", "Custom")
+
+manifest = {"frame_size": list(FRAME), "foot": list(FOOT), "pixels_per_unit": RES, "sprites": [], "sounds": []}
+custom_used = []
 
 
 def add_sprite(img, folder, name):
     rel = os.path.join("Sprites", folder, name + ".png")
+    custom = os.path.join(CUSTOM_DIR, folder, name + ".png")
+    if os.path.exists(custom):
+        src = Image.open(custom).convert("RGBA")
+        if src.size != img.size:
+            print("  Hinweis: %s hat %dx%d statt %dx%d – wird skaliert" % (custom, src.width, src.height,
+                                                                          img.width, img.height))
+            src = src.resize(img.size, Image.LANCZOS)
+        img = src
+        custom_used.append(rel)
     save(img, rel)
     manifest["sprites"].append({
         "file": rel.replace("\\", "/"),
         "package": "/Game/Sprites/" + folder,
         "name": name,
         "size": [img.width, img.height],
+        "ppu": RES,
     })
 
 
 def portrait(char, style, scale):
-    big = render_pose(char, stance(style), size=(420, 900), foot=(210, 880), scale=2.8)
+    R = RES
+    big = render_pose(char, stance(style), size=(420 * R, 900 * R), foot=(210 * R, 880 * R), scale=2.8 * R)
     bbox = big.getbbox()
     top = bbox[1]
-    alpha = big.split()[3].crop((0, top, big.width, top + 120))
+    alpha = big.split()[3].crop((0, top, big.width, top + 120 * R))
     hb = alpha.getbbox()
-    cx = (hb[0] + hb[2]) // 2 if hb else 210
-    crop = big.crop((cx - 80, top - 10, cx + 80, top + 150))
-    return crop.resize((128, 128), Image.LANCZOS)
+    cx = (hb[0] + hb[2]) // 2 if hb else 210 * R
+    crop = big.crop((cx - 80 * R, top - 10 * R, cx + 80 * R, top + 150 * R))
+    return crop.resize((128 * RES, 128 * RES), Image.LANCZOS)
 
 
 def gen_characters(only=None):
@@ -61,7 +78,8 @@ def gen_characters(only=None):
         count = 0
         for anim, frames in anims.items():
             for i, p in enumerate(frames):
-                img = render_pose(spec["char"], p, FRAME, FOOT, spec["scale"])
+                img = render_pose(spec["char"], p, (FRAME[0] * RES, FRAME[1] * RES), (FOOT[0] * RES, FOOT[1] * RES),
+                                  spec["scale"] * RES)
                 add_sprite(img, name, "%s_%s_%02d" % (name, anim, i))
                 count += 1
         add_sprite(portrait(spec["char"], spec["style"], spec["scale"]), "UI", "Portrait_" + name)
@@ -127,6 +145,8 @@ def main():
     with open(os.path.join(OUT_DIR, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=1)
     print("%d Sprites, %d Sounds -> %s" % (len(manifest["sprites"]), len(manifest["sounds"]), OUT_DIR))
+    if custom_used:
+        print("Eigene Grafiken aus Art/Custom verwendet: %d" % len(custom_used))
 
 
 if __name__ == "__main__":

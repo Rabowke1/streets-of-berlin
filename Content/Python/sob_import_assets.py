@@ -11,6 +11,7 @@ Erzeugt:
     /Game/Audio/<Name>                         Sounds (Musik loopt)
     /Game/Maps/Stage1                          leere Map (der GameMode baut alles zur Laufzeit)
 """
+import hashlib
 import json
 import os
 
@@ -73,8 +74,18 @@ def run(only_missing=True):
                            "ausfuehren." % manifest_path)
         return
 
-    with open(manifest_path, "r", encoding="utf-8") as f:
-        manifest = json.load(f)
+    with open(manifest_path, "rb") as f:
+        raw = f.read()
+    manifest = json.loads(raw.decode("utf-8"))
+
+    # Wurden die Assets neu generiert (anderes Manifest), alles neu importieren
+    stamp_path = os.path.join(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_saved_dir()),
+                              "sob_import_stamp.txt")
+    digest = hashlib.sha1(raw).hexdigest()
+    old = open(stamp_path).read().strip() if os.path.exists(stamp_path) else ""
+    if only_missing and old and old != digest:
+        unreal.log("Streets of Berlin: Manifest hat sich geaendert -> kompletter Re-Import.")
+        only_missing = False
 
     sprites = [s for s in manifest["sprites"]
                if not only_missing or not _exists(s["package"] + "/" + s["name"])]
@@ -105,7 +116,8 @@ def run(only_missing=True):
                 unreal.log_warning("Textur fehlt: " + s["name"])
                 continue
             _configure_texture(tex)
-            unreal.BrawlerEditorLibrary.create_sprite_from_texture(tex, s["package"], s["name"], material)
+            ppu = float(s.get("ppu", manifest.get("pixels_per_unit", 1)))
+            unreal.BrawlerEditorLibrary.create_sprite_from_texture(tex, s["package"], s["name"], material, ppu)
 
         # 3) Sounds
         if sounds:
@@ -120,6 +132,13 @@ def run(only_missing=True):
         unreal.EditorAssetLibrary.save_directory("/Game/Sprites", only_if_is_dirty=True, recursive=True)
         unreal.EditorAssetLibrary.save_directory("/Game/Audio", only_if_is_dirty=True, recursive=True)
         unreal.log("Streets of Berlin: Import abgeschlossen.")
+
+    try:
+        os.makedirs(os.path.dirname(stamp_path), exist_ok=True)
+        with open(stamp_path, "w") as f:
+            f.write(digest)
+    except OSError:
+        pass
 
     _ensure_map()
 
