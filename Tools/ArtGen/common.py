@@ -10,7 +10,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 
 SS = 3  # Supersampling-Faktor
-# Ausgabe-Aufloesung: Pixel pro Unreal-Unit. 2 = scharf bis 4K (Sprites bekommen PixelsPerUnrealUnit=2).
+# Ausgabe-Aufloesung: Pixel pro Welt-Unit. 2 = scharf bis 4K.
 RES = int(os.environ.get("SOB_RES", "2"))
 OUTLINE = (22, 16, 28, 255)
 

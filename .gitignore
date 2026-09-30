@@ -1,17 +1,9 @@
-# Unreal
-Binaries/
-Intermediate/
-Saved/
-DerivedDataCache/
+# Editoren
 .vs/
 .idea/
-*.sln
-*.VC.db
-*.opensdf
-*.sdf
-*.suo
-*.xcworkspace
-Build/
+# Desktop-Build
+desktop/app/
+desktop/dist/
 # Python
 __pycache__/
 *.pyc

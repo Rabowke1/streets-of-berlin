@@ -19,9 +19,15 @@ export class Menu {
   get active() { return this.stack.length > 0; }
   get top() { return this.stack[this.stack.length - 1]; }
   reset(id) { this.stack = id ? [{ id, sel: 0, col: 0 }] : []; this.wait = null; }
-  open(id) {
+  open(id, players = 1) {
     const sel = id === 'select' ? Math.max(0, CHARS.indexOf(this.game.settings.character)) : 0;
-    this.stack.push({ id, sel, col: 0 });
+    const top = { id, sel, col: 0 };
+    // Zu zweit: jedes Geraet hat seinen eigenen Cursor. 1P = Geraet, das "2 SPIELER" bestaetigt hat.
+    if (id === 'select' && players > 1) {
+      top.coop = { slots: [{ dev: this.game.lastMenuDev || 'kb', sel, ready: false },
+        { dev: null, sel: (sel + 1) % CHARS.length, ready: false }], taken: 0 };
+    }
+    this.stack.push(top);
     this.beep();
   }
   close() {
@@ -38,8 +44,11 @@ export class Menu {
     const vol = (k) => (d) => { s[k] = clamp(Math.round((s[k] + d * 0.1) * 10) / 10, 0, 1); s.save(); g.applyAudio(); };
     switch (id) {
       case 'main': return [
-        { label: 'SPIEL STARTEN', act: () => this.open('select') },
+        { label: '1 SPIELER', act: () => this.open('select', 1) },
+        { label: '2 SPIELER', act: () => this.open('select', 2) },
         { label: 'OPTIONEN', act: () => this.open('options') },
+        // nur in der Desktop-Version (.exe)
+        ...(g.desktop ? [{ label: 'BEENDEN', act: () => g.desktop.quit() }] : []),
       ];
       case 'pause': return [
         { label: 'WEITER', act: () => g.resume() },
@@ -52,6 +61,7 @@ export class Menu {
         { label: 'SOUNDS', value: () => (s.sfx ? 'AN' : 'AUS'), act: toggle('sfx'), adj: toggle('sfx') },
         { label: 'SOUND-LAUTSTÄRKE', value: () => pct(s.sfxVol), adj: vol('sfxVol'), act: () => vol('sfxVol')(1), dim: () => !s.sfx },
         { label: 'STEUERUNG ANPASSEN', act: () => this.open('controls') },
+        ...(g.canFullscreen() ? [{ label: 'VOLLBILD', value: () => (g.isFullscreen() ? 'AN' : 'AUS'), act: () => g.toggleFullscreen(), adj: () => g.toggleFullscreen() }] : []),
         { label: 'ZURÜCK', act: () => this.close() },
       ];
       case 'controls': return [
@@ -66,8 +76,9 @@ export class Menu {
 
   // --- Eingabe ------------------------------------------------------------------------
   /** p: Set mit 'up','down','left','right','ok','back','start' */
-  input(p) {
+  input(p, byDev) {
     const top = this.top; if (!top || this.wait) return;
+    if (top.coop) { this.coopInput(top, byDev || new Map()); return; }
     const items = this.items(top.id);
     const horiz = top.id === 'select';
     const prev = horiz ? 'left' : 'up', next = horiz ? 'right' : 'down';
@@ -81,6 +92,33 @@ export class Menu {
     }
     if (p.has('ok') || (p.has('start') && top.id !== 'pause')) { it.act(); return; }
     if (p.has('back') || (p.has('start') && top.id === 'pause')) this.close();
+  }
+  /** Figurenauswahl zu zweit: Eingaben je Geraet */
+  coopInput(top, byDev) {
+    const { slots } = top.coop;
+    for (const [dev, set] of byDev) {
+      const ok = set.has('ok') || set.has('start');
+      let idx = slots.findIndex((sl) => sl.dev === dev);
+      if (idx < 0) {
+        // Zweites Geraet meldet sich an
+        if (ok && slots[1].dev === null) { slots[1].dev = dev; this.beep(0.6); }
+        continue;
+      }
+      const sl = slots[idx], other = slots[1 - idx];
+      if (!sl.ready && (set.has('left') || set.has('right'))) {
+        sl.sel = (sl.sel + (set.has('right') ? 1 : CHARS.length - 1)) % CHARS.length; this.beep(0.2);
+      }
+      if (ok && !sl.ready) {
+        if (other.ready && other.sel === sl.sel) { top.coop.taken = 1.2; this.game.sfx('SFX_Thud', 0.6, 0); }
+        else { sl.ready = true; this.beep(0.6); }
+      } else if (set.has('back')) {
+        if (sl.ready) sl.ready = false;
+        else if (idx === 0) { this.close(); return; }
+        else sl.dev = null;
+        this.beep(0.2);
+      }
+    }
+    if (slots.every((sl) => sl.dev && sl.ready)) this.game.beginGame(slots.map((sl) => CHARS[sl.sel]), slots.map((sl) => sl.dev));
   }
   /** Tastendruck waehrend des Neubelegens. true = verbraucht. */
   captureKey(code) {
@@ -108,6 +146,13 @@ export class Menu {
     const top = this.top; if (!top) return;
     if (this.wait) { this.wait = null; return; } // Tippen bricht Neubelegen ab
     const r = this.hit(x, y); if (!r) return;
+    if (top.coop) {
+      // Maus/Touch steuert Spieler 1
+      const sl = top.coop.slots[0];
+      if (sl.sel === r.i && !sl.ready) this.coopInput(top, new Map([[sl.dev, new Set(['ok'])]]));
+      else if (!sl.ready) { sl.sel = r.i; this.beep(0.2); }
+      return;
+    }
     top.sel = r.i; if (r.col !== undefined) top.col = r.col;
     const it = this.items(top.id)[r.i];
     if (r.dir && it.adj) { it.adj(r.dir); this.beep(0.3); } else it.act();
@@ -129,7 +174,7 @@ export class Menu {
     const main = top.id === 'main', wide = top.id === 'options';
     const title = { pause: 'PAUSE', options: 'OPTIONEN' }[top.id];
     if (title) g.text(title, 800, 150, 64, '#ffc71a', 'center');
-    const y0 = main ? 470 : 280, step = main ? 70 : 78, w = wide ? 900 : 560;
+    const y0 = main ? 420 : 280, step = main ? 64 : 78, w = wide ? 900 : 560;
     items.forEach((it, i) => {
       const y = y0 + i * step, sel = i === top.sel, x = 800 - w / 2;
       this.rects.push({ x, y: y - 8, w, h: step - 12, i });
@@ -147,7 +192,7 @@ export class Menu {
     });
     const hint = main ? this.controlsHint() : '↑↓ WÄHLEN   ←→ ÄNDERN   ENTER OK   ESC ZURÜCK';
     g.text(hint, 800, main ? 700 : 830, 22, '#cfc6e0', 'center');
-    if (main) g.text('3 Stages: Kreuzberg · East Side Gallery · Baustelle am Alex', 800, 745, 22, '#ffd24a', 'center');
+    if (main) g.text('4 Stages: Kreuzberg · East Side Gallery · Baustelle am Alex · Tram M10', 800, 745, 22, '#ffd24a', 'center');
   }
   controlsHint() {
     const s = this.game.settings;
@@ -200,8 +245,13 @@ export class Menu {
     const g = this.game, ctx = g.ctx, A = g.assets;
     g.text('WÄHLE DEINE FIGUR', 800, 60, 56, '#ffc71a', 'center');
     const cw = 440, ch = 470, y = 150;
+    const coop = top.coop, slots = coop ? coop.slots : null;
+    const devName = (d) => (d === 'kb' ? 'TASTATUR' : d && d.startsWith('pad') ? `GAMEPAD ${Number(d.slice(3)) + 1}` : '');
+    if (coop) coop.taken = Math.max(0, coop.taken - 1 / 60);
     CHARS.forEach((id, i) => {
-      const def = PLAYERS[id], sel = i === top.sel;
+      const def = PLAYERS[id];
+      const cursors = coop ? slots.map((sl, k) => (sl.dev && sl.sel === i ? k : -1)).filter((k) => k >= 0) : [];
+      const sel = coop ? cursors.length > 0 : i === top.sel;
       const cx = 800 + (i - (CHARS.length - 1) / 2) * 480, x = cx - cw / 2;
       this.rects.push({ x, y, w: cw, h: ch, i });
       ctx.fillStyle = '#0a0610'; ctx.fillRect(x - 5, y - 5, cw + 10, ch + 10);
@@ -215,6 +265,12 @@ export class Menu {
         A.draw(ctx, f, cx, y + 400, W.FootX, W.FootY, i > 0, 1.35, sel ? 1 : 0.55);
       }
       g.text(def.name, cx, y + 16, 44, sel ? '#ffc71a' : '#bdb4cc', 'center');
+      cursors.forEach((k, n) => {
+        const sl = slots[k], tx = x + 14 + n * 110;
+        ctx.fillStyle = k ? '#8a3cff' : '#2f7bff'; ctx.fillRect(tx, y + 70, 100, 34);
+        g.text(`${k + 1}P`, tx + 50, y + 74, 24, '#fff', 'center');
+        if (sl.ready) g.text('BEREIT', cx, y + 330, 40, k ? '#c7a0ff' : '#9fd0ff', 'center');
+      });
       STAT_NAMES.forEach(([k, n], j) => {
         const sy = y + 412 + j * 18;
         g.text(n, x + 24, sy - 2, 14, '#cfc6e0');
@@ -224,6 +280,17 @@ export class Menu {
         }
       });
     });
+    if (coop) {
+      slots.forEach((sl, k) => {
+        const yy = 660 + k * 50;
+        const txt = sl.dev ? `${k + 1}P: ${devName(sl.dev)}  –  ${PLAYERS[CHARS[sl.sel]].name}${sl.ready ? '  ✔' : ''}` : '';
+        if (sl.dev) g.text(txt, 800, yy, 30, k ? '#c7a0ff' : '#9fd0ff', 'center');
+        else if ((performance.now() % 900) < 600) g.text('2P: START / A AUF EINEM ZWEITEN GERÄT DRÜCKEN', 800, yy, 30, '#fff', 'center');
+      });
+      if (coop.taken > 0) g.text('SCHON VERGEBEN!', 800, 770, 30, '#ff6080', 'center');
+      g.text('JEDER MIT SEINEM GERÄT:  ←→ WÄHLEN   ENTER / A BEREIT   ESC / B ZURÜCK', 800, 838, 22, '#cfc6e0', 'center');
+      return;
+    }
     const def = PLAYERS[CHARS[top.sel]];
     def.desc.forEach((l, i) => g.text(l, 800, 650 + i * 38, i ? 24 : 28, i ? '#fff' : '#ffc71a', 'center'));
     g.text('←→ WÄHLEN   ENTER LOS!   ESC ZURÜCK', 800, 838, 22, '#cfc6e0', 'center');

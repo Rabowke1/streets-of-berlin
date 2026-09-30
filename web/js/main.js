@@ -9,7 +9,9 @@ const opts = {
   god: params.has('god'),
   mute: params.has('mute'),
   speed: Math.max(1, Math.min(16, Number(params.get('speed')) || 1)),
-  stage: Math.max(0, Math.min(2, (Number(params.get('stage')) || 1) - 1)),
+  stage: Math.max(0, Math.min(3, (Number(params.get('stage')) || 1) - 1)),
+  // ?players=2: zu zweit (mit ?autoplay spielen zwei Bots)
+  players: Math.max(1, Math.min(2, Number(params.get('players')) || 1)),
   // ?char=leyla waehlt die Figur vor (fuer Tests / Direktlinks)
   character: params.has('char') ? params.get('char').charAt(0).toUpperCase() + params.get('char').slice(1).toLowerCase() : null,
 };

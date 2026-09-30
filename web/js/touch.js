@@ -45,12 +45,12 @@ export function setupTouch(game, root) {
     b.addEventListener('touchstart', (e) => {
       e.preventDefault();
       game.initAudio();
-      game.pressed.add(b.dataset.a);
+      game.touchPress(b.dataset.a);
       b.classList.add('down');
     }, { passive: false });
     const up = () => b.classList.remove('down');
     b.addEventListener('touchend', up);
     b.addEventListener('touchcancel', up);
-    b.addEventListener('click', () => game.pressed.add(b.dataset.a)); // Maus / Tests
+    b.addEventListener('click', () => game.touchPress(b.dataset.a)); // Maus / Tests
   }
 }

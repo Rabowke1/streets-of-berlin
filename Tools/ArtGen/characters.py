@@ -1,8 +1,8 @@
 """Figuren-Definitionen und Animationen (Posen) fuer Streets of Berlin.
 
-Alle Figuren schauen im Sprite nach rechts; die Engine spiegelt sie.
-Animationsnamen sind fuer alle Figuren gleich, damit der C++-Code sie
-einheitlich ansprechen kann (siehe BrawlerAnimTable in C++).
+Alle Figuren schauen im Sprite nach rechts; das Spiel spiegelt sie.
+Animationsnamen sind fuer alle Figuren gleich, damit das Spiel sie
+einheitlich ansprechen kann (siehe ANIM in web/js/data.js).
 """
 import math
 
@@ -108,7 +108,39 @@ def make_characters():
         "Harald", top=(120, 124, 136, 255), top_inner=(240, 240, 236, 255), sleeve_upper=(120, 124, 136, 255),
         sleeve_lower=(120, 124, 136, 255), pants=(96, 100, 112, 255), shoe=(60, 36, 24, 255),
         sole=(30, 20, 16, 255), hair_style="slick", hair=(170, 170, 176, 255), skin=(236, 190, 160, 255),
-        tie=(180, 30, 40, 255), chest_w=52, waist_w=40), style="player", scale=1.12)
+        tie=(180, 30, 40, 255), chest_w=52, waist_w=40, cap_color=(236, 190, 60, 255)), style="boss_harald",
+        scale=1.12)
+    # Bauhelm in Gold statt Frisur: der Baulöwe auf seiner eigenen Baustelle
+    chars["Harald"]["char"].hair_style = "hardhat"
+
+    # --- Endgegner mit Berlin-Bezug ----------------------------------------------
+    # Stage 1: Fahrkartenkontrolleur im U-Bahnhof
+    chars["Klaus"] = dict(char=Character(
+        "Klaus", top=(38, 44, 62, 255), sleeve_upper=(38, 44, 62, 255), sleeve_lower=(38, 44, 62, 255),
+        pants=(34, 38, 52, 255), shoe=(22, 20, 20, 255), sole=(50, 50, 50, 255), hair_style="uniform",
+        cap_color=(34, 40, 58, 255), mustache=True, hair=(90, 70, 60, 255), skin=(226, 168, 132, 255),
+        vest=(250, 214, 40, 255), glove=(30, 30, 34, 255),
+        **dict(heavy, chest_w=70, waist_w=64, belly=16)), style="boss_klaus", scale=1.18)
+    # Kontrolleure, die Klaus per Pfiff ruft
+    chars["Kontrolli"] = dict(char=Character(
+        "Kontrolli", **dict(punk, hair_style="uniform", cap_color=(34, 40, 58, 255), vest=(250, 214, 40, 255),
+                            top=(38, 44, 62, 255), pants=(34, 38, 52, 255), earring=False, hair=(60, 44, 36, 255),
+                            shoe=(22, 20, 20, 255))), style="punk", scale=1.0)
+    # Stage 2: Tuersteher vor dem Club im Hinterhof ("Heute nicht.")
+    chars["Tuer"] = dict(char=Character(
+        "Tuer", top=(22, 22, 26, 255), sleeve_upper=(22, 22, 26, 255), sleeve_lower=(22, 22, 26, 255),
+        pants=(18, 18, 22, 255), shoe=(14, 14, 16, 255), sole=(40, 40, 44, 255), hair_style="bald",
+        beard=True, beard_color=(58, 56, 60, 255), face_tattoo=(30, 44, 96, 255), piercings=True,
+        coat=(16, 16, 20, 255), chain=(210, 214, 222, 255), shades=False, skin=(214, 170, 146, 255),
+        hair=(60, 60, 64, 255), **dict(heavy, chest_w=66, waist_w=54, belly=4)), style="boss_tuer", scale=1.24)
+    # Stage 4: Strassenbahnfahrer Alex (Uniformjacke mit gelbem Kragen, Weichenstange)
+    chars["Alex"] = dict(char=Character(
+        "Alex", top=(30, 40, 74, 255), top_inner=(246, 200, 40, 255), sleeve_upper=(30, 40, 74, 255),
+        sleeve_lower=(30, 40, 74, 255), pants=(44, 46, 56, 255), stripe=(246, 200, 40, 255),
+        shoe=(24, 22, 22, 255), sole=(60, 60, 60, 255), hair_style="buzz", hair=(210, 180, 110, 255),
+        beard=True, beard_color=(190, 150, 90, 255), shades=True, skin=(230, 176, 140, 255), glove=(28, 28, 32, 255),
+        chest_w=60, waist_w=48, belly=6, arm_w=(10.5, 11.5, 8.5), fore_w=(9.0, 9.5, 7.5), fist_r=10.5),
+        style="boss_alex", scale=1.16)
     return chars
 
 
@@ -116,6 +148,7 @@ def make_characters():
 # Animationen
 # ---------------------------------------------------------------------------
 def stance(style):
+    style = {"boss_klaus": "heavy", "boss_tuer": "heavy", "boss_harald": "player", "boss_alex": "player"}.get(style, style)
     if style == "heavy":
         return pose(t=4, af=(26, 70), ab=(16, 60), lf=(14, 10, 0), lb=(-12, 10, 0), face="angry")
     if style == "punk":
@@ -400,6 +433,68 @@ def kicker_anims():
     return A
 
 
+def boss_klaus_anims():
+    A = heavy_anims()
+    st = stance("heavy")
+    # Pfiff: Hand zum Mund, ruft Verstaerkung
+    A["whistle"] = [
+        pose(t=2, face="angry", af=(50, 130), ab=st["ab"], lf=(14, 10, 0), lb=(-12, 10, 0)),
+        pose(t=-6, h=-10, face="shout", af=(58, 150), ab=(30, 40), lf=(14, 10, 0), lb=(-12, 10, 0)),
+    ]
+    # "Fahrschein, bitte!": fordernd zeigen
+    A["point"] = [
+        pose(t=8, face="shout", af=(96, 4), ab=(20, 60), lf=(22, 16, 0), lb=(-16, 12, 0)),
+        pose(t=10, face="angry", af=(92, 10), ab=(20, 60), lf=(22, 16, 0), lb=(-16, 12, 0)),
+    ]
+    return A
+
+
+def boss_tuer_anims():
+    A = heavy_anims()
+    st = stance("heavy")
+    # Deckung: Arme vor der Brust verschraenkt
+    A["guard"] = [
+        pose(t=-4, face="angry", af=(70, 125), ab=(62, 128), lf=(18, 10, 0), lb=(-16, 10, 0)),
+        pose(t=-2, face="angry", af=(72, 122), ab=(64, 126), lf=(18, 12, 0), lb=(-16, 12, 0)),
+    ]
+    # "Du kommst hier nicht rein!": beidhaendiger Stoss
+    A["shove"] = [
+        pose(t=-10, face="angry", af=(24, 120), ab=(16, 118), lf=(14, 12, 0), lb=(-14, 12, 0)),
+        pose(t=20, face="shout", af=(88, 6), ab=(82, 8), lf=(30, 18, 0), lb=(-24, 8, 0), dx=8),
+        pose(t=14, face="angry", af=(74, 30), ab=(66, 34), lf=(26, 16, 0), lb=(-20, 10, 0), dx=4),
+    ]
+    A["point"] = [
+        pose(t=4, face="angry", af=(120, 6), ab=st["ab"], lf=(16, 10, 0), lb=(-14, 10, 0)),
+        pose(t=6, face="shout", af=(116, 10), ab=st["ab"], lf=(16, 10, 0), lb=(-14, 10, 0)),
+    ]
+    return A
+
+
+def boss_harald_anims():
+    A = player_anims()
+    # Ruft den Kran: Arm hoch
+    A["point"] = [
+        pose(t=4, face="shout", af=(150, 10), ab=(20, 60), lf=(20, 18, 0), lb=(-16, 20, 0)),
+        pose(t=6, face="shout", af=(160, 4), ab=(20, 60), lf=(20, 18, 0), lb=(-16, 20, 0)),
+    ]
+    return A
+
+
+def boss_alex_anims():
+    A = player_anims()
+    # Klingel: Arm hoch an die Leine, Oberkoerper zurueck
+    A["bell"] = [
+        pose(t=-4, face="shout", af=(158, 40), ab=(20, 60), lf=(20, 18, 0), lb=(-16, 20, 0)),
+        pose(t=-8, h=-8, face="shout", af=(150, 90), ab=(24, 70), lf=(20, 18, 0), lb=(-16, 20, 0)),
+    ]
+    # Oberleitung anrufen: beide Arme hoch
+    A["point"] = [
+        pose(t=2, face="shout", af=(165, 10), ab=(150, 20), lf=(22, 16, 0), lb=(-18, 18, 0)),
+        pose(t=4, face="shout", af=(170, 4), ab=(158, 10), lf=(22, 16, 0), lb=(-18, 18, 0)),
+    ]
+    return A
+
+
 def _with_weapons(fn, style):
     def make():
         A = fn()
@@ -415,4 +510,8 @@ ANIMS_BY_STYLE = {
     "skater": skater_anims,
     "heavy": _with_weapons(heavy_anims, "heavy"),
     "kicker": kicker_anims,
+    "boss_klaus": _with_weapons(boss_klaus_anims, "heavy"),
+    "boss_tuer": _with_weapons(boss_tuer_anims, "heavy"),
+    "boss_harald": _with_weapons(boss_harald_anims, "player"),
+    "boss_alex": _with_weapons(boss_alex_anims, "player"),
 }

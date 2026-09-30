@@ -7,7 +7,7 @@
 // Ablauf: 0) Laden im abgeschotteten iframe (wie im Artifact-Viewer)
 //         1) Titelmenue + Figurenauswahl + manueller Start per Tastatur (Screenshots)
 //         2) Optionsmenue: Musik/Sounds, Tastenbelegung aendern, Leyla spielen, Pause, Speichern
-//         3) Bot spielt alle 3 Stages mit Kai und mit Leyla durch (?autoplay&god&speed=8).
+//         3) Bot spielt alle Stages mit Kai und mit Leyla durch (?autoplay&god&speed=8).
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -85,7 +85,7 @@ const state = (page) => page.evaluate(() => {
   const key = async (k, n = 1) => { for (let i = 0; i < n; i++) { await page.keyboard.press(k); await page.waitForTimeout(90); } };
   const menu = () => page.evaluate(() => { const g = window.__sob, t = g.menu.top; return { id: t && t.id, sel: t && t.sel, wait: g.menu.wait, s: { music: g.settings.music, sfx: g.settings.sfx, sfxVol: g.settings.sfxVol, attack: g.settings.keys.attack } }; });
   await page.waitForTimeout(500);
-  await key('ArrowDown'); await key('Enter');
+  await key('ArrowDown', 2); await key('Enter');
   let m = await menu();
   if (m.id !== 'options') fail('Optionsmenue nicht geoeffnet: ' + JSON.stringify(m));
   await key('Enter');                  // Musik aus
@@ -106,7 +106,7 @@ const state = (page) => page.evaluate(() => {
   await key('Escape'); await key('Escape');       // zurueck zum Titel
   m = await menu();
   if (m.id !== 'main') fail('Zurueck zum Titel klappt nicht: ' + JSON.stringify(m));
-  await key('ArrowUp'); await key('Enter'); await key('ArrowRight');
+  await key('ArrowUp', 2); await key('Enter'); await key('ArrowRight');
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT, '07_select_leyla.png') });
   await key('Enter');
@@ -143,9 +143,53 @@ const state = (page) => page.evaluate(() => {
   await page.close();
 }
 
-// --- 3) Bot spielt alle Stages (Kai und Leyla) ------------------------------------------
-for (const who of ['kai', 'leyla']) {
-  const page = await newPage(`?autoplay&god&mute&speed=8&char=${who}`);
+// --- 3) Zu zweit: Tastatur (1P) + Gamepad (2P, simuliert) --------------------------------
+{
+  const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+  page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
+  // Gamepad-Attrappe: window.__pad steuert Knoepfe und Stick
+  await page.addInitScript(() => {
+    window.__pad = { buttons: new Array(17).fill(false), axes: [0, 0] };
+    navigator.getGamepads = () => [{ connected: true, index: 0, id: 'Test-Pad', axes: window.__pad.axes,
+      buttons: window.__pad.buttons.map((p) => ({ pressed: p, value: p ? 1 : 0 })) }];
+  });
+  await page.goto(`${URL}/index.html?mute`);
+  await page.waitForFunction(() => window.__sob, null, { timeout: 60000 });
+  const padTap = async (i) => {
+    await page.evaluate((b) => { window.__pad.buttons[b] = true; }, i); await page.waitForTimeout(120);
+    await page.evaluate((b) => { window.__pad.buttons[b] = false; }, i); await page.waitForTimeout(120);
+  };
+  await page.waitForTimeout(400);
+  await page.keyboard.press('ArrowDown'); await page.waitForTimeout(100);
+  await page.keyboard.press('Enter'); await page.waitForTimeout(300);   // 2 SPIELER (1P = Tastatur)
+  await padTap(0);                                                        // Gamepad meldet sich als 2P an
+  const joined = await page.evaluate(() => window.__sob.menu.top.coop.slots.map((s) => s.dev));
+  await page.screenshot({ path: path.join(OUT, '10_coop_select.png') });
+  await page.keyboard.press('Enter'); await page.waitForTimeout(150);    // 1P bereit
+  await padTap(0);                                                        // 2P bereit -> Start
+  await page.waitForTimeout(2600);
+  const coop = await page.evaluate(() => window.__sob.players.map((p) => ({ c: p.sprite, dev: p.device, x: Math.round(p.x) })));
+  console.log('Koop-Start:', JSON.stringify(joined), JSON.stringify(coop));
+  if (joined[0] !== 'kb' || joined[1] !== 'pad0') fail('Geraete-Zuordnung falsch: ' + JSON.stringify(joined));
+  if (coop.length !== 2 || coop[0].dev !== 'kb' || coop[1].dev !== 'pad0' || coop[0].c === coop[1].c) fail('Koop-Start falsch: ' + JSON.stringify(coop));
+  // Stick nach rechts bewegt nur 2P, Taste D nur 1P
+  await page.evaluate(() => { window.__pad.axes = [1, 0]; }); await page.waitForTimeout(900);
+  await page.evaluate(() => { window.__pad.axes = [0, 0]; });
+  const afterPad = await page.evaluate(() => window.__sob.players.map((p) => Math.round(p.x)));
+  await page.keyboard.down('KeyD'); await page.waitForTimeout(700); await page.keyboard.up('KeyD');
+  const afterKb = await page.evaluate(() => window.__sob.players.map((p) => Math.round(p.x)));
+  console.log('Koop-Bewegung:', JSON.stringify({ start: coop.map((p) => p.x), afterPad, afterKb }));
+  if (!(afterPad[1] > coop[1].x + 100) || Math.abs(afterPad[0] - coop[0].x) > 5) fail('Gamepad steuert nicht nur 2P');
+  if (!(afterKb[0] > afterPad[0] + 80) || Math.abs(afterKb[1] - afterPad[1]) > 5) fail('Tastatur steuert nicht nur 1P');
+  await page.screenshot({ path: path.join(OUT, '11_coop_game.png') });
+  await page.close();
+}
+
+// --- 4) Bots spielen alle Stages: Kai, Leyla und zu zweit ---------------------------------
+const BOSS_EVENTS = ['boss Klaus', 'train', 'boss down Klaus', 'boss Tuer', 'spot', 'bass drop', 'boss down Tuer', 'boss Harald', 'crane', 'boss down Harald', 'boss Alex', 'tram', 'zap', 'bellwave', 'boss down Alex'];
+for (const who of ['kai', 'leyla', 'duo']) {
+  const query = who === 'duo' ? '?autoplay&god&mute&speed=8&players=2' : `?autoplay&god&mute&speed=8&char=${who}`;
+  const page = await newPage(query);
   const t0 = Date.now();
   let lastStage = -1, shots = 0, lastX = -1, stuck = 0;
   while (Date.now() - t0 < MAX_MIN * 60000) {
@@ -164,9 +208,13 @@ for (const who of ['kai', 'leyla']) {
   }
   const s = await state(page);
   if (s.flow !== 'ending') fail(`Ende nicht erreicht (${who}): ` + JSON.stringify(s));
-  if (s.char && s.char.toLowerCase() !== who) fail(`Bot spielt falsche Figur: ${s.char}`);
+  if (who !== 'duo' && s.char && s.char.toLowerCase() !== who) fail(`Bot spielt falsche Figur: ${s.char}`);
+  if (who === 'duo' && (await page.evaluate(() => window.__sob.players.length)) !== 2) fail('Duo-Lauf ohne 2 Spieler');
   await page.screenshot({ path: path.join(OUT, `zz_end_${who}.png`) });
-  const log = await page.evaluate(() => window.__sob.log.join('\n'));
+  const log = await page.evaluate(() => window.__sob.fullLog.join('\n'));
+  const missing = BOSS_EVENTS.filter((ev) => !log.includes('] ' + ev));
+  console.log(`Boss-Mechaniken (${who}):`, missing.length ? 'FEHLEN ' + missing.join(', ') : 'alle ausgeloest');
+  if (missing.length) fail(`Boss-Ereignisse fehlen (${who}): ${missing.join(', ')}`);
   fs.writeFileSync(path.join(OUT, `game-log-${who}.txt`), log);
   await page.close();
 }

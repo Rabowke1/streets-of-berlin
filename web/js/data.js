@@ -1,4 +1,4 @@
-// Spieldaten – spiegeln die Werte aus dem Unreal-Code (Source/StreetsOfBerlin), plus Stage 2/3 und Waffen.
+// Spieldaten: Figuren, Angriffe, Gegner, Waffen und Stages.
 
 export const W = {
   DepthMin: 0, DepthMax: 240, FloorTopZ: 300, Gravity: 2600,
@@ -13,6 +13,7 @@ export const ANIM = {
   jump: [0, false], jump_kick: [14, false], special: [16, false], back_attack: [14, false], grab: [1, true],
   grab_knee: [14, false], throw: [11, false], pickup: [1, false], victory: [4, true],
   weapon_swing: [13, false], weapon_throw: [12, false],
+  whistle: [4, false], point: [3, false], guard: [3, true], shove: [7, false], bell: [4, false],
 };
 
 // Angriffs-Vorlage (entspricht FBrawlerAttack)
@@ -98,10 +99,19 @@ export const ENEMIES = {
   Zoe:     { name: 'ZOE', style: 'kicker', hp: 65, speed: 240, score: 250, cd: 1.0 },
   Nina:    { name: 'NINA', style: 'kicker', hp: 75, speed: 250, score: 300, cd: 0.9 },
   Brecher: { name: 'BRECHER', style: 'heavy', hp: 150, speed: 120, score: 500, grab: false, armor: 2, cd: 1.8, shadow: 1.35 },
-  Rolf:    { name: 'TÜRSTEHER ROLF', style: 'heavy', hp: 420, speed: 140, score: 5000, grab: false, armor: 3, cd: 1.3, boss: true, shadow: 1.4 },
+  Rolf:    { name: 'SECURITY-ROLF', style: 'heavy', hp: 300, speed: 140, score: 3000, grab: false, armor: 3, cd: 1.3, shadow: 1.4 },
   RolfII:  { sprite: 'Rolf', name: 'ROLF (REVANCHE)', style: 'heavy', hp: 260, speed: 150, score: 2000, grab: false, armor: 3, cd: 1.4, shadow: 1.4 },
-  Sven:    { name: 'HOOL-SVEN', style: 'heavy', hp: 480, speed: 150, score: 6000, grab: false, armor: 3, cd: 1.2, boss: true, weapon: 'Bat', shadow: 1.4 },
-  Harald:  { name: 'BAULÖWE HARALD', style: 'suit', hp: 560, speed: 200, score: 10000, grab: false, armor: 2, cd: 1.0, boss: true, weapon: 'Golf', shadow: 1.2, summon: ['Zoe', 'Brecher'] },
+  Sven:    { name: 'HOOL-SVEN', style: 'heavy', hp: 320, speed: 150, score: 3000, grab: false, armor: 3, cd: 1.2, weapon: 'Bat', shadow: 1.4 },
+  Kontrolli: { name: 'KONTROLLEUR', style: 'punk', hp: 60, speed: 190, score: 150, cd: 1.1 },
+  // --- Endgegner mit eigenen Mechaniken (siehe Enemy.bossBrain) -------------------------
+  Klaus:   { name: 'KONTROLLEUR KLAUS', title: 'Fahrscheine, bitte!', style: 'heavy', hp: 480, speed: 150, score: 6000, grab: false, armor: 3, cd: 1.3, boss: true, brain: 'klaus', shadow: 1.4,
+    tips: ['Sprint: Punktestrafe bei Treffer', 'Pfiff: ruft Kontrolleure', 'U-Bahn fährt ein: hinten weg!'] },
+  Tuer:    { name: 'DIE TÜR', title: 'Heute nicht.', style: 'heavy', hp: 520, speed: 130, score: 8000, grab: false, armor: 3, cd: 1.2, boss: true, brain: 'tuer', shadow: 1.45,
+    tips: ['Blockt von vorne: von hinten angreifen', 'Spotlight: raus aus dem Licht!', 'Würfe und Spezial durchbrechen die Deckung'] },
+  Harald:  { name: 'BAULÖWE HARALD', title: 'Das wird alles Luxus!', style: 'suit', hp: 600, speed: 200, score: 10000, grab: false, armor: 2, cd: 1.0, boss: true, brain: 'harald', weapon: 'Golf', shadow: 1.2, summon: ['Zoe', 'Brecher'],
+    tips: ['Kran: Schatten am Boden meiden', 'Golfbälle aus der Distanz', 'Ruft Verstärkung'] },
+  Alex:    { name: 'TRAMFAHRER ALEX', title: 'Bitte nicht in die Gleise treten!', style: 'suit', hp: 650, speed: 210, score: 12000, grab: false, armor: 2, cd: 1.0, boss: true, brain: 'alex', weapon: 'Pipe', shadow: 1.2, summon: ['Jojo', 'Deniz'],
+    tips: ['Bimm Bimm: Gleise räumen, die Tram kommt!', 'Oberleitung: blaue Kreise meiden', 'Klingel-Welle: drüberspringen!'] },
 };
 
 // Stages: Bereiche (Kulisse), Kaempfe, Kisten, Waffen am Boden
@@ -118,8 +128,8 @@ export const STAGES = [
       { t: 1760, lock: 2100, g: [G(['Jojo', 'Kalle', 'Ronny']), G(['Deniz', 'Kalle'], 1, 12)] },
       { t: 2960, lock: 3300, g: [G(['Brecher']), G(['Ronny', 'Jojo'], 1, 6), G(['Kalle', 'Deniz'], 1, 12)] },
       { t: 4560, lock: 4900, g: [G(['Kalle', 'Ronny', 'Deniz']), G(['Jojo', 'Jojo'], 1, 10), G(['Brecher'], 1, 14)] },
-      { t: 5860, lock: 6200, g: [G(['Brecher', 'Kalle']), G(['Deniz', 'Ronny', 'Jojo'], 1, 10), G(['Brecher'], 1, 14)] },
-      { t: 7050, lock: 7392, boss: true, g: [G(['Rolf']), G(['Kalle', 'Ronny'], 1, 15), G(['Jojo', 'Deniz'], 1, 22)] },
+      { t: 5860, lock: 6200, g: [G(['Rolf', 'Kalle']), G(['Deniz', 'Ronny', 'Jojo'], 1, 10), G(['Brecher'], 1, 14)] },
+      { t: 7050, lock: 7392, boss: true, g: [G(['Klaus']), G(['Kalle', 'Ronny'], 1, 25)] },
     ],
     props: [['TrashCan', 1050, 222, 'Currywurst'], ['Crate', 1520, 205, 'Money'], ['TrashCan', 2650, 225, 'Doener'],
       ['Crate', 3560, 210, 'Currywurst'], ['TrashCan', 4450, 225, 'Money'], ['Crate', 5600, 200, 'Doener'],
@@ -137,8 +147,8 @@ export const STAGES = [
       { t: 1760, lock: 2100, g: [G(['Nina', 'Ronny', 'Deniz']), G(['Micha', 'Zoe'], 1, 12)] },
       { t: 2960, lock: 3300, g: [G(['Brecher', 'Micha']), G(['Zoe', 'Nina'], 1, 8)] },
       { t: 4560, lock: 4900, g: [G(['Kalle', 'Micha', 'Deniz']), G(['Brecher', 'Jojo'], 1, 12)] },
-      { t: 5860, lock: 6200, g: [G(['Nina', 'Zoe', 'Micha']), G(['Ronny', 'Deniz', 'Kalle'], 1, 12)] },
-      { t: 7050, lock: 7392, boss: true, g: [G(['Sven']), G(['Micha', 'Nina'], 1, 16), G(['Zoe', 'Ronny'], 1, 24)] },
+      { t: 5860, lock: 6200, g: [G(['Sven', 'Zoe']), G(['Ronny', 'Deniz', 'Kalle'], 1, 12)] },
+      { t: 7050, lock: 7392, boss: true, g: [G(['Tuer']), G(['Micha', 'Nina'], 1, 18), G(['Zoe', 'Ronny'], 1, 28)] },
     ],
     props: [['Crate', 1100, 220, 'Currywurst'], ['TrashCan', 2300, 210, 'Money'], ['Crate', 3600, 215, 'Doener'],
       ['TrashCan', 4700, 225, 'Currywurst'], ['Crate', 5500, 200, 'Money'], ['TrashCan', 6800, 222, 'Doener']],
@@ -162,4 +172,25 @@ export const STAGES = [
       ['Crate', 4700, 215, 'Money'], ['TrashCan', 5600, 225, 'Doener'], ['Crate', 6900, 100, 'Doener']],
     weapons: [['Pipe', 900, 160], ['Bat', 3100, 60], ['Knife', 5100, 140], ['Pipe', 6600, 200]],
   },
+  {
+    name: 'STAGE 4', title: 'NACHTFAHRT MIT DER M10',
+    areas: [
+      { x0: 0, x1: 4096, walls: ['BG_TramStop_00', 'BG_TramStop_01'], floor: 'BG_FloorTram', sky: 'BG_SkyTram', fg: ['FG_Mast', [1400, 2800, 3800]] },
+      { x0: 4096, x1: 10240, walls: ['BG_Depot_00', 'BG_Depot_00', 'BG_Depot_00'], floor: 'BG_FloorDepot', sky: 'BG_SkyTram', fg: ['FG_Mast', [5200, 6600]] },
+    ],
+    encounters: [
+      { t: 560, lock: 900, g: [G(['Kontrolli', 'Jojo']), G(['Deniz', 'Kalle'], 1, 10)] },
+      { t: 1760, lock: 2100, g: [G(['Zoe', 'Kontrolli', 'Micha']), G(['Nina', 'Ronny'], 1, 12)] },
+      { t: 2960, lock: 3300, g: [G(['Brecher', 'Kontrolli']), G(['Jojo', 'Deniz', 'Zoe'], 1, 10)] },
+      { t: 4560, lock: 4900, g: [G(['RolfII', 'Nina']), G(['Micha', 'Kontrolli'], 1, 12)] },
+      { t: 5860, lock: 6200, g: [G(['Sven', 'Zoe']), G(['Brecher', 'Deniz', 'Kontrolli'], 1, 12)] },
+      { t: 7050, lock: 7392, boss: true, g: [G(['Alex']), G(['Kontrolli', 'Micha'], 1, 22)] },
+    ],
+    props: [['TrashCan', 1150, 225, 'Currywurst'], ['Crate', 2400, 215, 'Money'], ['TrashCan', 3650, 220, 'Doener'],
+      ['Crate', 4800, 225, 'Currywurst'], ['TrashCan', 5700, 215, 'Doener'], ['Crate', 6950, 120, 'Doener']],
+    weapons: [['Bottle', 1000, 120], ['Pipe', 3200, 200], ['Bat', 5300, 120], ['Knife', 6500, 60]],
+  },
 ];
+
+// Strassenbahn-Gleise in Stage 4 (Tiefe der Gleismitte), gleiche Werte wie Tools/ArtGen/backgrounds3.py
+export const TRAM_LANES = [170, 70];

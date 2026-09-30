@@ -1,12 +1,12 @@
 # Streets of Berlin
 
-Ein 2D-Beat-'em-Up für die **Unreal Engine 5** im Stil von *Streets of Rage 4*. Alles ist von Grund auf neu gebaut:
-Spiellogik in C++ (Paper2D), dazu **prozedural erzeugte Grafiken** (Figuren, Gegner, Level, Effekte, UI) und
+Ein 2D-Beat-'em-Up im Stil von *Streets of Rage 4*. Alles ist von Grund auf neu gebaut: Spiellogik in
+JavaScript (Canvas), dazu **prozedural erzeugte Grafiken** (Figuren, Gegner, Level, Effekte, UI) und
 **Sounds und Musik**. Alles lässt sich per Skript neu erzeugen.
 
-Zusätzlich gibt es eine **spielbare Browser-Version** (`web/`) mit denselben Grafiken und derselben Spiellogik sowie
-eine **KI-Pipeline** (`Tools/AIGen`), mit der sich die Figuren über ComfyUI im gezeichneten Comic-Stil neu
-generieren lassen, in exakt den Posen des Spiels.
+Das Spiel läuft als **Windows-Programm** (`StreetsOfBerlin.exe`, gebaut mit Electron) und als **Browser-Version**.
+Beide nutzen denselben Code (`web/`). Dazu gibt es eine **KI-Pipeline** (`Tools/AIGen`), mit der sich die Figuren über
+ComfyUI im gezeichneten Comic-Stil neu generieren lassen, in exakt den Posen des Spiels.
 
 ![Szene](Art/Generated/Preview_Scene.png)
 ![East Side Gallery](Art/Generated/Preview_Gallery.png)
@@ -19,31 +19,41 @@ generieren lassen, in exakt den Posen des Spiels.
 |---|---|
 | Spielfiguren | **Kai** (ausgewogen, viel Energie): 4er-Combo (Jab → Gerade → Uppercut → Kick), Flugkick, Rückwärts-Ellbogen, Spezial *Wirbelwind* (trifft rundum).<br>**Leyla** (schnelle Kickboxerin aus Neukölln, weniger Energie, mehr Reichweite): Jab → Front-Kick → Knie → Dreh-Roundhouse, *Hechtsprung-Kick* schräg nach unten, Esel-Tritt nach hinten, Spezial *Helikopter-Kick* mit Mehrfachtreffern.<br>Beide: Spezialangriff kostet Energie, die man wie in SoR4 durch Treffer zurückholt; Griff mit Knie ×3 oder Wurf; Essen und Waffen aufheben |
 | Gegner | **Kalle / Ronny** (Punks, Haken), **Messer-Micha** (sticht und wirft sein Messer), **Jojo / Deniz** (Skater, Rutschkick), **Zoe / Nina** (Kickboxerinnen, schnelle Kicks, fliegender Roundhouse), **Brecher** (schwer, Super-Armor, Sturmangriff) |
-| Bosse | Stage 1 **Türsteher Rolf** · Stage 2 **Hool-Sven** mit Baseballschläger · Stage 3 **Baulöwe Harald** mit Golfschläger, Sprungkicks und Verstärkung bei 66 %/33 % Energie. Alle mit Wut-Phase unter 50 % |
+| Endgegner | Jeder Boss hat einen Auftritt mit Namen, Spruch und Tipps, eine große Energieleiste unten und eine Wut-Phase unter 50 %.<br>**Stage 1 – Kontrolleur Klaus** (U-Bahnhof Kottbusser Tor, Warnweste und Dienstmütze): *„Fahrscheine, bitte!“*-Sprint, der bei Treffer Punkte als Strafe abzieht; ein Pfiff ruft Kontrolleure; alle paar Sekunden heißt es *„Zurückbleiben, bitte!“*, dann fährt die U8 durch die hintere Spur und räumt alles ab, was dort steht, auch Gegner.<br>**Stage 2 – Die Tür** (Club-Hinterhof, schwarzer Mantel, Gesichts-Tattoos): blockt von vorne; man muss ihn von hinten, per Wurf oder mit dem Spezialangriff erwischen, zu zweit also in die Zange nehmen. *„Heute nicht!“*-Stoß; das *Gästeliste*-Spotlight verfolgt einen Spieler, dann trifft ein Bass-Drop alles im Lichtkegel.<br>**Stage 3 – Baulöwe Harald** (Dach am Alex, goldener Bauhelm): lässt vom Kran Stahlträger auf markierte Stellen fallen (Schatten am Boden), schlägt Golfbälle aus der Distanz und ruft Verstärkung.<br>**Stage 4 – Tramfahrer Alex** (Uniformjacke mit gelbem Kragen, Weichenstange). Alle drei Mechaniken sind Flächenangriffe zum Ausweichen: *Bimm Bimm*: ein Gleis leuchtet gelb, dann rast eine Tram über diese Spur, in der Wut-Phase über beide gegenläufig; *Oberleitung*: blaue Warnkreise, dann schlagen Blitze ein; *Klingel-Welle*: ein Ring breitet sich über den Boden aus, man muss drüberspringen.<br>Zwischengegner: **Security-Rolf** (Stage 1), **Hool-Sven** mit Baseballschläger (Stage 2) |
 | Waffen | **Rohr, Baseballschläger, Messer, Flasche, Golfschläger**: aufheben mit Schlag, zuschlagen mit Schlag, werfen mit Rückschlag. Haltbarkeit pro Waffe, Flaschen zerbrechen, Gegner lassen ihre Waffen beim Umfallen fallen. Die Waffe sitzt über Hand-Anker pro Animations-Frame in der Hand |
 | Kampfsystem | aktive Hit-Frames, Hitstop, Screenshake, Hitstun, Knockdown mit Aufprall-Hüpfer, Jonglieren, geworfene Gegner werfen andere um, Unverwundbarkeit beim Aufstehen, Angriffs-Tokens (maximal 2 Gegner greifen gleichzeitig an) |
 | Stage 1 | *Kreuzberg bei Nacht*: Oranienstraße (Späti, Döner, Brandwand mit Fernsehturm) → U-Bahnhof Kottbusser Tor |
 | Stage 2 | *East Side Gallery*: Mauer-Wandbilder, Oberbaumbrücke mit U1 → Club-Hinterhof mit Lichterketten und Container-Bar |
 | Stage 3 | *Baustelle am Alex*: Rohbau mit Gerüst, Flutlicht, „Harald Immobilien“-Banner → Showdown auf dem Dach über der Stadt |
+| Stage 4 | *Nachtfahrt mit der M10*: Tram-Haltestelle zwischen Plattenbauten mit Oberleitung, Spätkauf und Fahrgastanzeiger → Betriebshof mit abgestellten Bahnen. Zwei Gleise laufen quer durch die Kampffläche |
 | Ablauf | je Stage 6 Kampfabschnitte mit Kamera-Sperre und „GO →“-Pfeil, Stage-Wechsel mit Punkte-Übernahme, Abspann |
-| Menüs | Titelmenü, **Figurenauswahl** (Werte + Moves), **Optionen**: Musik an/aus + Lautstärke, Sounds an/aus + Lautstärke, **Steuerung anpassen** (2 Tasten + 1 Gamepad-Knopf pro Aktion, Tausch bei Doppelbelegung, Standard wiederherstellen), Pause-Menü (Weiter / Optionen / Zum Titel). Alles wird gespeichert (Unreal: SaveGame-Slot `SobSettings`, Browser: `localStorage`) |
+| 2 Spieler | Koop zu zweit: **zwei Gamepads** oder **Tastatur + Gamepad**. Unter *2 Spieler* bestätigt Spieler 1 mit seinem Gerät, Spieler 2 drückt Start/A auf einem zweiten Gerät; jeder wählt dann mit seinem Gerät die eigene Figur (Kai oder Leyla). Jeder hat eigene Energie, Leben und Punkte; die Kamera hält beide im Bild, Gegner verteilen sich auf beide und halten zu zweit mehr aus |
+| Menüs | Titelmenü (1 Spieler / 2 Spieler), **Figurenauswahl** (Werte + Moves), **Optionen**: Musik an/aus + Lautstärke, Sounds an/aus + Lautstärke, **Steuerung anpassen** (2 Tasten + 1 Gamepad-Knopf pro Aktion, Tausch bei Doppelbelegung, Standard wiederherstellen), Pause-Menü (Weiter / Optionen / Zum Titel). In der .exe außerdem **Vollbild** und **Beenden**. Alles wird gespeichert |
 | Extras | zerstörbare Mülltonnen/Obstkisten mit Döner (volle Heilung), Currywurst und Geld, Combo-Zähler, Punkte, 3 Leben mit Wiedereinstieg, Game Over, Stage Clear, Zeitlupe beim Boss-KO |
 
 ## Schnellstart
 
-Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit C++-Toolchain
-(Windows: Visual Studio 2022 mit „Spieleentwicklung mit C++“).
+**Spielen unter Windows:** `StreetsOfBerlin-win-x64.zip` entpacken und `StreetsOfBerlin.exe` starten. Der ganze Ordner
+muss zusammenbleiben; eine Installation ist nicht nötig. Die ZIP entsteht automatisch bei jedem Push auf `main`
+(GitHub → *Actions* → *Desktop-Build* → *Artifacts*). Bei einem Tag wie `v1.0.0` wird sie zusätzlich als Release
+veröffentlicht.
 
-1. `StreetsOfBerlin.uproject` doppelklicken und die Frage „Module neu kompilieren?“ mit **Ja** beantworten
-   (oder Rechtsklick → *Generate Visual Studio project files* und in Visual Studio `Development Editor` bauen).
-2. Beim ersten Editor-Start importiert `Content/Python/init_unreal.py` automatisch alle Assets aus
-   `Art/Generated` (≈610 Sprites, 10 Sounds) und legt die Map `/Game/Maps/Stage1` an. Das dauert beim ersten Mal
-   ein paar Minuten, danach wird nur noch geprüft.
-3. Falls die Map beim Start noch leer oder nicht geöffnet ist: `Content/Maps/Stage1` öffnen.
-4. **Play** drücken (am besten *Standalone Game* oder *New Editor Window*, 16:9).
+**Selbst bauen** (Windows, Linux oder macOS, Node.js ≥ 20):
 
-> Die Python-Plugins (*Python Editor Script Plugin*, *Editor Scripting Utilities*) und *Paper2D* sind in der
-> `.uproject` bereits aktiviert.
+```bash
+cd desktop
+npm install
+npm start               # direkt spielen (Entwicklung)
+npm run build:win       # -> desktop/dist/StreetsOfBerlin-win32-x64/StreetsOfBerlin.exe + StreetsOfBerlin-win-x64.zip
+npm run build:linux     # -> desktop/dist/StreetsOfBerlin-linux-x64/StreetsOfBerlin
+```
+
+Die Windows-.exe lässt sich auch unter Linux bauen: Icon und Versionsinfo setzt `build.mjs` mit *resedit*, Wine ist
+nicht nötig. Hängt der Download von Electron hinter einem Proxy, das passende `electron-vX-win32-x64.zip` selbst laden
+und mit `node build.mjs --platform win32 --electron-zip-dir <ordner>` bauen.
+
+**Vollbild:** F11 oder Alt+Enter, oder *Optionen → Vollbild* (wird gespeichert). Einstellungen und Tastenbelegung
+liegen im Benutzerprofil (`%APPDATA%\Streets of Berlin`).
 
 ## Steuerung
 
@@ -60,16 +70,17 @@ immer mit Pfeilen/D-Pad, *Enter*/A und *Esc*/B bedienen, im Browser auch per Mau
 | Rückschlag (nach hinten) / Waffe werfen | I | B / ○ |
 | Start / Pause | Enter / P (Esc pausiert immer) | Start |
 
-> Im Unreal-Editor beendet *Esc* standardmäßig das Play-in-Editor. Zum Testen des Pause-Menüs *Enter*/*P* nutzen oder als
-> *Standalone Game* starten.
+**Zu zweit:** Allein steuert man mit allen Geräten gleichzeitig. Zu zweit gehört die Tastatur (samt Touch) dem Spieler,
+der sich damit angemeldet hat, und jedes Gamepad seinem Spieler. Die Belegung aus *Optionen → Steuerung* gilt für
+die Tastatur bzw. für alle Gamepads.
 
 **Griff:** in einen Gegner hineinlaufen. Dann *Schlag* = Knie (das dritte wirft um), *weg drücken + Schlag* = Wurf,
 *Sprung* = loslassen. Die Combo läuft nur weiter, wenn die Schläge treffen – sonst beginnt sie wieder beim Jab.
 
 ## Browser-Version
 
-Die Browser-Version (`web/`) ist eine Portierung der Spiellogik nach JavaScript/Canvas mit denselben Grafiken.
-Damit lässt sich das Spiel sofort ohne Unreal spielen und automatisch testen.
+`web/` enthält das komplette Spiel. `desktop/` verpackt genau diese Dateien in die .exe. Zum Entwickeln reicht ein
+lokaler Webserver:
 
 ```bash
 python Tools/WebBuild/build_web.py               # Texturatlanten + Hintergründe nach web/assets (≈7 MB)
@@ -77,19 +88,28 @@ python -m http.server 8000 --directory web       # dann http://localhost:8000 ö
 ```
 
 URL-Parameter: `?stage=2` (direkt in Stage 2/3 starten), `?char=leyla` (Figur vorwählen), `?mute`,
-`?autoplay&god&speed=8` (Bot spielt selbst).
+`?autoplay&god&speed=8` (Bot spielt selbst), `?players=2` (mit `autoplay` spielen zwei Bots zusammen).
 
 **Automatischer Playtest** (headless Chromium über Playwright): Laden im abgeschotteten iframe, Titelmenü und
 Figurenauswahl per Tastatur, Laufen und Schlagen; dann Optionsmenü (Musik/Sounds aus, Lautstärke, Schlag-Taste auf *U*
 umbelegen), Spiel mit Leyla inklusive Spezialangriff und Pause-Menü, Prüfung der gespeicherten Einstellungen nach dem
-Neuladen. Zum Schluss spielt ein Bot mit Kai und mit Leyla alle drei Stages bis zum Abspann durch; dabei wird auf
-JavaScript-Fehler geprüft.
+Neuladen. Danach ein Koop-Start mit Tastatur + simuliertem Gamepad: Anmelden, Figurenwahl, und die Prüfung, dass
+jedes Gerät nur seinen Spieler bewegt. Zum Schluss spielen Bots mit Kai, mit Leyla und zu zweit alle drei Stages bis
+zum Abspann. Dabei wird geprüft, dass jede Boss-Mechanik ausgelöst wurde (U-Bahn, Spotlight/Bass-Drop, Kran) und
+keine JavaScript-Fehler auftreten.
 
 ```bash
 npm i playwright                                  # einmalig
 python -m http.server 8765 --directory web &
 node Tools/WebBuild/playtest.mjs --out playtest-out
 ```
+
+Nach Änderungen an `web/js/*.js` das Bündel neu bauen: `python Tools/WebBuild/bundle.py` (macht `build_web.py` mit).
+
+**Test der Desktop-Version:** `desktop/smoke-test.mjs` startet die App über Playwright/Electron. Geprüft werden das Laden
+über `app://`, das Titelmenü mit *Beenden*, die Vollbild-Umschaltung und das Spielen. Mit `--full` spielt zusätzlich ein
+Bot alle Stages durch. Mit `--exe <pfad>` wird ein gepacktes Build getestet. Im CI läuft das auf Windows gegen die
+fertige `StreetsOfBerlin.exe`.
 
 ## KI-Figuren (ComfyUI)
 
@@ -113,19 +133,15 @@ python Tools/ArtGen/generate_all.py      # erzeugt Art/Generated/** und manifest
 python Tools/ArtGen/preview_scene.py     # Vorschaubilder (optional)
 ```
 
-Danach im Editor die Python-Konsole öffnen und den Import erzwingen:
+Danach `python Tools/WebBuild/build_web.py` ausführen (Texturatlanten für das Spiel) und die .exe neu bauen.
 
-```python
-import sob_import_assets, importlib; importlib.reload(sob_import_assets); sob_import_assets.run(only_missing=False)
-```
-
-**Auflösung:** Alle Grafiken entstehen in doppelter Auflösung (`SOB_RES=2`, scharf bis 4K). Die Sprites bekommen
-beim Import `PixelsPerUnrealUnit = 2`, die Spielwelt bleibt also gleich groß. `SOB_RES=1` erzeugt schnelle
-Test-Versionen, `SOB_RES=3` noch schärfere.
+**Auflösung:** Alle Grafiken entstehen in doppelter Auflösung (`SOB_RES=2`, scharf bis 4K). Das Spiel rechnet in
+1600×900-Welt-Einheiten und skaliert die Atlanten entsprechend. `SOB_RES=1` erzeugt schnelle Test-Versionen,
+`SOB_RES=3` noch schärfere.
 
 **Eigene oder KI-generierte Bilder:** PNGs mit gleichem Namen in `Art/Custom/<Ordner>/` ersetzen die generierten
-Versionen automatisch (Größen und Tipps: [`Art/Custom/README.md`](Art/Custom/README.md)). Nach dem nächsten
-`generate_all.py` erkennt der Editor das geänderte Manifest und importiert alles neu.
+Versionen automatisch (Größen und Tipps: [`Art/Custom/README.md`](Art/Custom/README.md)). Sie werden beim nächsten
+`generate_all.py` + `build_web.py` übernommen.
 
 | Datei | Inhalt |
 |---|---|
@@ -138,55 +154,49 @@ Versionen automatisch (Größen und Tipps: [`Art/Custom/README.md`](Art/Custom/R
 | `audio.py` | Synthetisierte Treffer-, Wurf-, KO-, Pickup-Sounds und ein Synthwave-Musikloop |
 
 Eigene Figuren: in `characters.py` eine neue `Character(...)` anlegen (Farben, Frisur, Proportionen) und einen
-Animationssatz (`player`, `punk`, `skater`, `heavy`) zuweisen. In C++ genügt dann ein neuer Eintrag in
-`ABrawlerEnemy::GetProfile` und ein Name in den Gegnerwellen in `ABrawlerGameMode::BuildStageData`.
+Animationssatz (`player`, `player2`, `punk`, `skater`, `heavy` …) zuweisen. Im Spiel genügt dann ein Eintrag in
+`ENEMIES` bzw. `PLAYERS` (`web/js/data.js`) und ein Name in den Gegnerwellen der Stages.
 
-## Architektur (C++, `Source/StreetsOfBerlin`)
+## Aufbau
 
 ```
-ABrawlerGameMode        Ablauf (Titel/Intro/Spiel/Clear/GameOver/Abspann), Stage-Wechsel, Kampfabschnitte & Wellen,
-                        Kamera, Punkte, Combo, Angriffs-Tokens, Effekte & Sounds, Pause
- ├─ UBrawlerMenu        Menü-Logik: Titel, Figurenauswahl, Optionen, Steuerung (Neubelegen), Pause
- ├─ UBrawlerSettings    SaveGame: Musik/Sounds, Lautstärken, Tastenbelegung, zuletzt gewählte Figur
- ├─ ABrawlerStage       Kulissen-Layer je Stage-Abschnitt mit Parallaxe (Himmel 0.15, Fassaden/Boden 1.0, Vordergrund 1.25)
- ├─ ABrawlerCamera      orthografische Kamera, 2D-taugliches Post-Processing
- └─ ABrawlerHUD         Canvas-HUD: Portraits, Energiebalken (gelb + grün rückgewinnbar), Combo, GO, Menüs
-
-ABrawlerEntity          Belt-Scroll-Position (X, Tiefe, Höhe), Sprite-Animation, Schatten, Tiefensortierung, Hitstop
- ├─ ABrawlerFighter     Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe, Waffe in der Hand
- │   ├─ ABrawlerPlayer  Eingabepuffer, Combo-Kette, Spezial, Griff-Steuerung; Figuren-Profile (Kai, Leyla)
- │   └─ ABrawlerEnemy   KI (Betreten, Einkreisen, Token, Stil-Spezialangriffe, Messerwurf, Boss-Verstärkung), Profile
- ├─ ABrawlerProp        zerstörbare Objekte mit Drops
- ├─ ABrawlerPickup      Essen / Geld
- ├─ ABrawlerWeaponItem  Waffe am Boden
- ├─ ABrawlerProjectile  geworfene Waffe
- └─ ABrawlerEffect      einmalige Sprite-Effekte
-
-BrawlerData             Stages (Abschnitte, Wellen, Kisten, Waffen) und Waffenwerte (BrawlerStageData.cpp)
-UBrawlerAssets          lädt Sprites/Texturen/Sounds per Namenskonvention (/Game/Sprites/<Ordner>/<Name>_NN)
-                        und die Hand-/Waffen-Anker aus Content/Data/anchors.json
-UBrawlerEditorLibrary   (nur Editor) erzeugt Paper2D-Sprites für das Import-Skript
-ABrawlerPlayerController fragt Tastatur/Gamepad nach der Belegung aus UBrawlerSettings ab, steuert Menüs
-                        (läuft auch während der Pause) und fängt beim Neubelegen die nächste Taste ab
+web/                    das Spiel (läuft im Browser und in der .exe)
+ ├─ index.html          Seite mit Canvas 1600×900 (wird auf Fenstergröße skaliert)
+ ├─ js/main.js          Laden, feste 60-Hz-Spiellogik, URL-Parameter
+ ├─ js/game.js          Ablauf (Titel/Intro/Spiel/Clear/GameOver/Abspann), Stages, Kampfabschnitte & Wellen,
+ │                      Kamera, Punkte, Combo, Angriffs-Tokens, HUD, Eingabe je Gerät (Tastatur/Gamepads),
+ │                      Boss-Stage-Mechaniken (U-Bahn, Spotlight), Boss-Intro/-Leiste, Audio, Vollbild, Test-Bot
+ ├─ js/entities.js      Fighter-Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe,
+ │                      Waffen; Player (Profile Kai/Leyla, Leben/Punkte/Gerät), Enemy-KI mit Zielwahl
+ │                      zwischen den Spielern und bossBrain (Klaus, Die Tür, Harald), Golfball, Stahlträger
+ ├─ js/data.js          Balancing: Figuren, Angriffe, Gegner, Waffen, Stages
+ ├─ js/menu.js          Titel, Figurenauswahl, Optionen, Steuerung (Neubelegen), Pause – Tastatur/Gamepad/Maus/Touch
+ ├─ js/settings.js      Einstellungen + Tastenbelegung (localStorage)
+ ├─ js/touch.js         Touch-Steuerung für Handys/Tablets
+ ├─ js/bundle.js        alle Module + Daten in einer Datei (von Tools/WebBuild/bundle.py erzeugt)
+ └─ assets/             Texturatlanten, Hintergründe, Sounds (von Tools/WebBuild/build_web.py erzeugt)
+desktop/                Electron-Hülle für die .exe
+ ├─ main.js             Fenster, Protokoll app://game/, F11/Alt+Enter, Einzelinstanz, keine fremden Seiten
+ ├─ preload.js          window.sobDesktop: Beenden und Vollbild (sonst kein Systemzugriff für die Seite)
+ ├─ build.mjs           kopiert web/ nach desktop/app und packt mit @electron/packager, setzt Icon/Version, ZIP
+ └─ smoke-test.mjs      automatischer Test der App bzw. der gebauten .exe
+Tools/ArtGen            Grafiken & Sounds aus Code
+Tools/WebBuild          Atlanten/Bündel bauen, Browser-Playtest
+Tools/AIGen             KI-Pipeline (ComfyUI)
+.github/workflows       Desktop-Build: .exe auf Windows bauen, testen, als ZIP/Release bereitstellen
 ```
 
-**Koordinaten:** Die Spiellogik rechnet in *(X, Tiefe, Höhe)*. Für die Darstellung gilt
-`Welt = (X, -Tiefe, Tiefe + Höhe)` – Figuren weiter hinten stehen weiter oben im Bild, die Kamera schaut
-orthografisch entlang −Y. Die Zeichenreihenfolge wird über die *Translucency Sort Priority* aus der Tiefe bestimmt.
+**Koordinaten:** Die Spiellogik rechnet in *(X, Tiefe, Höhe)*. Figuren weiter hinten stehen weiter oben im Bild und
+werden zuerst gezeichnet.
 
-**Balancing** passiert direkt im Code: Figurenwerte und Angriffe in `BrawlerPlayer.cpp` (`MakeKai`, `MakeLeyla`)
-und `BrawlerEnemy.cpp` (`MakeMelee`, `MakeRush`), Gegnerwerte in `ABrawlerEnemy::GetProfile`, Stages, Wellen,
-Kisten und Waffen in `BrawlerStageData.cpp`, Animationsgeschwindigkeiten in `ABrawlerFighter::GetAnimInfo`.
-Die Browser-Version spiegelt diese Werte in `web/js/data.js`. Wer balanciert, sollte beide Stellen anpassen.
+**Balancing** passiert in `web/js/data.js` (Figuren, Angriffe, Gegner, Waffen, Stages und Wellen).
 
 ## Bekannte Punkte / Ideen für später
 
-- Farben wirken zu dunkel/blass? In `ABrawlerCamera` die Post-Process-Werte (`AutoExposureBias`) anpassen.
-- Der C++-Code wurde ohne Unreal-Installation geschrieben. Die Spiellogik ist über die Browser-Version automatisch
-  durchgespielt, der C++-Code nur per Syntaxprüfung gegen nachgebildete Engine-Header. Beim ersten Build in Unreal
-  können einzelne API-Details nachzubessern sein.
-- Eine weitere Figur braucht: Eintrag in `Tools/ArtGen/characters.py` (Aussehen + Animationen), ein Profil in
-  `BrawlerPlayer.cpp` (`GetProfiles`) und in `web/js/data.js` (`PLAYERS`). Figurenauswahl, HUD und Portrait laufen
-  automatisch über den Namen.
-- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler gleichzeitig, Star-Moves, weitere Stages
+- Die .exe ist nicht signiert. Windows SmartScreen fragt deshalb beim ersten Start nach („Weitere Informationen →
+  Trotzdem ausführen“). Für eine Veröffentlichung wäre ein Code-Signing-Zertifikat nötig.
+- Die frühere Unreal-Engine-Fassung (C++) ist entfernt, bleibt aber in der Git-Historie erhalten (bis Commit `687aaf4`).
+- Eine weitere Figur braucht: Eintrag in `Tools/ArtGen/characters.py` (Aussehen + Animationen) und ein Profil in
+  `web/js/data.js` (`PLAYERS`). Figurenauswahl, HUD und Portrait laufen automatisch über den Namen.
+- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zwei Spieler an einer Tastatur, Online-Koop, Star-Moves, weitere Stages
   (Tempelhofer Feld, Berghain-Schlange 😉), Figuren-LoRAs für die KI-Pipeline.

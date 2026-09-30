@@ -289,3 +289,115 @@ def weapon(name):
         _outlined(d, [(6 * S, 12 * S), (30 * S, 13 * S)], 4 * S, (30, 30, 34, 255))
         _outlined(d, [(124 * S, 12 * S), (134 * S, 30 * S), (122 * S, 34 * S)], 3 * S, (200, 204, 214, 255))
     return downsample(img)
+
+
+# ---------------------------------------------------------------------------
+# Boss-Mechaniken
+# ---------------------------------------------------------------------------
+def ubahn_train():
+    """Einfahrender U-Bahn-Zug (Seitenansicht, 2 Wagen) fuer den Kontrolleur-Kampf."""
+    W, H = 1600, 230
+    img, d = _canvas(W, H)
+    S = SS
+    body = (246, 200, 40, 255)
+    dark = shade(body, 0.62)
+    for car in range(2):
+        x0 = (20 + car * 790) * S
+        x1 = x0 + 770 * S
+        # Wagenkasten mit abgerundeten Enden
+        d.rounded_rectangle((x0, 24 * S, x1, 196 * S), radius=34 * S, fill=OUTLINE)
+        d.rounded_rectangle((x0 + 4 * S, 28 * S, x1 - 4 * S, 192 * S), radius=30 * S, fill=body)
+        d.rectangle((x0 + 6 * S, 150 * S, x1 - 6 * S, 190 * S), fill=dark)  # Schuerze
+        d.rectangle((x0 + 6 * S, 40 * S, x1 - 6 * S, 48 * S), fill=shade(body, 1.12))  # Glanzkante
+        # Fenster (hell erleuchtet) und Tueren
+        for i in range(6):
+            wx = x0 + (46 + i * 118) * S
+            if i in (1, 4):
+                d.rectangle((wx - 8 * S, 60 * S, wx + 58 * S, 186 * S), fill=OUTLINE)
+                d.rectangle((wx - 4 * S, 64 * S, wx + 25 * S, 182 * S), fill=shade(body, 0.9))
+                d.rectangle((wx + 29 * S, 64 * S, wx + 54 * S, 182 * S), fill=shade(body, 0.9))
+                d.rectangle((wx + 2 * S, 72 * S, wx + 19 * S, 120 * S), fill=(255, 244, 200, 255))
+                d.rectangle((wx + 35 * S, 72 * S, wx + 48 * S, 120 * S), fill=(255, 244, 200, 255))
+            else:
+                d.rounded_rectangle((wx - 6 * S, 62 * S, wx + 70 * S, 128 * S), radius=8 * S, fill=OUTLINE)
+                d.rounded_rectangle((wx - 2 * S, 66 * S, wx + 66 * S, 124 * S), radius=6 * S, fill=(255, 238, 180, 255))
+                # Fahrgast-Silhouetten
+                d.ellipse((wx + 14 * S, 84 * S, wx + 30 * S, 100 * S), fill=(120, 96, 80, 200))
+                d.rectangle((wx + 10 * S, 100 * S, wx + 34 * S, 124 * S), fill=(90, 70, 110, 200))
+        # Drehgestelle
+        for bx in (x0 + 110 * S, x1 - 110 * S):
+            d.rectangle((bx - 70 * S, 190 * S, bx + 70 * S, 206 * S), fill=(40, 40, 46, 255))
+            for wx in (bx - 44 * S, bx + 44 * S):
+                d.ellipse((wx - 20 * S, 190 * S, wx + 20 * S, 230 * S), fill=OUTLINE)
+                d.ellipse((wx - 14 * S, 196 * S, wx + 14 * S, 224 * S), fill=(90, 90, 100, 255))
+    # Stirnseite vorne (rechts): Scheinwerfer + Linienschild
+    fx = (20 + 790 + 770) * S
+    d.ellipse((fx - 40 * S, 150 * S, fx - 18 * S, 172 * S), fill=(255, 255, 230, 255))
+    d.rounded_rectangle((fx - 120 * S, 30 * S, fx - 40 * S, 58 * S), radius=5 * S, fill=(20, 20, 24, 255))
+    d.text((fx - 80 * S, 44 * S), "U8", font=font(22 * S), fill=(255, 200, 60, 255), anchor="mm")
+    return downsample(img)
+
+
+def steel_beam():
+    """Stahltraeger (Doppel-T), den Haralds Kran fallen laesst."""
+    W, H = 280, 60
+    img, d = _canvas(W, H)
+    S = SS
+    steel = (170, 72, 48, 255)  # Rostschutz-Rot
+    _outlined(d, [(10 * S, 14 * S), (270 * S, 14 * S)], 7 * S, steel)
+    _outlined(d, [(10 * S, 46 * S), (270 * S, 46 * S)], 7 * S, steel)
+    d.rectangle((12 * S, 18 * S, 268 * S, 42 * S), fill=shade(steel, 0.7))
+    for x in range(40, 260, 44):
+        d.ellipse(((x - 4) * S, 26 * S, (x + 4) * S, 34 * S), fill=shade(steel, 0.45))
+    d.line([(14 * S, 10 * S), (266 * S, 10 * S)], fill=shade(steel, 1.3), width=2 * S)
+    return downsample(img)
+
+
+def tram():
+    """Niederflur-Strassenbahn (3 Module, Seitenansicht, faehrt nach rechts) fuer den Kampf gegen Alex."""
+    W, H = 1500, 270
+    img, d = _canvas(W, H)
+    S = SS
+    body = (246, 200, 40, 255)
+    band = (250, 250, 244, 255)
+    x0, x1 = 20 * S, 1480 * S
+    # Stromabnehmer
+    d.line([(700 * S, 34 * S), (760 * S, 6 * S), (820 * S, 34 * S)], fill=OUTLINE, width=6 * S)
+    d.line([(730 * S, 6 * S), (800 * S, 6 * S)], fill=OUTLINE, width=6 * S)
+    d.rectangle((680 * S, 30 * S, 840 * S, 44 * S), fill=(60, 60, 70, 255))
+    # Wagenkasten mit gerundeter Front
+    d.rounded_rectangle((x0, 40 * S, x1, 238 * S), radius=40 * S, fill=OUTLINE)
+    d.rounded_rectangle((x0 + 4 * S, 44 * S, x1 - 4 * S, 234 * S), radius=36 * S, fill=body)
+    d.rectangle((x0 + 6 * S, 160 * S, x1 - 6 * S, 176 * S), fill=band)
+    d.rectangle((x0 + 6 * S, 200 * S, x1 - 6 * S, 232 * S), fill=shade(body, 0.6))
+    # Gelenke zwischen den Modulen
+    for jx in (500, 1000):
+        d.rectangle(((jx - 10) * S, 44 * S, (jx + 10) * S, 234 * S), fill=(40, 40, 46, 255))
+    # Fensterband und Tueren
+    for m in range(3):
+        mx = 40 + m * 500
+        for i in range(4):
+            wx = mx + 30 + i * 110
+            if i == 1:
+                d.rectangle(((wx - 4) * S, 64 * S, (wx + 70) * S, 232 * S), fill=OUTLINE)
+                d.rectangle((wx * S, 68 * S, (wx + 32) * S, 228 * S), fill=shade(body, 0.92))
+                d.rectangle(((wx + 36) * S, 68 * S, (wx + 66) * S, 228 * S), fill=shade(body, 0.92))
+                d.rectangle(((wx + 4) * S, 76 * S, (wx + 28) * S, 150 * S), fill=(255, 238, 190, 255))
+                d.rectangle(((wx + 40) * S, 76 * S, (wx + 62) * S, 150 * S), fill=(255, 238, 190, 255))
+            else:
+                d.rounded_rectangle(((wx - 4) * S, 64 * S, (wx + 84) * S, 150 * S), radius=10 * S, fill=OUTLINE)
+                d.rounded_rectangle((wx * S, 68 * S, (wx + 80) * S, 146 * S), radius=8 * S, fill=(255, 236, 184, 255))
+                d.ellipse(((wx + 24) * S, 90 * S, (wx + 42) * S, 108 * S), fill=(110, 90, 80, 210))
+                d.rectangle(((wx + 20) * S, 108 * S, (wx + 46) * S, 146 * S), fill=(80, 70, 120, 210))
+    # Front rechts: Scheibe, Scheinwerfer, Linienanzeige
+    d.rounded_rectangle((1400 * S, 60 * S, 1470 * S, 150 * S), radius=14 * S, fill=(140, 200, 240, 255))
+    d.ellipse((1440 * S, 182 * S, 1466 * S, 204 * S), fill=(255, 255, 230, 255))
+    d.rounded_rectangle((1300 * S, 46 * S, 1392 * S, 62 * S), radius=4 * S, fill=(20, 20, 24, 255))
+    d.text((1346 * S, 54 * S), "M10", font=font(14 * S), fill=(255, 170, 40, 255), anchor="mm")
+    # Fahrwerk
+    for bx in (160, 750, 1340):
+        d.rectangle(((bx - 80) * S, 232 * S, (bx + 80) * S, 246 * S), fill=(40, 40, 46, 255))
+        for wx in (bx - 48, bx + 48):
+            d.ellipse(((wx - 20) * S, 230 * S, (wx + 20) * S, 270 * S), fill=OUTLINE)
+            d.ellipse(((wx - 14) * S, 236 * S, (wx + 14) * S, 264 * S), fill=(90, 90, 100, 255))
+    return downsample(img)

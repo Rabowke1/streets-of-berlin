@@ -1,6 +1,6 @@
 // Spielablauf, Stages, Kamera, HUD, Eingabe und Audio (Portierung von ABrawlerGameMode/HUD/Stage/Controller).
-import { PLAYERS, STAGES, W, WEAPONS } from './data.js';
-import { Effect, Enemy, Fighter, Pickup, Player, Prop, WeaponItem, Projectile } from './entities.js';
+import { ENEMIES, PLAYERS, STAGES, TRAM_LANES, W, WEAPONS, atk } from './data.js';
+import { BellWave, Effect, Enemy, FallingBeam, Fighter, GolfBall, Pickup, Player, Prop, WeaponItem, Projectile, ZapMark } from './entities.js';
 import { Menu } from './menu.js';
 import { Settings } from './settings.js';
 
@@ -12,34 +12,55 @@ export class Game {
   constructor(canvas, assets, opts = {}) {
     this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.assets = assets;
     this.opts = opts;
-    this.entities = []; this.player = null;
+    this.entities = []; this.players = [];
+    // Spieler-Aufstellung fuer das naechste Spiel: [{ char, device }] (device: 'all' | 'kb' | 'padN')
+    this.party = [];
     this.flow = 'title'; this.flowTime = 0; this.paused = false;
     this.stageIndex = 0; this.stage = null;
     this.camX = 800; this.lockX = -1; this.shakeT = 0; this.shakeA = 0; this.timeScale = 1; this.slowT = 0;
-    this.score = 0; this.lives = 3; this.combo = 0; this.comboT = 0; this.goT = 0; this.respawnT = -1;
+    this.combo = 0; this.comboT = 0; this.goT = 0; this.respawnT = -1;
     this.lastHit = null; this.lastHitT = 0;
     this.tokens = new Set();
     this.nextEnc = 0; this.activeEnc = -1; this.nextGroup = 0; this.groupT = 0; this.bossActive = false;
-    this.keys = new Set(); this.pressed = new Set(); this.menuKeys = new Set(); this.padPrev = []; this.padDir = { x: 0, y: 0 };
+    this.keys = new Set(); this.pressed = new Set(); this.menuKeys = new Set();
+    // Eingaben je Geraet ('kb' = Tastatur + Touch, 'pad0'..'pad3'): Aktionen und Menue-Impulse dieses Frames
+    this.devPressed = new Map(); this.devMenu = new Map(); this.pads = {}; this.lastMenuDev = 'kb';
+    // Boss-Mechaniken der Stage und Einblendungen
+    this.train = null; this.spot = null; this.trams = []; this.popups = []; this.bossIntro = null; this.flash = 0;
     this.virtual = { x: 0, y: 0 }; this.virtualPrev = { x: 0, y: 0 };
     this.settings = new Settings();
     if (opts.character && PLAYERS[opts.character]) this.settings.character = opts.character;
     this.menu = new Menu(this); this.menu.reset('main');
+    this.setupFullscreen();
     this.lastRender = performance.now();
     this.audio = null; this.music = null; this.musicGain = null;
     this.stats = { hits: 0, kills: 0, stagesCleared: 0, deaths: 0, frames: 0 };
-    this.log = [];
+    this.log = []; this.fullLog = [];
     this.bindInput();
   }
 
   // --- Hilfen ------------------------------------------------------------------
+  /** Spieler 1 (fuer Einzelspieler-Code und Tests) */
+  get player() { return this.players[0] || null; }
+  /** Spieler, die noch im Spiel sind (nicht endgueltig raus) */
+  activePlayers() { return this.players.filter((p) => !p.out); }
+  get score() { return this.players.reduce((a, p) => a + p.score, 0); }
+  addScore(who, n) {
+    const pl = who instanceof Player ? who : this.players[0];
+    if (pl) pl.score = Math.max(0, pl.score + n);
+  }
+  popup(text, x, depth, h, color = '#fff') { this.popups.push({ text, x, depth, h, color, t: 0 }); }
   get viewMin() { return this.camX - W.ScreenW / 2; }
   get viewMax() { return this.camX + W.ScreenW / 2; }
   add(e) { this.entities.push(e); return e; }
   *fighters() { for (const e of this.entities) if (e instanceof Fighter && !e.dead) yield e; }
   enemies() { return this.entities.filter((e) => e instanceof Enemy && !e.dead); }
   aliveEnemies() { return this.enemies().filter((e) => e.alive).length; }
-  note(msg) { this.log.push(`[${this.stats.frames}] ${msg}`); if (this.log.length > 400) this.log.shift(); }
+  note(msg) {
+    const line = `[${this.stats.frames}] ${msg}`;
+    this.log.push(line); if (this.log.length > 400) this.log.shift();
+    this.fullLog.push(line); if (this.fullLog.length > 5000) this.fullLog.shift();
+  }
 
   effect(prefix, x, depth, h, facing = 1, fps = 18, scale = 1) {
     const e = new Effect(this, prefix, fps, scale, prefix.startsWith('FX_Hit'));
@@ -92,6 +113,25 @@ export class Game {
     this.music.connect(this.musicGain).connect(this.audio.destination);
     this.music.start();
   }
+  // --- Vollbild / Desktop-Version --------------------------------------------------
+  /** In der .exe (Electron) stellt preload.js window.sobDesktop bereit */
+  get desktop() { return window.sobDesktop || null; }
+  setupFullscreen() {
+    this.fullscreen = false;
+    if (this.desktop) {
+      this.desktop.onFullscreen((on) => { this.fullscreen = on; this.settings.fullscreen = on; this.settings.save(); });
+      if (this.settings.fullscreen) this.desktop.setFullscreen(true);
+    } else {
+      document.addEventListener('fullscreenchange', () => { this.fullscreen = !!document.fullscreenElement; });
+    }
+  }
+  canFullscreen() { return !!this.desktop || !!document.fullscreenEnabled; }
+  isFullscreen() { return this.fullscreen; }
+  toggleFullscreen() {
+    if (this.desktop) { this.desktop.toggleFullscreen(); return; }
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
   musicVolume() { return 0.45 * this.settings.musicVol * 1.4; }
   /** Nach Aenderungen im Optionsmenue: Musik an/aus, Lautstaerke */
   applyAudio() {
@@ -105,12 +145,17 @@ export class Game {
 
   // --- Ablauf ------------------------------------------------------------------
   setFlow(f) { this.flow = f; this.flowTime = 0; this.note('flow ' + f); }
-  /** Figurenauswahl bestaetigt: neues Spiel */
-  beginGame(character) {
-    this.settings.character = PLAYERS[character] ? character : 'Kai';
+  /** Figurenauswahl bestaetigt: neues Spiel. chars/devices je Spieler (1 oder 2 Eintraege). */
+  beginGame(chars, devices) {
+    chars = (Array.isArray(chars) ? chars : [chars]).map((c) => (PLAYERS[c] ? c : 'Kai'));
+    devices = devices || (chars.length > 1 ? ['kb', 'pad0'] : ['all']);
+    this.settings.character = chars[0];
     this.settings.save();
     this.menu.reset();
-    this.initAudio(); this.score = 0; this.lives = 3;
+    this.initAudio();
+    this.party = chars.map((c, i) => ({ char: c, device: devices[i] || 'all' }));
+    this.players = [];
+    this.note('party ' + this.party.map((p) => p.char + '@' + p.device).join(', '));
     this.startStage(this.opts.stage || 0);
   }
   pause() { this.paused = true; this.menu.reset('pause'); this.sfx('SFX_Pickup', 0.3, 0); }
@@ -121,22 +166,29 @@ export class Game {
     else if ((this.flow === 'gameover' || this.flow === 'ending') && this.flowTime > 1.5) this.toTitle();
     else if ((this.flow === 'playing' || this.flow === 'intro') && !this.paused) this.pause();
   }
-  toTitle() { this.paused = false; this.menu.reset('main'); this.stopMusic(); this.entities = []; this.player = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
+  toTitle() { this.paused = false; this.menu.reset('main'); this.stopMusic(); this.entities = []; this.players = []; this.train = null; this.spot = null; this.trams = []; this.bossIntro = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
   nextStage() {
     if (this.stageIndex + 1 >= STAGES.length) { this.setFlow('ending'); return; }
     this.startStage(this.stageIndex + 1, true);
   }
   startStage(i, keepPlayer = false) {
-    const hpCarry = keepPlayer && this.player ? this.player : null;
+    const prev = keepPlayer ? this.players : [];
     this.stageIndex = i; this.stage = STAGES[i];
     this.entities = []; this.tokens.clear();
     this.camX = 800; this.lockX = -1; this.nextEnc = 0; this.activeEnc = -1; this.bossActive = false; this.goT = 0;
-    this.lastHit = null; this.combo = 0; this.respawnT = -1; this.timeScale = 1;
+    this.lastHit = null; this.combo = 0; this.timeScale = 1;
+    this.train = null; this.spot = null; this.trams = []; this.popups = []; this.bossIntro = null;
     for (const [type, x, d, drop] of this.stage.props) { const p = new Prop(this, type, drop); p.x = x; p.depth = d; this.add(p); }
     for (const [type, x, d] of this.stage.weapons) { const w = new WeaponItem(this, type); w.x = x; w.depth = d; this.add(w); }
-    const pl = new Player(this, this.settings.character); pl.x = 260; pl.depth = 110;
-    if (hpCarry) pl.health = pl.maxHealth;
-    this.player = this.add(pl);
+    this.players = this.party.map((m, idx) => {
+      const pl = new Player(this, m.char);
+      pl.index = idx; pl.device = m.device;
+      pl.x = 260 - idx * 70; pl.depth = 110 + idx * 70;
+      const old = prev[idx];
+      if (old) { pl.score = old.score; pl.lives = old.out ? 0 : old.lives; pl.out = old.out; }
+      if (!pl.out) this.add(pl);
+      return pl;
+    });
     this.playMusic();
     this.setFlow('intro');
   }
@@ -150,21 +202,36 @@ export class Game {
       for (const a of ['up', 'down', 'left', 'right', 'start']) if (this.pressed.has(a)) p.add(a);
       if (this.pressed.has('attack')) p.add('ok');
       if (this.pressed.has('back')) p.add('back');
-      this.menu.input(p);
-      this.menuKeys.clear(); this.pressed.clear();
-      if (this.opts.autoplay && this.flow === 'title' && this.menu.t > 1) this.beginGame(this.settings.character);
+      // Menue-Impulse je Geraet (fuer die Figurenauswahl zu zweit)
+      const byDev = new Map();
+      for (const [dev, set] of this.devMenu) byDev.set(dev, new Set(set));
+      for (const [dev, set] of this.devPressed) {
+        const m = byDev.get(dev) || new Set();
+        for (const a of ['up', 'down', 'left', 'right', 'start']) if (set.has(a)) m.add(a);
+        if (set.has('attack')) m.add('ok');
+        if (set.has('back')) m.add('back');
+        byDev.set(dev, m);
+      }
+      for (const [dev, m] of byDev) if (m.has('ok') || m.has('start')) this.lastMenuDev = dev;
+      this.menu.input(p, byDev);
+      this.clearInput();
+      if (this.opts.autoplay && this.flow === 'title' && this.menu.t > 1) {
+        const first = this.opts.character || this.settings.character;
+        const other = Object.keys(PLAYERS).find((c) => c !== first);
+        this.beginGame(this.opts.players > 1 ? [first, other] : [first]);
+      }
       if (this.flow === 'title' || this.paused) return;
     }
-    this.menuKeys.clear();
+    this.menuKeys.clear(); this.devMenu.clear();
     if (this.pressed.has('start')) this.onStart();
     if (this.opts.autoplay && this.flow === 'clear' && this.flowTime > 2) this.onStart();
-    if (this.paused) { this.pressed.clear(); return; }
+    if (this.paused) { this.clearInput(); return; }
     this.stats.frames++;
     if (this.slowT > 0) { this.slowT -= dtReal; if (this.slowT <= 0) this.timeScale = 1; }
     const dt = dtReal * this.timeScale;
     this.flowTime += dt;
 
-    if (this.player) this.applyInput();
+    for (const pl of this.players) if (!pl.out) this.applyInput(pl);
 
     this.comboT = Math.max(0, this.comboT - dt); if (this.comboT <= 0) this.combo = 0;
     this.lastHitT = Math.max(0, this.lastHitT - dt);
@@ -175,22 +242,114 @@ export class Game {
     if (this.flow === 'playing') this.updateEncounters(dt);
     if (this.flow === 'clear' && this.opts.autoplay && this.flowTime > 3) this.nextStage();
 
-    if (this.respawnT > 0) {
-      this.respawnT -= dt;
-      if (this.respawnT <= 0 && this.player) { this.player.x = this.camX - 250; this.player.depth = 120; this.player.dropIn(); }
+    for (const pl of this.players) {
+      if (pl.respawnT > 0) {
+        pl.respawnT -= dt;
+        if (pl.respawnT <= 0) { pl.x = this.camX - 250 + pl.index * 90; pl.depth = 120 + pl.index * 50; pl.dropIn(); }
+      }
     }
+    this.updateHazards(dt);
 
     for (const e of this.entities.slice()) if (!e.dead) e.update(dt);
     this.entities = this.entities.filter((e) => !e.dead);
     this.updateCamera(dt);
-    this.pressed.clear();
+    this.clearInput();
+  }
+  clearInput() { this.pressed.clear(); this.menuKeys.clear(); this.devPressed.clear(); this.devMenu.clear(); }
+  devAdd(map, dev, a) { let s = map.get(dev); if (!s) map.set(dev, (s = new Set())); s.add(a); }
+
+  // --- Boss-Mechaniken der Stage (U-Bahn, Spotlight) sowie Einblendungen -----------
+  /** Kontrolleur Klaus: Warnung, dann faehrt ein Zug durch die hintere Spur */
+  startTrain() {
+    this.train = { phase: 'warn', t: 0, x: 0, hit: new Set() };
+    this.sfx('SFX_Go', 0.8, 0); this.note('train');
+  }
+  get trainZone() { return W.DepthMax - 75; }
+  /** Tramfahrer Alex: nach Warnung (Gleis leuchtet) faehrt eine Tram ueber Spur lane (0 hinten, 1 vorne) */
+  startTram(lane, dir, delay = 0) {
+    this.trams.push({ lane, c: TRAM_LANES[lane], dir, t: -delay, phase: 'warn', x: 0, hit: new Set() });
+    this.note('tram');
+  }
+  /** Die Tuer: Spotlight verfolgt einen Spieler, dann Bass-Drop */
+  startSpot(target) {
+    this.spot = { target, x: target.x, depth: target.depth, t: 0 };
+    this.note('spot');
+  }
+  updateHazards(dt) {
+    this.flash = Math.max(0, this.flash - dt * 2.5);
+    for (const p of this.popups) p.t += dt;
+    this.popups = this.popups.filter((p) => p.t < 1.3);
+    if (this.bossIntro) { this.bossIntro.t += dt; if (this.bossIntro.t > 3.2) this.bossIntro = null; }
+    const tr = this.train;
+    if (tr) {
+      tr.t += dt;
+      if (tr.phase === 'warn' && tr.t > 2.2) { tr.phase = 'pass'; tr.x = this.viewMin - 60; this.sfx('SFX_Whoosh', 1, 0); this.shake(5, 1.0); }
+      if (tr.phase === 'pass') {
+        tr.x += 2800 * dt;
+        const a = { ...atk({ dmg: 20, type: 'kd', kb: 520, launch: 480, stop: 0.1 }) };
+        for (const f of this.fighters()) {
+          if (f.boss || tr.hit.has(f) || !f.alive || f.h > 140 || f.depth < this.trainZone) continue;
+          if (f.x < tr.x && f.x > tr.x - 1600) {
+            tr.hit.add(f);
+            const fake = { team: 'hazard', x: f.x - 50, h: 0, facing: 1 };
+            if (f.receiveHit(fake, f.team === 'enemy' ? { ...a, dmg: 35 } : a, 1)) this.popup('AUTSCH!', f.x, f.depth, 220, '#ffd24a');
+          }
+        }
+        if (tr.x - 1600 > this.viewMax + 100) this.train = null;
+      }
+    }
+    for (const tm of this.trams) {
+      tm.t += dt;
+      if (tm.phase === 'warn' && tm.t > 1.7) {
+        tm.phase = 'pass'; tm.x = tm.dir > 0 ? this.viewMin - 40 : this.viewMax + 40;
+        this.sfx('SFX_Whoosh', 1, 0); this.shake(5, 0.8);
+      }
+      if (tm.phase !== 'pass') continue;
+      tm.x += tm.dir * 2600 * dt;
+      const a = atk({ dmg: 20, type: 'kd', kb: 480, launch: 460, stop: 0.1 });
+      for (const f of this.fighters()) {
+        if (f.boss || tm.hit.has(f) || !f.alive || f.h > 150 || Math.abs(f.depth - tm.c) > 38) continue;
+        const rear = tm.x - tm.dir * 1500;
+        if ((f.x - rear) * tm.dir > 0 && (tm.x - f.x) * tm.dir > 0) {
+          tm.hit.add(f);
+          f.receiveHit({ team: 'hazard', x: f.x - tm.dir * 50, h: 0, facing: tm.dir }, f.team === 'enemy' ? { ...a, dmg: 35 } : a, tm.dir);
+        }
+      }
+      tm.done = (tm.x - tm.dir * 1500 - (tm.dir > 0 ? this.viewMax + 100 : this.viewMin - 100)) * tm.dir > 0;
+    }
+    this.trams = this.trams.filter((tm) => !tm.done);
+    const sp = this.spot;
+    if (sp) {
+      sp.t += dt;
+      const tg = sp.target;
+      if (sp.t < 2.4 && tg && !tg.dead) {
+        const k = Math.min(1, dt * 2.6);
+        sp.x += (tg.x - sp.x) * k; sp.depth += (tg.depth - sp.depth) * k;
+      }
+      if (sp.t >= 3.0) {
+        this.spot = null; this.flash = 1; this.shake(12, 0.4);
+        this.sfx('SFX_Special', 1, 0); this.sfx('SFX_HitHeavy', 1, 0);
+        this.effect('FX_SpecialRing', sp.x, sp.depth, 10, 1, 14, 1.4);
+        const a = atk({ dmg: 22, type: 'kd', kb: 380, launch: 560, stop: 0.12 });
+        for (const f of this.fighters()) {
+          if (f.boss || !f.alive) continue;
+          const nx = (f.x - sp.x) / 150, nd = (f.depth - sp.depth) / 48;
+          if (nx * nx + nd * nd <= 1) f.receiveHit({ team: 'hazard', x: sp.x, h: 0, facing: 1 }, a, Math.sign(f.x - sp.x) || 1);
+        }
+        this.note('bass drop');
+      }
+    }
   }
 
   updateCamera(dt) {
     let target = this.camX;
     if (this.lockX >= 0) target = this.lockX;
-    else if (this.player && this.flow !== 'title') {
-      target = Math.max(this.camX, this.player.x + 120);
+    else if (this.flow !== 'title' && this.activePlayers().length) {
+      const xs = this.activePlayers().map((p) => p.x);
+      target = Math.max(this.camX, Math.max(...xs) + 120);
+      // Zu zweit: niemand darf links aus dem Bild fallen
+      target = Math.min(target, Math.min(...xs) + W.ScreenW / 2 - 90);
+      target = Math.max(target, this.camX);
       const enc = this.stage && this.stage.encounters[this.nextEnc];
       if (enc) target = Math.min(target, enc.lock);
     }
@@ -200,10 +359,11 @@ export class Game {
   }
 
   updateEncounters(dt) {
-    const pl = this.player; if (!pl || !this.stage) return;
+    const act = this.activePlayers(); if (!act.length || !this.stage) return;
+    const leadX = Math.max(...act.map((p) => p.x));
     const encs = this.stage.encounters;
     if (this.activeEnc < 0) {
-      if (this.nextEnc < encs.length && pl.x >= encs[this.nextEnc].t) {
+      if (this.nextEnc < encs.length && leadX >= encs[this.nextEnc].t) {
         this.activeEnc = this.nextEnc++;
         const e = encs[this.activeEnc];
         this.lockX = e.lock; this.goT = 0; this.bossActive = !!e.boss; this.nextGroup = 0; this.groupT = 0;
@@ -226,7 +386,7 @@ export class Game {
       this.activeEnc = -1; this.lockX = -1;
       if (e.boss) {
         this.bossActive = false;
-        if (pl.alive) pl.celebrate();
+        for (const p of this.activePlayers()) if (p.alive) p.celebrate();
         this.stats.stagesCleared++;
         this.note(`stage ${this.stageIndex + 1} clear`);
         this.setFlow('clear');
@@ -243,8 +403,10 @@ export class Game {
   spawnEnemy(type, x, depth) {
     const e = new Enemy(this, type);
     e.x = x; e.depth = depth; e.facing = x > this.camX ? -1 : 1; e.setEntering(true);
+    // Zu zweit halten Gegner mehr aus
+    if (this.activePlayers().length > 1) e.maxHealth = e.health = Math.round(e.maxHealth * (e.boss ? 1.5 : 1.3));
     this.add(e);
-    if (e.boss) { this.lastHit = e; this.lastHitT = 4; }
+    if (e.boss) { this.bossIntro = { e, t: 0 }; this.note('boss ' + type); this.sfx('SFX_Go', 1, 0); }
     return e;
   }
   requestToken(e) {
@@ -258,25 +420,34 @@ export class Game {
     this.stats.hits++;
     if (att && att.team === 'player') {
       this.combo = this.comboT > 0 ? this.combo + 1 : 1; this.comboT = 1.4;
-      this.score += Math.round(dmg * 10) + this.combo * 5;
+      this.addScore(att, Math.round(dmg * 10) + this.combo * 5);
+      victim.lastAttacker = att;
       this.lastHit = victim; this.lastHitT = 3;
       if (victim.boss && victim.health <= 0) { this.slowMo(0.25, 1.4); this.sfx('SFX_KO', 1, 0); }
     } else if (victim && victim.team === 'player') { this.combo = 0; this.comboT = 0; }
   }
   onEnemyKilled(e) {
     this.stats.kills++;
-    this.score += e.profile.score;
+    this.addScore(e.lastAttacker, e.profile.score);
+    if (e.boss) {
+      this.note('boss down ' + e.type);
+      this.train = null; this.spot = null; this.trams = [];
+      const enc = this.stage && this.stage.encounters[this.activeEnc];
+      if (enc) this.nextGroup = enc.g.length; // nach dem Boss keine weiteren Wellen
+    }
     this.tokens.delete(e);
     if (e.boss) {
       for (const o of this.enemies()) if (o !== e && o.alive) { o.health = 0; o.knockdown(o.x > e.x ? 1 : -1, 250, 500); }
     }
   }
-  onPlayerDied() {
+  onPlayerDied(pl) {
     this.stats.deaths++;
-    if (this.opts.god) { this.respawnT = 0.5; return; }
-    this.lives--;
-    if (this.lives > 0) this.respawnT = 1.0;
-    else { this.stopMusic(); this.setFlow('gameover'); }
+    if (this.opts.god) { pl.respawnT = 0.5; return; }
+    pl.lives--;
+    if (pl.lives > 0) { pl.respawnT = 1.0; return; }
+    pl.out = true; pl.destroy();
+    this.note(`P${pl.index + 1} raus`);
+    if (!this.activePlayers().length) { this.stopMusic(); this.setFlow('gameover'); }
   }
 
   // --- Eingabe -----------------------------------------------------------------
@@ -288,8 +459,8 @@ export class Game {
       if (this.menu.wait) { if (!ev.repeat) this.menu.captureKey(ev.code); return; }
       const action = this.settings.keyToAction[ev.code];
       if (!this.keys.has(ev.code)) {
-        if (action) this.pressed.add(action);
-        if (MENU[ev.code]) this.menuKeys.add(MENU[ev.code]);
+        if (action) { this.pressed.add(action); this.devAdd(this.devPressed, 'kb', action); }
+        if (MENU[ev.code]) { this.menuKeys.add(MENU[ev.code]); this.devAdd(this.devMenu, 'kb', MENU[ev.code]); }
         // Esc pausiert immer, auch wenn Start umbelegt wurde
         if (ev.code === 'Escape' && !this.menu.active && ['playing', 'intro'].includes(this.flow)) this.pressed.add('start');
       }
@@ -313,50 +484,68 @@ export class Game {
     });
     this.canvas.addEventListener('pointermove', (ev) => { if (this.menu.active && ev.pointerType === 'mouse') this.menu.hover(...pos(ev)); });
   }
+  /** Touch-Knopf (touch.js): zaehlt als Tastatur-Spieler */
+  touchPress(a) { this.pressed.add(a); this.devAdd(this.devPressed, 'kb', a); }
+  /** Alle angeschlossenen Gamepads einzeln abfragen (pad0..pad3) */
   pollGamepad() {
-    const pads = navigator.getGamepads ? navigator.getGamepads() : [];
-    const p = pads && [...pads].find((x) => x);
-    this.pad = null;
-    if (!p) return;
-    const btn = (i) => !!(p.buttons[i] && p.buttons[i].pressed);
-    const edge = (i) => btn(i) && !this.padPrev[i];
-    if (this.menu.wait && this.menu.wait.col !== 2) {
-      if (edge(1)) this.menu.wait = null; // B bricht das Neubelegen einer Taste ab
-    } else if (this.menu.wait && this.menu.wait.col === 2) {
-      const i = p.buttons.findIndex((b, j) => b.pressed && !this.padPrev[j]);
-      if (i >= 0) this.menu.capturePad(i);
-    } else {
-      const map = this.settings.pad;
-      for (const a of ['attack', 'jump', 'special', 'back', 'start']) if (edge(map[a])) this.pressed.add(a);
-      // Menues: A bestaetigt, B zurueck (Standard-Konvention, unabhaengig von der Belegung)
-      if (edge(0)) this.menuKeys.add('ok');
-      if (edge(1)) this.menuKeys.add('back');
-    }
-    this.padPrev = p.buttons.map((b) => b.pressed);
-    let x = p.axes[0] || 0, y = -(p.axes[1] || 0);
-    if (Math.hypot(x, y) < 0.25) { x = 0; y = 0; }
-    const m = this.settings.pad;
-    if (btn(m.left)) x = -1; if (btn(m.right)) x = 1; if (btn(m.up)) y = 1; if (btn(m.down)) y = -1;
-    this.pad = { x, y };
-    this.dirEdges(this.padDir, x, y); this.padDir = { x, y };
+    const list = navigator.getGamepads ? [...navigator.getGamepads()] : [];
+    const seen = new Set();
+    list.forEach((p, idx) => {
+      if (!p || !p.connected) return;
+      const dev = 'pad' + idx; seen.add(dev);
+      const st = this.pads[dev] || (this.pads[dev] = { prev: [], dir: { x: 0, y: 0 }, x: 0, y: 0 });
+      const btn = (i) => !!(p.buttons[i] && p.buttons[i].pressed);
+      const edge = (i) => btn(i) && !st.prev[i];
+      if (this.menu.wait && this.menu.wait.col !== 2) {
+        if (edge(1)) this.menu.wait = null; // B bricht das Neubelegen einer Taste ab
+      } else if (this.menu.wait && this.menu.wait.col === 2) {
+        const i = p.buttons.findIndex((b, j) => b.pressed && !st.prev[j]);
+        if (i >= 0) this.menu.capturePad(i);
+      } else {
+        const map = this.settings.pad;
+        for (const a of ['attack', 'jump', 'special', 'back', 'start']) {
+          if (edge(map[a])) { this.pressed.add(a); this.devAdd(this.devPressed, dev, a); }
+        }
+        // Menues: A bestaetigt, B zurueck (Standard-Konvention, unabhaengig von der Belegung)
+        if (edge(0)) { this.menuKeys.add('ok'); this.devAdd(this.devMenu, dev, 'ok'); }
+        if (edge(1)) { this.menuKeys.add('back'); this.devAdd(this.devMenu, dev, 'back'); }
+      }
+      st.prev = p.buttons.map((b) => b.pressed);
+      let x = p.axes[0] || 0, y = -(p.axes[1] || 0);
+      if (Math.hypot(x, y) < 0.25) { x = 0; y = 0; }
+      const m = this.settings.pad;
+      if (btn(m.left)) x = -1; if (btn(m.right)) x = 1; if (btn(m.up)) y = 1; if (btn(m.down)) y = -1;
+      st.x = x; st.y = y;
+      this.dirEdges(st.dir, x, y, dev); st.dir = { x, y };
+    });
+    for (const dev of Object.keys(this.pads)) if (!seen.has(dev)) delete this.pads[dev];
   }
   /** Richtungs-"Tastendruecke" fuer Menues aus Stick/Steuerkreuz */
-  dirEdges(prev, x, y) {
+  dirEdges(prev, x, y, dev = 'kb') {
     const d = (v) => (v > 0.6 ? 1 : v < -0.6 ? -1 : 0);
-    if (d(x) !== d(prev.x) && d(x)) this.menuKeys.add(d(x) > 0 ? 'right' : 'left');
-    if (d(y) !== d(prev.y) && d(y)) this.menuKeys.add(d(y) > 0 ? 'up' : 'down');
+    const add = (a) => { this.menuKeys.add(a); this.devAdd(this.devMenu, dev, a); };
+    if (d(x) !== d(prev.x) && d(x)) add(d(x) > 0 ? 'right' : 'left');
+    if (d(y) !== d(prev.y) && d(y)) add(d(y) > 0 ? 'up' : 'down');
   }
-  virtualEdges() { this.dirEdges(this.virtualPrev, this.virtual.x, this.virtual.y); this.virtualPrev = { ...this.virtual }; }
-  applyInput() {
-    const pl = this.player;
+  virtualEdges() { this.dirEdges(this.virtualPrev, this.virtual.x, this.virtual.y, 'kb'); this.virtualPrev = { ...this.virtual }; }
+  /** Geraete eines Spielers: allein spielt man mit allem, zu zweit hat jeder sein Geraet */
+  devicesOf(pl) { return pl.device === 'all' ? ['kb', ...Object.keys(this.pads)] : [pl.device]; }
+  applyInput(pl) {
     if (this.opts.autoplay) { this.botControl(pl); return; }
-    const k = (a) => this.settings.isDown(a, this.keys);
-    let x = (k('right') ? 1 : 0) - (k('left') ? 1 : 0);
-    let y = (k('up') ? 1 : 0) - (k('down') ? 1 : 0);
-    if (this.pad) { x = clamp(x + this.pad.x, -1, 1); y = clamp(y + this.pad.y, -1, 1); }
-    x = clamp(x + this.virtual.x, -1, 1); y = clamp(y + this.virtual.y, -1, 1);
-    pl.move2 = { x, y };
-    for (const a of ['attack', 'jump', 'special', 'back']) if (this.pressed.has(a)) pl.press(a);
+    let x = 0, y = 0;
+    const devs = this.devicesOf(pl);
+    for (const dev of devs) {
+      if (dev === 'kb') {
+        const k = (a) => this.settings.isDown(a, this.keys);
+        x += (k('right') ? 1 : 0) - (k('left') ? 1 : 0) + this.virtual.x;
+        y += (k('up') ? 1 : 0) - (k('down') ? 1 : 0) + this.virtual.y;
+      } else if (this.pads[dev]) { x += this.pads[dev].x; y += this.pads[dev].y; }
+    }
+    pl.move2 = { x: clamp(x, -1, 1), y: clamp(y, -1, 1) };
+    for (const dev of devs) {
+      const set = this.devPressed.get(dev);
+      if (set) for (const a of ['attack', 'jump', 'special', 'back']) if (set.has(a)) pl.press(a);
+    }
   }
 
   /** Einfacher Bot fuer automatische Tests (?autoplay=1) */
@@ -372,6 +561,19 @@ export class Game {
     if ((!target || (items.length && Math.abs(items[0].x - pl.x) < 200)) && items.length) { target = items[0]; mode = 'item'; }
     if (!target && props.length) { target = props[0]; mode = 'prop'; }
     if (!target) { pl.move2 = { x: 1, y: (110 - pl.depth) / 100 }; return; }
+    // Boss-Gefahren ausweichen: Zugspur, Spotlight, Traeger-Schatten
+    if (this.train && pl.depth > this.trainZone - 25) { pl.move2 = { x: 0, y: -1 }; return; }
+    if (this.spot && this.spot.t > 1.6 && Math.hypot((pl.x - this.spot.x) / 150, (pl.depth - this.spot.depth) / 48) < 1.4) {
+      pl.move2 = { x: Math.sign(pl.x - this.spot.x) || 1, y: Math.sign(pl.depth - this.spot.depth) || 1 }; return;
+    }
+    const lane = this.trams.find((tm) => Math.abs(pl.depth - tm.c) < 50);
+    if (lane) { pl.move2 = { x: 0, y: pl.depth >= lane.c ? 1 : -1 }; return; }
+    const wave = this.entities.find((w) => w instanceof BellWave && Math.abs(Math.hypot(pl.x - w.x, (pl.depth - w.depth) * 3.2) - w.r) < 90 && Math.hypot(pl.x - w.x, (pl.depth - w.depth) * 3.2) > w.r);
+    if (wave && pl.h <= 0) pl.press('jump');
+    const zap = this.entities.find((z) => z instanceof ZapMark && !z.struck && Math.abs(z.x - pl.x) < 120 && Math.abs(z.depth - pl.depth) < 45);
+    if (zap) { pl.move2 = { x: Math.sign(pl.x - zap.x) || 1, y: 0 }; return; }
+    const beam = this.entities.find((b) => b instanceof FallingBeam && !b.landed && Math.abs(b.x - pl.x) < 150 && Math.abs(b.depth - pl.depth) < 40);
+    if (beam) { pl.move2 = { x: Math.sign(pl.x - beam.x) || 1, y: 0 }; return; }
     const near = foes.filter((e) => Math.abs(e.x - pl.x) < 130 && Math.abs(e.depth - pl.depth) < 30).length;
     if (near >= 2 && pl.health > 30 && Math.random() < 0.05) { pl.press('special'); return; }
     const side = mode === 'fight' ? (pl.x < target.x ? -1 : 1) : 0;
@@ -404,7 +606,9 @@ export class Game {
     this.drawBackground(st);
     this.drawEntities();
     this.drawForeground(st);
+    this.drawPopups();
     ctx.restore();
+    if (this.flash > 0) { ctx.fillStyle = `rgba(255,120,220,${this.flash * 0.45})`; ctx.fillRect(0, 0, W.ScreenW, W.ScreenH); }
     this.drawHUD();
     const now = performance.now();
     this.menu.render(Math.min(0.1, (now - this.lastRender) / 1000));
@@ -451,9 +655,29 @@ export class Game {
       const fade = clamp(1 - e.h / 400, 0.35, 1);
       A.draw(ctx, 'FX_Shadow', this.sx(e.x), this.sy(e.depth), 55, 15, false, e.shadow * fade, 1);
     }
+    this.drawHazards(list);
+    // Trams werden mit den Figuren nach Tiefe sortiert (vor der Spur stehende Figuren bleiben sichtbar)
+    for (const tm of this.trams) if (tm.phase === 'pass') list.push({ tram: tm, depth: tm.c - 36, h: 0, front: 0 });
     list.sort((a, b) => (a.front - b.front) || (b.depth - a.depth) || (a.h - b.h));
     for (const e of list) {
       if (e.blink > 0 && (e.blink % 0.12) < 0.06) continue;
+      if (e.tram) {
+        const tm = e.tram, img = this.bgImg('FX_Tram');
+        if (img) {
+          const [w, h] = this.bgSize('FX_Tram');
+          const y = this.sy(tm.c - 22) - h;
+          ctx.save();
+          if (tm.dir > 0) ctx.drawImage(img, this.sx(tm.x) - w, y, w, h);
+          else { ctx.translate(this.sx(tm.x) + w, y); ctx.scale(-1, 1); ctx.drawImage(img, 0, 0, w, h); }
+          ctx.restore();
+        }
+        continue;
+      }
+      if (e instanceof GolfBall) {
+        ctx.beginPath(); ctx.arc(this.sx(e.x), this.sy(e.depth + e.h), 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#fbfbf4'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#0a0610'; ctx.stroke();
+        continue;
+      }
       const name = e.frameName; if (!name) continue;
       const px = this.sx(e.x) + (e.shake > 0 ? rand(-4, 4) : 0);
       const py = this.sy(e.depth + e.h);
@@ -472,6 +696,86 @@ export class Game {
       } else {
         A.draw(ctx, name, px, py, fw / 2, A.frameBottom(name) - 6, false);
       }
+    }
+  }
+  /** Boden-Markierungen und Zug (liegen unter den Figuren) */
+  drawHazards(list) {
+    const ctx = this.ctx, A = this.assets;
+    const now = performance.now() / 1000;
+    const floorEllipse = (x, depth, rx, rd, fill) => {
+      ctx.beginPath(); ctx.ellipse(this.sx(x), this.sy(depth), rx, rd, 0, 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill();
+    };
+    // Stahltraeger: wachsender Warnschatten
+    for (const b of list) {
+      if (!(b instanceof FallingBeam) || b.landed) continue;
+      const k = b.warn;
+      floorEllipse(b.x, b.depth, 40 + 90 * k, 10 + 18 * k, `rgba(10,0,0,${0.25 + 0.45 * k})`);
+      ctx.lineWidth = 3; ctx.strokeStyle = `rgba(255,60,60,${0.4 + 0.5 * Math.abs(Math.sin(now * 12))})`; ctx.stroke();
+    }
+    // Tram-Gleise: leuchten gelb vor der Durchfahrt
+    for (const tm of this.trams) {
+      if (tm.phase !== 'warn' || tm.t < 0) continue;
+      const y0 = this.sy(tm.c + 36), y1 = this.sy(tm.c - 36);
+      ctx.fillStyle = `rgba(255,210,40,${0.15 + 0.25 * Math.abs(Math.sin(now * 10))})`;
+      ctx.fillRect(0, y0, W.ScreenW, y1 - y0);
+      this.text(tm.dir > 0 ? '▶ ▶ ▶' : '◀ ◀ ◀', tm.dir > 0 ? 120 : 1480, (y0 + y1) / 2 - 18, 32, '#ffd24a', 'center');
+    }
+    // Oberleitungs-Blitze: blaue Warnkreise, dann Blitz von oben
+    for (const z of list) {
+      if (!(z instanceof ZapMark)) continue;
+      if (!z.struck) {
+        const k = z.warn;
+        floorEllipse(z.x, z.depth, 95, 32, `rgba(80,180,255,${0.12 + 0.3 * k})`);
+        ctx.lineWidth = 3; ctx.strokeStyle = `rgba(160,220,255,${0.5 + 0.5 * Math.abs(Math.sin(now * (8 + 14 * k)))})`; ctx.stroke();
+      } else {
+        const x = this.sx(z.x), y = this.sy(z.depth);
+        ctx.strokeStyle = '#e8f6ff'; ctx.lineWidth = 6; ctx.shadowColor = '#60c8ff'; ctx.shadowBlur = 24;
+        ctx.beginPath(); ctx.moveTo(x + rand(-30, 30), 0);
+        for (let i = 1; i <= 8; i++) ctx.lineTo(x + rand(-26, 26) * (1 - i / 9), (y * i) / 8);
+        ctx.stroke(); ctx.shadowBlur = 0;
+        floorEllipse(z.x, z.depth, 95, 32, 'rgba(200,240,255,0.45)');
+      }
+    }
+    // Klingel-Welle: gelber Ring am Boden
+    for (const r of list) {
+      if (!(r instanceof BellWave)) continue;
+      ctx.beginPath(); ctx.ellipse(this.sx(r.x), this.sy(r.depth), r.r, r.r / 3.2, 0, 0, Math.PI * 2);
+      ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(255,210,60,0.35)'; ctx.stroke();
+      ctx.lineWidth = 4; ctx.strokeStyle = '#ffe070'; ctx.stroke();
+    }
+    // U-Bahn: Warnstreifen, dann der Zug in der hinteren Spur
+    const tr = this.train;
+    if (tr) {
+      const y0 = this.sy(W.DepthMax + 12), y1 = this.sy(this.trainZone);
+      if (tr.phase === 'warn') {
+        ctx.fillStyle = `rgba(255,40,40,${0.18 + 0.2 * Math.abs(Math.sin(now * 9))})`;
+        ctx.fillRect(0, y0, W.ScreenW, y1 - y0);
+      } else if (this.bgImg('FX_Train')) {
+        const [w, h] = this.bgSize('FX_Train');
+        ctx.drawImage(this.bgImg('FX_Train'), this.sx(tr.x) - w, y1 - h + 10, w, h);
+      }
+    }
+    // Spotlight der Tuer: Lichtkegel von oben + Kreis am Boden
+    const sp = this.spot;
+    if (sp) {
+      const lock = sp.t > 2.4;
+      const a = lock ? 0.45 + 0.35 * Math.abs(Math.sin(now * 20)) : 0.35;
+      const x = this.sx(sp.x), y = this.sy(sp.depth);
+      const g = ctx.createLinearGradient(0, 0, 0, y);
+      g.addColorStop(0, 'rgba(255,120,220,0)'); g.addColorStop(1, `rgba(255,120,220,${a * 0.5})`);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.moveTo(x - 30, 0); ctx.lineTo(x + 30, 0); ctx.lineTo(x + 150, y); ctx.lineTo(x - 150, y); ctx.closePath(); ctx.fill();
+      floorEllipse(sp.x, sp.depth, 150, 48, `rgba(255,150,230,${a})`);
+      ctx.lineWidth = 4; ctx.strokeStyle = lock ? '#ffffff' : '#ff60c0'; ctx.stroke();
+    }
+  }
+  /** Texte ueber den Figuren (WUT!, GEBLOCKT, Strafe …) */
+  drawPopups() {
+    for (const p of this.popups) {
+      const k = p.t / 1.3;
+      this.ctx.globalAlpha = clamp(1.6 - k * 1.6, 0, 1);
+      this.text(p.text, this.sx(p.x), this.sy(p.depth + p.h) - k * 50, 28, p.color, 'center');
+      this.ctx.globalAlpha = 1;
     }
   }
   drawHeldWeapon(f, frameName, px, py) {
@@ -505,20 +809,56 @@ export class Game {
     ctx.fillStyle = color; ctx.fillRect(rtl ? x + w * (1 - v) : x, y, w * v, h);
     ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.fillRect(x, y + 2, w, 3);
   }
-  panel(f, right, rec) {
+  /** Energie-Panel. slot: 0/1 = Spieler links, 'enemy' = Gegner rechts */
+  panel(f, slot, rec) {
     const ctx = this.ctx, A = this.assets;
-    const P = 96, BW = 400, px = right ? 1600 - 24 - P : 24;
+    const right = slot === 'enemy', coop = this.players.length > 1;
+    const P = 96, BW = coop ? 330 : 400;
+    const px = right ? 1600 - 24 - P : 24 + (slot || 0) * (P + BW + 60);
     ctx.fillStyle = '#0a0610'; ctx.fillRect(px - 4, 14, P + 8, P + 8);
-    ctx.fillStyle = right ? '#591a26' : '#1a3366'; ctx.fillRect(px, 18, P, P);
+    ctx.fillStyle = right ? '#591a26' : (slot === 1 ? '#2e1a55' : '#1a3366'); ctx.fillRect(px, 18, P, P);
     const pn = 'Portrait_' + f.sprite;
     if (A.has(pn)) { const [fw] = A.frameSize(pn); A.draw(ctx, pn, px, 18, 0, 0, false, P / fw); }
     const bx = right ? px - 16 - BW : px + P + 16;
-    this.text(f.displayName, right ? bx + BW : bx, 16, 26, '#fff', right ? 'right' : 'left');
+    const label = !right && coop ? `${slot + 1}P ${f.displayName}` : f.displayName;
+    this.text(label, right ? bx + BW : bx, 16, 26, '#fff', right ? 'right' : 'left');
     this.bar(bx, 52, BW, 22, f.health / f.maxHealth, rec / f.maxHealth, right ? '#f23333' : '#ffc71a', right);
-    if (f.weapon && !right) {
-      const w = WEAPONS[f.weapon];
-      this.text(`${w.name} ${f.weaponDur > 50 ? '' : '×' + f.weaponDur}`, bx + BW + 16, 50, 20, '#9fe8ff');
+    if (!right) {
+      this.text('x' + Math.max(0, f.lives - 1), px + 6, 120, 26, '#ffc71a');
+      this.text(String(f.score).padStart(7, '0'), bx, 84, 26, '#fff');
+      if (f.weapon) {
+        const w = WEAPONS[f.weapon];
+        this.text(`${w.name} ${f.weaponDur > 50 ? '' : '×' + f.weaponDur}`, bx + 150, 88, 20, '#9fe8ff');
+      }
+      if (f.out) { ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(px - 4, 14, P + BW + 30, P + 8); this.text('K.O.', bx + BW / 2, 44, 40, '#ff4080', 'center'); }
     }
+  }
+  /** Grosse Boss-Leiste unten (wie in SoR4) */
+  bossBar(b) {
+    const ctx = this.ctx, BW = 900, x = 800 - BW / 2, y = 830;
+    this.text(b.displayName, x, y - 40, 30, '#ffc71a');
+    if (b.enraged) this.text('WUT', x + BW, y - 38, 26, '#ff4060', 'right');
+    this.bar(x, y, BW, 24, b.health / b.maxHealth, 0, '#f23333', false);
+    ctx.fillStyle = 'rgba(10,6,16,0.7)';
+    for (let i = 1; i < 10; i++) ctx.fillRect(x + (BW * i) / 10 - 1, y, 2, 24);
+  }
+  /** Boss-Auftritt: Name, Spruch und Tipps in einem schraegen Band */
+  drawBossIntro(bi) {
+    const ctx = this.ctx, A = this.assets, e = bi.e, p = e.profile;
+    const t = bi.t, inK = clamp(t / 0.35, 0, 1), outK = clamp((3.2 - t) / 0.4, 0, 1), k = Math.min(inK, outK);
+    ctx.save();
+    ctx.globalAlpha = k;
+    ctx.translate((1 - inK) * -400, 0);
+    ctx.fillStyle = 'rgba(8,4,16,0.82)';
+    ctx.beginPath(); ctx.moveTo(0, 300); ctx.lineTo(1600, 250); ctx.lineTo(1600, 560); ctx.lineTo(0, 610); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#ff3c96'; ctx.fillRect(0, 296, 1600, 6);
+    const pn = 'Portrait_' + e.sprite;
+    if (A.has(pn)) { const [fw] = A.frameSize(pn); A.draw(ctx, pn, 170, 290, 0, 0, false, 300 / fw); }
+    this.text('ENDGEGNER', 520, 300, 28, '#ff60c0');
+    this.text(p.name, 520, 340, 72, '#ffc71a');
+    if (p.title) this.text(`„${p.title}“`, 520, 430, 34, '#fff');
+    (p.tips || []).forEach((tip, i) => this.text('▸ ' + tip, 520, 485 + i * 30, 22, '#cfc6e0'));
+    ctx.restore();
   }
   drawHUD() {
     const ctx = this.ctx, A = this.assets;
@@ -528,13 +868,14 @@ export class Game {
       if (A.has('UI_Logo') && this.menu.top && this.menu.top.id === 'main') A.draw(ctx, 'UI_Logo', 800, 90, 550, 0);
       return;
     }
-    if (this.player) {
-      this.panel(this.player, false, this.player.recoverable);
-      this.text('x' + Math.max(0, this.lives - 1), 30, 120, 26, '#ffc71a');
-      this.text(String(this.score).padStart(7, '0'), 136, 84, 26, '#fff');
-    }
+    this.players.forEach((pl, i) => this.panel(pl, i, pl.recoverable));
     const e = this.lastHit;
-    if (e && !e.dead && (this.lastHitT > 0 || (this.bossActive && e.boss))) this.panel(e, true, 0);
+    if (e && !e.dead && !e.boss && this.lastHitT > 0) this.panel(e, 'enemy', 0);
+    const boss = this.enemies().find((b) => b.boss && b.alive && !b.entering);
+    if (boss) this.bossBar(boss);
+    if (this.bossIntro) this.drawBossIntro(this.bossIntro);
+    if (this.train && this.train.phase === 'warn' && blink) this.text('ZURÜCKBLEIBEN, BITTE!', 800, 180, 48, '#ffd24a', 'center');
+    if (this.trams.some((tm) => tm.phase === 'warn' && tm.t >= 0) && blink) this.text('BIMM BIMM – GLEISE FREI!', 800, 180, 48, '#ffd24a', 'center');
     if (this.combo >= 2 && this.comboT > 0) {
       const pop = 1 + clamp(this.comboT - 1.2, 0, 0.2) * 2;
       this.text(String(this.combo), 40, 170, 64 * pop, '#ffc71a');
@@ -550,6 +891,7 @@ export class Game {
       dim(clamp(this.flowTime * 0.3, 0, 0.5));
       this.text(`${st.name} CLEAR!`, 800, 290, 72, '#ffc71a', 'center');
       this.text(`PUNKTE: ${this.score}`, 800, 410, 40, '#fff', 'center');
+      if (this.players.length > 1) this.text(this.players.map((p, i) => `${i + 1}P ${p.score}`).join('   ·   '), 800, 460, 26, '#cfc6e0', 'center');
       if (this.flowTime > 1.5 && blink) this.text(this.stageIndex + 1 < STAGES.length ? 'ENTER: WEITER' : 'ENTER', 800, 510, 30, '#fff', 'center');
     } else if (this.flow === 'gameover') {
       dim(clamp(this.flowTime * 0.4, 0, 0.65));
@@ -558,11 +900,13 @@ export class Game {
     } else if (this.flow === 'ending') {
       dim(0.7);
       this.text('BERLIN IST GERETTET!', 800, 260, 64, '#ffc71a', 'center');
-      this.text('Harald Immobilien ist pleite – die Mieten bleiben bezahlbar.', 800, 360, 30, '#fff', 'center');
+      this.text('Harald Immobilien ist pleite – die Mieten bleiben bezahlbar.', 800, 350, 30, '#fff', 'center');
+      this.text('Und die M10 fährt wieder nach Fahrplan.', 800, 392, 30, '#fff', 'center');
       this.text(`ENDPUNKTE: ${this.score}`, 800, 440, 40, '#fff', 'center');
+      if (this.players.length > 1) this.text(this.players.map((p, i) => `${i + 1}P ${p.score}`).join('   ·   '), 800, 490, 26, '#cfc6e0', 'center');
       if (this.flowTime > 1.5 && blink) this.text('ENTER: TITEL', 800, 540, 30, '#fff', 'center');
     }
   }
 }
 
-const ENEMY_FROM_RIGHT = new Set(['Rolf', 'Sven', 'Harald']);
+const ENEMY_FROM_RIGHT = new Set(['Rolf', 'Sven', 'Harald', 'Klaus', 'Tuer', 'Alex']);

@@ -66,7 +66,7 @@ def main():
 
     by_folder = {}
     for s in manifest["sprites"]:
-        folder = s["package"].rsplit("/", 1)[-1]
+        folder = s["folder"]
         by_folder.setdefault(folder, []).append(s)
 
     atlas_index = {"scale": args.scale, "atlases": {}, "backgrounds": {}}
@@ -123,7 +123,7 @@ def main():
         atlas_index["sounds"][s["name"]] = "audio/%s.wav" % s["name"]
         total += os.path.getsize(dst)
 
-    shutil.copy(os.path.join(ROOT, "Content", "Data", "anchors.json"), os.path.join(OUT, "anchors.json"))
+    shutil.copy(os.path.join(ROOT, "Art", "Generated", "anchors.json"), os.path.join(OUT, "anchors.json"))
     with open(os.path.join(OUT, "atlas.json"), "w", encoding="utf-8") as f:
         json.dump(atlas_index, f, separators=(",", ":"))
     import bundle
