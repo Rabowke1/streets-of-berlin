@@ -1,0 +1,2855 @@
+{
+ "frame_size": [
+  320,
+  320
+ ],
+ "foot": [
+  160,
+  312
+ ],
+ "pixels_per_unit": 2,
+ "sprites": [
+  {
+   "file": "Sprites/Kai/Kai_idle_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_idle_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_idle_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_idle_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_04.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_05.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_06.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_walk_07.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_hurt_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_hurt_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grabbed_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grabbed_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_fall_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_fall_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_down_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_getup_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_getup_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_getup_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack1_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack1_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack1_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack2_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack2_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack2_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack3_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack3_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack3_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack3_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack3_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack3_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack3_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack3_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack4_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack4_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack4_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack4_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack4_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack4_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack4_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack4_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_attack4_04.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_attack4_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_jump_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_jump_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_jump_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_jump_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_jump_kick_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_jump_kick_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_jump_kick_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_jump_kick_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_04.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_special_05.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_special_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_back_attack_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_back_attack_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_back_attack_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_back_attack_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_back_attack_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_back_attack_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grab_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grab_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grab_knee_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grab_knee_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grab_knee_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grab_knee_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_grab_knee_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_grab_knee_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_throw_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_throw_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_throw_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_throw_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_throw_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_pickup_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_pickup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_victory_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_victory_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_victory_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_victory_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Kai.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Kai",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_idle_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_idle_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_idle_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_idle_03.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_03.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_04.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_05.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_06.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_walk_07.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_hurt_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_hurt_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_grabbed_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_grabbed_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_fall_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_fall_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_down_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_getup_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_getup_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_getup_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack1_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack1_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack1_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack2_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack2_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack2_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_attack2_03.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Kalle.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Kalle",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_idle_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_idle_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_idle_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_idle_03.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_03.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_04.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_05.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_06.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_walk_07.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_hurt_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_hurt_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_grabbed_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_grabbed_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_fall_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_fall_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_down_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_getup_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_getup_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_getup_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack1_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack1_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack1_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack2_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack2_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack2_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_attack2_03.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Ronny.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Ronny",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_idle_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_idle_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_idle_02.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_idle_03.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_02.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_03.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_04.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_05.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_06.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_walk_07.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_hurt_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_hurt_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_grabbed_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_grabbed_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_fall_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_fall_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_down_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_getup_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_getup_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_getup_02.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack1_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack1_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack1_02.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack2_00.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack2_01.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack2_02.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Jojo/Jojo_attack2_03.png",
+   "package": "/Game/Sprites/Jojo",
+   "name": "Jojo_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Jojo.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Jojo",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_idle_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_idle_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_idle_02.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_idle_03.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_02.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_03.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_04.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_05.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_06.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_walk_07.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_hurt_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_hurt_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_grabbed_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_grabbed_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_fall_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_fall_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_down_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_getup_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_getup_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_getup_02.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack1_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack1_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack1_02.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack2_00.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack2_01.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack2_02.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Deniz/Deniz_attack2_03.png",
+   "package": "/Game/Sprites/Deniz",
+   "name": "Deniz_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Deniz.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Deniz",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_idle_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_idle_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_idle_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_idle_03.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_03.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_04.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_05.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_06.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_walk_07.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_hurt_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_hurt_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_grabbed_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_grabbed_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_fall_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_fall_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_down_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_getup_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_getup_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_getup_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack1_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack1_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack1_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack1_03.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack1_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack2_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack2_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack2_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_attack2_03.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Brecher.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Brecher",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_idle_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_idle_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_idle_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_idle_03.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_03.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_04.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_05.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_06.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_walk_07.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_hurt_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_hurt_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_grabbed_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_grabbed_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_fall_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_fall_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_down_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_getup_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_getup_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_getup_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack1_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack1_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack1_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack1_03.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack1_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack2_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack2_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack2_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_attack2_03.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Rolf.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Rolf",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_00",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_01",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_02",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_03",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_00",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_01",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_02",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_03",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_04.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_04",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_00",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_01",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_02",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_03",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_00",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_01",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_02",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_03",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Shadow.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Shadow",
+   "size": [
+    220,
+    60
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_TrashCan_00.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_TrashCan_00",
+   "size": [
+    220,
+    280
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_TrashCan_01.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_TrashCan_01",
+   "size": [
+    220,
+    280
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_Crate_00.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_Crate_00",
+   "size": [
+    240,
+    240
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_Crate_01.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_Crate_01",
+   "size": [
+    240,
+    240
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Doener.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Doener",
+   "size": [
+    160,
+    120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Currywurst.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Currywurst",
+   "size": [
+    160,
+    100
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Money.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Money",
+   "size": [
+    120,
+    88
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/UI_Go.png",
+   "package": "/Game/Sprites/UI",
+   "name": "UI_Go",
+   "size": [
+    400,
+    220
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/UI_Logo.png",
+   "package": "/Game/Sprites/UI",
+   "name": "UI_Logo",
+   "size": [
+    2200,
+    600
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Sky.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Sky",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Street_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Street_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_UBahn_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_UBahn_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorStreet.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorStreet",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPlatform.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorPlatform",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_LampPost.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_LampPost",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Pillar.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Pillar",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  }
+ ],
+ "sounds": [
+  {
+   "file": "Audio/SFX_HitLight.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_HitLight"
+  },
+  {
+   "file": "Audio/SFX_HitHeavy.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_HitHeavy"
+  },
+  {
+   "file": "Audio/SFX_Whoosh.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Whoosh"
+  },
+  {
+   "file": "Audio/SFX_Thud.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Thud"
+  },
+  {
+   "file": "Audio/SFX_Break.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Break"
+  },
+  {
+   "file": "Audio/SFX_Pickup.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Pickup"
+  },
+  {
+   "file": "Audio/SFX_Special.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Special"
+  },
+  {
+   "file": "Audio/SFX_Go.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_Go"
+  },
+  {
+   "file": "Audio/SFX_KO.wav",
+   "package": "/Game/Audio",
+   "name": "SFX_KO"
+  },
+  {
+   "file": "Audio/MUS_Stage1.wav",
+   "package": "/Game/Audio",
+   "name": "MUS_Stage1"
+  }
+ ]
+}
