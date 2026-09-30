@@ -53,12 +53,14 @@ const state = (page) => page.evaluate(() => {
   if (!info.options.includes('VOLLBILD')) fail('VOLLBILD fehlt in den Optionen');
   if (info.atlases < 10) fail('Grafiken nicht geladen');
 
+  // Der Fensterzustand kommt (v.a. unter Windows) mit Verzoegerung im Spiel an: bis zu 5 s warten
+  const waitFs = (want) => page.waitForFunction((w) => window.__sob.fullscreen === w, want, { timeout: 5000 }).then(() => true, () => false);
   await page.evaluate(() => window.__sob.toggleFullscreen());
-  await page.waitForTimeout(1200);
+  const fsGame = await waitFs(true);
   const fsOn = await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFullScreen());
-  const fsGame = (await state(page)).fs;
   await page.evaluate(() => window.__sob.toggleFullscreen());
-  await page.waitForTimeout(1200);
+  const fsOff = await waitFs(false);
+  if (!extra.length && !fsOff) fail('Vollbild laesst sich nicht wieder ausschalten');
   console.log('Vollbild:', fsOn, fsGame);
   // ohne Fenstermanager (reiner Headless-Modus) gibt es kein Vollbild – dann nur mit Xvfb/Desktop pruefbar
   if (extra.length) console.log('Vollbild-Pruefung uebersprungen (headless)');

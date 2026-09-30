@@ -108,7 +108,7 @@ export class Game {
   canFullscreen() { return !!this.desktop || !!document.fullscreenEnabled; }
   isFullscreen() { return this.fullscreen; }
   toggleFullscreen() {
-    if (this.desktop) { this.desktop.setFullscreen(!this.fullscreen); return; }
+    if (this.desktop) { this.desktop.toggleFullscreen(); return; }
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     else document.documentElement.requestFullscreen().catch(() => {});
   }

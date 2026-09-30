@@ -76,6 +76,8 @@ if (!app.requestSingleInstanceLock()) {
 
     ipcMain.on('sob:quit', () => app.quit());
     ipcMain.on('sob:set-fullscreen', (_event, on) => { if (win) win.setFullScreen(!!on); });
+    // Umschalten entscheidet das Fenster selbst: der Zustand in der Seite kommt unter Windows verzoegert an
+    ipcMain.on('sob:toggle-fullscreen', () => { if (win) win.setFullScreen(!win.isFullScreen()); });
 
     createWindow();
   });
