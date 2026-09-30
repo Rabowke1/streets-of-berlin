@@ -1,0 +1,39 @@
+{
+  "_hinweis": "Stil- und Figurenbeschreibungen fuer die KI-Generierung. Eigene Designs, keine Figuren aus existierenden Spielen.",
+  "style": "2d beat em up game sprite, hand-drawn comic book art, bold black ink outlines, cel shading with purple shadows, vibrant saturated colors, full body, side view, facing right, dynamic pose, clean silhouette, plain flat solid green background #00ff00, no ground shadow",
+  "negative": "3d render, photo, realistic, blurry, lowres, extra limbs, extra fingers, missing limbs, cropped, out of frame, text, watermark, logo, signature, background scenery, floor, shadow, multiple characters, front view, back view",
+  "characters": {
+    "Kai": "athletic young man, short messy dark brown hair, red-orange bomber jacket open over black t-shirt, black fingerless gloves, blue jeans, white sneakers",
+    "Kalle": "lanky street punk, tall green mohawk, sleeveless faded denim vest over bare chest, earring, black jeans, brown boots, angry face",
+    "Ronny": "street punk, tall pink mohawk, black sleeveless leather vest, dark red jeans, brown boots, angry face",
+    "Micha": "street punk with a knife, blond spiky mohawk, dark red sleeveless shirt, dark blue jeans, brown boots, sneer",
+    "Jojo": "skinny skater guy, backwards blue cap, yellow hoodie, khaki shorts, white sneakers with red soles, dark skin",
+    "Deniz": "skater guy, backwards red cap, green hoodie, khaki shorts, white sneakers",
+    "Zoe": "female kickboxer, black ponytail, teal tank top, dark leggings, pink sneakers, red wraps on hands",
+    "Nina": "female kickboxer, blond ponytail, orange sports top, black leggings, white sneakers, black wraps on hands",
+    "Brecher": "huge bald bearded thug, white tank top, big belly, black track pants with white side stripes, black shoes",
+    "Rolf": "giant bald nightclub bouncer, sunglasses, short beard, black t-shirt with yellow security badge, black pants",
+    "Sven": "big hooligan, buzz cut, black bomber jacket with orange patch, olive cargo pants, boots",
+    "Harald": "arrogant real estate tycoon, slicked back grey hair, grey business suit, white shirt, red tie, brown leather shoes"
+  },
+  "animation_hints": {
+    "idle": "fighting stance",
+    "walk": "walking",
+    "attack1": "quick jab punch",
+    "attack2": "straight punch",
+    "attack3": "uppercut",
+    "attack4": "high kick",
+    "jump": "jumping in the air",
+    "jump_kick": "flying kick",
+    "special": "spinning attack with arms spread",
+    "hurt": "getting hit, recoiling",
+    "fall": "knocked back through the air",
+    "down": "lying on the ground knocked out",
+    "getup": "getting up from the ground",
+    "grab": "grabbing opponent",
+    "throw": "throwing opponent",
+    "victory": "victory pose, fist raised",
+    "weapon_swing": "swinging a weapon overhead",
+    "weapon_throw": "throwing an object"
+  }
+}

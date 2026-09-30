@@ -1,17 +1,35 @@
 #include "BrawlerFighter.h"
 
 #include "BrawlerGameMode.h"
+#include "BrawlerAssets.h"
+#include "BrawlerStageData.h"
+#include "BrawlerWeaponItem.h"
 #include "EngineUtils.h"
 #include "Engine/World.h"
+#include "PaperSprite.h"
+#include "PaperSpriteComponent.h"
 
 ABrawlerFighter::ABrawlerFighter()
 {
+	WeaponSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("WeaponSprite"));
+	WeaponSprite->SetupAttachment(Root);
+	WeaponSprite->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponSprite->SetGenerateOverlapEvents(false);
+	WeaponSprite->CastShadow = false;
+	WeaponSprite->SetVisibility(false);
 }
 
 void ABrawlerFighter::BeginPlay()
 {
 	Super::BeginPlay();
 	Health = MaxHealth;
+	if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
+	{
+		if (UMaterialInterface* Mat = Assets->GetSpriteMaterial())
+		{
+			WeaponSprite->SetMaterial(0, Mat);
+		}
+	}
 	EnterState(EFighterState::Idle);
 }
 
@@ -328,6 +346,15 @@ void ABrawlerFighter::OnLanded()
 
 	if (State == EFighterState::Attack || State == EFighterState::Jump)
 	{
+		if (State == EFighterState::Attack)
+		{
+			State = EFighterState::Idle;
+			OnAttackFinished();
+			if (State != EFighterState::Idle)
+			{
+				return;
+			}
+		}
 		VelX = VelDepth = 0.f;
 		if (GM)
 		{
@@ -390,6 +417,11 @@ void ABrawlerFighter::TickAttack(float DeltaSeconds)
 		ApplyMovement(DeltaSeconds);
 	}
 
+	OnAttackFrame();
+	if (State != EFighterState::Attack)
+	{
+		return;
+	}
 	ProcessAttackHits();
 
 	if (bAirborne)
@@ -478,6 +510,10 @@ void ABrawlerFighter::ProcessAttackHits()
 			HitThisAttack.Add(Target);
 			bAttackConnected = true;
 			AddHitstop(CurrentAttack.Hitstop);
+			if (!CurrentAttack.Weapon.IsNone() && Team == EBrawlerTeam::Player && Cast<ABrawlerFighter>(Target))
+			{
+				UseWeaponHit();
+			}
 			OnAttackHit(Target, CurrentAttack);
 		}
 	}
@@ -599,6 +635,7 @@ void ABrawlerFighter::Knockdown(float Direction, float Speed, float Launch)
 		ReleaseGrab();
 	}
 	GrabPartner.Reset();
+	DropWeapon();
 
 	Facing = -Direction;
 	VelX = Direction * Speed;
@@ -708,4 +745,135 @@ void ABrawlerFighter::ProcessThrownCollisions()
 			}
 		}
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Waffen
+// ---------------------------------------------------------------------------
+void ABrawlerFighter::TakeWeapon(FName Type, int32 Durability)
+{
+	const FWeaponDef* Def = BrawlerData::GetWeapon(Type);
+	if (!Def)
+	{
+		return;
+	}
+	Weapon = Type;
+	WeaponDurability = Durability >= 0 ? Durability : Def->Durability;
+	if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
+	{
+		WeaponSprite->SetSprite(Assets->GetSprite(TEXT("Weapons"), TEXT("Weapon_") + Type.ToString()));
+	}
+	UpdateRender();
+}
+
+void ABrawlerFighter::DropWeapon(bool bPop)
+{
+	if (Weapon.IsNone())
+	{
+		return;
+	}
+	const FName Type = Weapon;
+	const int32 Durability = WeaponDurability;
+	Weapon = NAME_None;
+	WeaponSprite->SetVisibility(false);
+
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Params.bDeferConstruction = true;
+	if (ABrawlerWeaponItem* Item = GetWorld()->SpawnActor<ABrawlerWeaponItem>(ABrawlerWeaponItem::StaticClass(), FTransform::Identity, Params))
+	{
+		Item->Init(Type, Durability);
+		Item->SetBeltPosition(PosX, Depth, FMath::Max(Height, 40.f));
+		Item->FinishSpawning(FTransform::Identity);
+		if (bPop)
+		{
+			Item->Pop(-Facing);
+		}
+	}
+}
+
+void ABrawlerFighter::ThrowWeapon()
+{
+	if (Weapon.IsNone())
+	{
+		return;
+	}
+	const FWeaponDef* Def = BrawlerData::GetWeapon(Weapon);
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Params.bDeferConstruction = true;
+	if (ABrawlerProjectile* P = GetWorld()->SpawnActor<ABrawlerProjectile>(ABrawlerProjectile::StaticClass(), FTransform::Identity, Params))
+	{
+		P->Init(Weapon, this, Def ? Def->ThrowDamage : 12.f, WeaponDurability);
+		P->Facing = Facing;
+		P->SetBeltPosition(PosX + Facing * 50.f, Depth, 120.f);
+		P->FinishSpawning(FTransform::Identity);
+	}
+	Weapon = NAME_None;
+	WeaponSprite->SetVisibility(false);
+	if (ABrawlerGameMode* GM = GetBrawlerGameMode())
+	{
+		GM->PlaySfx(TEXT("SFX_Whoosh"), 0.8f, 0.1f);
+	}
+}
+
+void ABrawlerFighter::UseWeaponHit()
+{
+	if (Weapon.IsNone())
+	{
+		return;
+	}
+	if (--WeaponDurability <= 0)
+	{
+		if (ABrawlerGameMode* GM = GetBrawlerGameMode())
+		{
+			GM->SpawnEffect(TEXT("FX_HitSpark"), PosX + Facing * 80.f, Depth, 110.f, Facing, 20.f);
+			GM->PlaySfx(TEXT("SFX_Break"), 0.6f, 0.1f);
+		}
+		Weapon = NAME_None;
+		WeaponSprite->SetVisibility(false);
+	}
+}
+
+void ABrawlerFighter::OnAttackFrame()
+{
+	// Wurf: Waffe verlaesst die Hand im zweiten Frame
+	if (CurrentAttack.Anim == FName(TEXT("weapon_throw")) && AnimFrame >= 1 && HasWeapon())
+	{
+		ThrowWeapon();
+	}
+}
+
+void ABrawlerFighter::UpdateRender()
+{
+	Super::UpdateRender();
+
+	if (Weapon.IsNone() || !Sprite->GetSprite())
+	{
+		WeaponSprite->SetVisibility(false);
+		return;
+	}
+
+	UBrawlerAssets* Assets = UBrawlerAssets::Get(this);
+	const FWeaponDef* Def = BrawlerData::GetWeapon(Weapon);
+	FVector Anchor;
+	FVector2D Size, Grip;
+	if (!Assets || !Def || !Assets->GetHandAnchor(Sprite->GetSprite()->GetName(), Anchor) || !Assets->GetWeaponGrip(Weapon, Size, Grip))
+	{
+		WeaponSprite->SetVisibility(false);
+		return;
+	}
+
+	// Sprite-Mitte relativ zum Griff (y nach oben), um den Waffenwinkel gedreht
+	const float Theta = Anchor.Z + Def->HoldAngle;
+	const float Rad = FMath::DegreesToRadians(Theta);
+	const FVector2D C(Size.X * 0.5f - Grip.X, Grip.Y - Size.Y * 0.5f);
+	const FVector2D R(C.X * FMath::Cos(Rad) - C.Y * FMath::Sin(Rad), C.X * FMath::Sin(Rad) + C.Y * FMath::Cos(Rad));
+
+	// Gespiegelt bei Blick nach links: Mirror(Rot(t) v) = Rot(-t) Mirror(v)
+	WeaponSprite->SetRelativeLocation(FVector(Facing * (Anchor.X + R.X), 2.f, Height + Anchor.Y + R.Y));
+	WeaponSprite->SetRelativeRotation(FRotator(Facing * Theta, 0.f, 0.f));
+	WeaponSprite->SetRelativeScale3D(FVector(Facing, 1.f, 1.f));
+	WeaponSprite->SetTranslucentSortPriority(Sprite->TranslucencySortPriority + 1);
+	WeaponSprite->SetVisibility(Sprite->IsVisible());
 }

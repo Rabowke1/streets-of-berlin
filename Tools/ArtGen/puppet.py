@@ -310,6 +310,10 @@ class Character:
             s.details.append(("line", local_poly(j["hip"], -t, [(cw * 0.35, 0.93 * L), (cw * 0.25, 0.55 * L)]),
                               shade(self.top, 0.55), 1.6))
             shapes.append(s)
+            if getattr(self, "tie", None):
+                tie = local_poly(j["hip"], -t, [(cw * 0.62, 0.90 * L), (cw * 0.78, 0.86 * L), (cw * 0.74, 0.40 * L),
+                                                (cw * 0.62, 0.34 * L), (cw * 0.52, 0.42 * L)])
+                shapes.append(Shape(tie, 1.2, self.tie, light_shift=2.0))
             collar = local_poly(j["hip"], -t, [(-cw * 0.55, 0.97 * L), (cw * 0.1, 1.02 * L), (cw * 0.42, 0.88 * L)])
             shapes.append(Shape(collar, 2.4, shade(self.top, 1.1), light_shift=1.5))
         if self.logo_color is not None:
@@ -418,6 +422,18 @@ class Character:
         elif st == "long":
             P([(-0.90, -0.60), (-1.10, 0.20), (-0.86, 0.84), (-0.30, 1.08), (0.30, 1.04), (0.74, 0.76),
                (0.86, 0.44), (0.40, 0.56), (0.00, 0.52), (-0.30, 0.20), (-0.44, -0.30), (-0.70, -0.90)])
+        elif st == "ponytail":
+            P([(-0.92, -0.05), (-0.98, 0.45), (-0.70, 0.90), (-0.20, 1.06), (0.36, 1.00), (0.74, 0.70),
+               (0.84, 0.40), (0.46, 0.50), (0.10, 0.44), (-0.30, 0.30), (-0.52, 0.02)])
+            # Zopf
+            P([(-0.70, 0.70), (-1.30, 0.62), (-1.62, 0.10), (-1.58, -0.50), (-1.40, -0.60), (-1.30, 0.00),
+               (-1.02, 0.36), (-0.74, 0.40)], r=2.0)
+            P([(-0.78, 0.66), (-0.86, 0.50)], r=2.6, col=(200, 50, 80, 255))  # Haargummi
+        elif st == "slick":
+            P([(-0.92, 0.00), (-0.94, 0.52), (-0.60, 0.94), (0.00, 1.06), (0.56, 0.92), (0.82, 0.62),
+               (0.60, 0.56), (0.20, 0.72), (-0.30, 0.60), (-0.56, 0.24), (-0.60, -0.02)], r=1.6, ls=2.2)
+            out.append(Shape(local_poly(c, a, [(-0.40 * R, 0.84 * R), (0.30 * R, 0.90 * R)]), 1.4,
+                             shade(H, 1.6), outline=False, light_shift=0))
         elif st == "buzz":
             P([(-0.88, 0.00), (-0.82, 0.60), (-0.40, 0.92), (0.20, 0.94), (0.62, 0.66), (0.70, 0.48),
                (0.20, 0.60), (-0.30, 0.40), (-0.50, 0.00)], r=1.4, ls=2.0)
@@ -439,6 +455,18 @@ class Character:
         layers += self._leg(j, "f", False)
         layers += self._head(j, p)
         layers += self._arm(j, "f", p, False)
+        # Gelenkpunkte fuer die KI-Pipeline (OpenPose-Export)
+        R = self.head_r
+        ha = j["head_ang"]
+        joints = {k: j[k] for k in ("neck", "head", "sh_f", "sh_b", "elbow_f", "elbow_b", "wrist_f", "wrist_b",
+                                    "hip_f", "hip_b", "knee_f", "knee_b", "ankle_f", "ankle_b")}
+        joints["nose"] = add(j["head"], rot((0.95 * R, -0.05 * R), ha))
+        joints["eye"] = add(j["head"], rot((0.52 * R, 0.14 * R), ha))
+        joints["ear"] = add(j["head"], rot((-0.18 * R, 0.0), ha))
+        # Hand-Anker (vordere Faust) fuer Waffen: Punkt + Richtung des Unterarms
+        d = norm(sub(j["wrist_f"], j["elbow_f"]))
+        hand = add(j["wrist_f"], mul(d, self.fist_r * 0.55))
+        tip = add(hand, d)
         # globale Transformation (Rotation, Grounding)
         rr = p["rot"]
         if rr:
@@ -446,6 +474,9 @@ class Character:
             for s in layers:
                 s.pts = [add(pivot, rot(sub(q, pivot), rr)) for q in s.pts]
                 s.details = [_rot_detail(d, pivot, rr) for d in s.details]
+            hand = add(pivot, rot(sub(hand, pivot), rr))
+            tip = add(pivot, rot(sub(tip, pivot), rr))
+            joints = {k: add(pivot, rot(sub(v, pivot), rr)) for k, v in joints.items()}
         if p["ground"]:
             low = min(q[1] - s.r for s in layers for q in s.pts)
             off = (p["dx"], -low + p["dy"])
@@ -454,6 +485,11 @@ class Character:
         for s in layers:
             s.pts = [add(q, off) for q in s.pts]
             s.details = [_off_detail(d, off) for d in s.details]
+        hand = add(hand, off)
+        tip = add(tip, off)
+        self.last_joints = {k: add(v, off) for k, v in joints.items()}
+        # (x, y) in Modell-Einheiten ueber dem Fusspunkt, Winkel in Grad (0 = nach vorne, + = nach oben)
+        self.last_anchor = (hand[0], hand[1], math.degrees(math.atan2(tip[1] - hand[1], tip[0] - hand[0])))
         return layers
 
 

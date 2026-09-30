@@ -65,6 +65,35 @@ def make_characters():
         shoe=(20, 20, 20, 255), sole=(60, 60, 60, 255), hair_style="bald", beard=True, shades=True,
         hair=(40, 30, 28, 255), skin=(200, 146, 110, 255), logo_color=(230, 200, 60, 255), **boss),
         style="heavy", scale=1.22)
+
+    # --- Neue Gegner (Stage 2/3) ---------------------------------------------
+    kicker = dict(
+        head_r=17, torso=56, chest_w=40, waist_w=28, arm_w=(7.5, 8.0, 6.0), fore_w=(6.5, 7.0, 5.5), fist_r=8.0,
+        thigh=46, shin=44, thigh_w=(11.0, 11.0, 7.5), shin_w=(8.0, 8.0, 6.0), shoe_len=26, shoe_h=11,
+        hair_style="ponytail", sole=(240, 240, 240, 255),
+    )
+    chars["Zoe"] = dict(char=Character(
+        "Zoe", top=(40, 200, 200, 255), pants=(40, 36, 60, 255), shoe=(250, 110, 150, 255), hair=(30, 24, 22, 255),
+        skin=(214, 158, 118, 255), glove=(200, 40, 60, 255), **kicker), style="kicker", scale=0.98)
+    chars["Nina"] = dict(char=Character(
+        "Nina", top=(240, 120, 40, 255), pants=(20, 20, 26, 255), shoe=(250, 250, 250, 255), hair=(236, 200, 120, 255),
+        skin=(240, 196, 166, 255), glove=(30, 30, 36, 255), **kicker), style="kicker", scale=0.98)
+
+    chars["Micha"] = dict(char=Character(
+        "Micha", hair=(250, 230, 70, 255), **dict(punk, top=(110, 40, 40, 255), pants=(40, 50, 70, 255))),
+        style="punk", scale=1.0)
+
+    chars["Sven"] = dict(char=Character(
+        "Sven", top=(26, 30, 26, 255), sleeve_upper=(26, 30, 26, 255), sleeve_lower=(26, 30, 26, 255),
+        pants=(80, 86, 70, 255), shoe=(30, 26, 22, 255), sole=(20, 18, 16, 255), hair_style="buzz",
+        hair=(150, 110, 70, 255), skin=(234, 184, 150, 255), logo_color=(230, 120, 30, 255),
+        **dict(heavy, chest_w=72, waist_w=58, belly=6)), style="heavy", scale=1.16)
+
+    chars["Harald"] = dict(char=Character(
+        "Harald", top=(120, 124, 136, 255), top_inner=(240, 240, 236, 255), sleeve_upper=(120, 124, 136, 255),
+        sleeve_lower=(120, 124, 136, 255), pants=(96, 100, 112, 255), shoe=(60, 36, 24, 255),
+        sole=(30, 20, 16, 255), hair_style="slick", hair=(170, 170, 176, 255), skin=(236, 190, 160, 255),
+        tie=(180, 30, 40, 255), chest_w=52, waist_w=40), style="player", scale=1.12)
     return chars
 
 
@@ -76,6 +105,8 @@ def stance(style):
         return pose(t=4, af=(26, 70), ab=(16, 60), lf=(14, 10, 0), lb=(-12, 10, 0), face="angry")
     if style == "punk":
         return pose(t=12, h=-4, af=(32, 95), ab=(16, 100), lf=(16, 16, 0), lb=(-14, 16, 0), face="angry")
+    if style == "kicker":
+        return pose(t=4, af=(38, 110), ab=(24, 120), lf=(24, 14, 0), lb=(-20, 18, 0), face="angry")
     if style == "skater":
         return pose(t=8, af=(22, 70), ab=(12, 60), lf=(18, 20, 0), lb=(-16, 20, 0), face="angry")
     return pose(t=8, af=(40, 108), ab=(22, 125), lf=(20, 18, 0), lb=(-16, 20, 0))
@@ -263,9 +294,54 @@ def heavy_anims():
     return A
 
 
+def weapon_anims(style):
+    """Waffen-Animationen (Waffe selbst wird von der Engine am Hand-Anker gezeichnet)."""
+    st = stance(style)
+    face = "angry" if style != "player" else "normal"
+    return {
+        "weapon_swing": [
+            pose(t=-12, face=face, af=(168, 40), ab=(30, 100), lf=(20, 18, 0), lb=(-18, 16, 0)),
+            pose(t=4, face="shout", af=(120, 10), ab=(30, 100), lf=(26, 16, 0), lb=(-20, 12, 0)),
+            pose(t=22, face="shout", af=(70, 4), ab=(20, 90), lf=(34, 20, 0), lb=(-26, 6, 0), dx=6),
+            pose(t=12, face=face, af=(40, 30), ab=st["ab"], lf=(26, 18, 0), lb=(-20, 14, 0)),
+        ],
+        "weapon_throw": [
+            pose(t=-14, face=face, af=(-50, 70), ab=(60, 80), lf=(22, 18, 0), lb=(-20, 18, 0)),
+            pose(t=18, face="shout", af=(96, 0), ab=(-20, 60), lf=(34, 18, 0), lb=(-26, 4, -20), dx=4),
+            pose(t=10, face=face, af=(60, 40), ab=st["ab"], lf=(26, 18, 0), lb=(-20, 14, 0)),
+        ],
+    }
+
+
+def kicker_anims():
+    A = common_anims("kicker")
+    st = stance("kicker")
+    A["attack1"] = [
+        pose(t=0, face="angry", af=st["af"], ab=st["ab"], lf=(70, 110, 10), lb=(-10, 8, 0)),
+        pose(t=-12, face="shout", af=(50, 110), ab=(10, 100), lf=(94, 4, 10), lb=(-8, 4, 0)),
+        pose(t=-2, face="angry", af=st["af"], ab=st["ab"], lf=(60, 100, 0), lb=(-12, 8, 0)),
+    ]
+    A["attack2"] = [
+        pose(t=10, face="angry", af=(60, 100), ab=(30, 110), lf=(30, 60, 0), lb=(-20, 60, 0)),
+        pose(t=-30, face="shout", af=(80, 60), ab=(-60, 40), lf=(110, 2, 20), lb=(20, 90, -20)),
+        pose(t=-36, face="shout", af=(90, 40), ab=(-70, 30), lf=(118, 0, 20), lb=(24, 96, -20)),
+        pose(t=6, face="angry", af=st["af"], ab=st["ab"], lf=(40, 60, 0), lb=(-20, 50, 0)),
+    ]
+    return A
+
+
+def _with_weapons(fn, style):
+    def make():
+        A = fn()
+        A.update(weapon_anims(style))
+        return A
+    return make
+
+
 ANIMS_BY_STYLE = {
-    "player": player_anims,
-    "punk": punk_anims,
+    "player": _with_weapons(player_anims, "player"),
+    "punk": _with_weapons(punk_anims, "punk"),
     "skater": skater_anims,
-    "heavy": heavy_anims,
+    "heavy": _with_weapons(heavy_anims, "heavy"),
+    "kicker": kicker_anims,
 }

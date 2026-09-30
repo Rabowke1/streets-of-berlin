@@ -79,6 +79,17 @@ public:
 	/** Angriff beginnen */
 	virtual void StartAttack(const FBrawlerAttack& Attack);
 
+	// --- Waffen -------------------------------------------------------------
+	FName GetWeapon() const { return Weapon; }
+	bool HasWeapon() const { return !Weapon.IsNone(); }
+	int32 GetWeaponDurability() const { return WeaponDurability; }
+	/** Waffe in die Hand nehmen (Durability < 0 = Standardwert der Waffe) */
+	void TakeWeapon(FName Type, int32 Durability = -1);
+	/** Waffe fallen lassen (als aufhebbarer Gegenstand) */
+	void DropWeapon(bool bPop = true);
+	/** Waffe als Geschoss werfen */
+	void ThrowWeapon();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void TickEntity(float DeltaSeconds) override;
@@ -92,6 +103,10 @@ protected:
 	virtual void OnHurt(ABrawlerFighter* Attacker, float Damage) {}
 	virtual void OnDied() {}
 	virtual void OnLanded();
+	/** Wird waehrend eines Angriffs jeden Frame aufgerufen (z.B. Waffe loslassen) */
+	virtual void OnAttackFrame();
+	virtual void UpdateRender() override;
+	void UseWeaponHit();
 
 	void EnterState(EFighterState NewState);
 	void PlayCharAnim(FName Anim, bool bRestart = false, float FPSOverride = 0.f);
@@ -131,4 +146,10 @@ protected:
 
 	/** Darf die Figur den sichtbaren Bildschirmbereich verlassen (Gegner beim Betreten) */
 	bool bClampToView = true;
+
+	UPROPERTY(VisibleAnywhere, Category = "Brawler")
+	TObjectPtr<UPaperSpriteComponent> WeaponSprite;
+
+	FName Weapon;
+	int32 WeaponDurability = 0;
 };

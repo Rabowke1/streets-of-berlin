@@ -24,7 +24,7 @@ public:
 	static FEnemyProfile GetProfile(FName Type);
 
 	const FEnemyProfile& GetEnemyProfile() const { return Profile; }
-	bool IsBoss() const { return Profile.Style == EEnemyStyle::Boss; }
+	bool IsBoss() const { return Profile.bBoss; }
 
 	void SetEntering(bool bInEntering);
 
@@ -35,6 +35,7 @@ protected:
 	virtual void OnAttackFinished() override;
 	virtual void OnHurt(ABrawlerFighter* Attacker, float Damage) override;
 	virtual void OnDied() override;
+	virtual void OnLanded() override;
 
 private:
 	FBrawlerAttack MakeMelee(bool bStrong) const;
@@ -50,4 +51,6 @@ private:
 	float WaitDistance = 230.f;
 	bool bHasToken = false;
 	bool bEnraged = false;
+	float ThrowCooldown = 3.f;
+	int32 SummonCount = 0;
 };

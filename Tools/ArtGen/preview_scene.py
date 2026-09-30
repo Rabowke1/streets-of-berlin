@@ -24,6 +24,28 @@ def load(folder, name):
     return img
 
 
+HOLD = {"Pipe": 80, "Bat": 80, "Golf": 80, "Knife": 70, "Bottle": 80}
+
+
+def with_weapon(frame_img, frame_name, weapon):
+    """Zeichnet eine Waffe am Hand-Anker (wie Spiel/Engine)."""
+    import json
+    anchors = json.load(open(os.path.join(os.path.dirname(OUT_DIR), "..", "Content", "Data", "anchors.json")))
+    if frame_name not in anchors["frames"]:
+        return frame_img
+    ax, ay, ang = anchors["frames"][frame_name]
+    gx, gy = anchors["weapons"][weapon]["grip"]
+    w = load("Weapons", "Weapon_" + weapon)
+    big = Image.new("RGBA", (w.width * 3, w.width * 3), (0, 0, 0, 0))
+    cx = cy = big.width // 2
+    big.alpha_composite(w, (int(cx - gx * SCALE), int(cy - gy * SCALE)))
+    rot = big.rotate(ang + HOLD[weapon], resample=Image.BICUBIC)
+    out = frame_img.copy()
+    hx, hy = (160 + ax) * SCALE, (312 - ay) * SCALE
+    out.alpha_composite(rot, (int(hx - cx), int(hy - cy)))
+    return out
+
+
 class Scene:
     def __init__(self, cam_x):
         self.cam_x = cam_x
@@ -40,10 +62,12 @@ class Scene:
         x = self.cam_x + (base_x - self.cam_x) * parallax
         self.put_center(load("Backgrounds", name), x, center_z)
 
-    def actor(self, folder, name, x, depth, flip=False, height=0):
+    def actor(self, folder, name, x, depth, flip=False, height=0, weapon=None):
         sh = load("Effects", "FX_Shadow")
         self.put_center(sh, x, depth)
         spr = load(folder, name)
+        if weapon:
+            spr = with_weapon(spr, name, weapon)
         if flip:
             spr = spr.transpose(Image.FLIP_LEFT_RIGHT)
         # Frame 320x320, Fuesse bei y=312 -> Mitte 152 Units ueber den Fuessen
@@ -55,41 +79,44 @@ class Scene:
         self.img.alpha_composite(spr, (int(cx - spr.width / 2), int(cy - spr.height + 8 * SCALE)))
 
 
-def compose(cam_x, area, out):
-    s = Scene(cam_x)
-    if area == "street":
-        s.layer("BG_Sky", 2150, 650, 0.15)
-        for i, n in enumerate(("BG_Street_00", "BG_Street_01")):
-            s.layer(n, 1024 + i * 2048, 580)
-        floor = "BG_FloorStreet"
-    else:
-        s.layer("BG_UBahn_00", 5120, 580)
-        s.layer("BG_UBahn_00", 7168, 580)
-        floor = "BG_FloorPlatform"
-    for i in range(10):
-        s.layer(floor, 512 + i * 1024, 90)
+AREAS = {
+    "street": dict(sky="BG_Sky", walls=["BG_Street_00", "BG_Street_01"], floor="BG_FloorStreet", fg="FG_LampPost"),
+    "ubahn": dict(sky=None, walls=["BG_UBahn_00"] * 5, floor="BG_FloorPlatform", fg="FG_Pillar"),
+    "gallery": dict(sky="BG_SkySpree", walls=["BG_Gallery_00", "BG_Gallery_01"], floor="BG_FloorPromenade", fg="FG_Tree"),
+    "construction": dict(sky="BG_SkyAlex", walls=["BG_Construction_00", "BG_Construction_01"],
+                         floor="BG_FloorConstruction", fg="FG_Scaffold"),
+    "rooftop": dict(sky="BG_SkyRooftop", walls=["BG_Rooftop_00"] * 5, floor="BG_FloorRooftop", fg=None),
+}
 
-    x0 = cam_x - 800
-    cast = [
-        ("prop", "Prop_TrashCan_00", x0 + 1340, 200),
-        ("Brecher", "Brecher_idle_01", x0 + 1250, 160, True),
-        ("Kalle", "Kalle_hurt_00", x0 + 930, 90, True),
-        ("Kai", "Kai_attack4_01", x0 + 820, 80, False),
-        ("Jojo", "Jojo_walk_03", x0 + 470, 40, False),
-        ("Ronny", "Ronny_fall_01", x0 + 1140, 30, True, 60),
-    ]
-    cast.sort(key=lambda e: -e[3])
+DEFAULT_CAST = [
+    ("prop", "Prop_TrashCan_00", 540, 200),
+    ("Brecher", "Brecher_idle_01", 450, 160, True),
+    ("Kalle", "Kalle_hurt_00", 130, 90, True),
+    ("Kai", "Kai_attack4_01", 20, 80, False),
+    ("Jojo", "Jojo_walk_03", -330, 40, False),
+    ("Ronny", "Ronny_fall_01", 340, 30, True, 60),
+]
+
+
+def compose(cam_x, area, out, cast=None, spark=(150, 230)):
+    a = AREAS[area]
+    s = Scene(cam_x)
+    if a["sky"]:
+        s.layer(a["sky"], 2150, 650, 0.15)
+    for i, n in enumerate(a["walls"]):
+        s.layer(n, 1024 + i * 2048, 580)
+    for i in range(10):
+        s.layer(a["floor"], 512 + i * 1024, 90)
+    cast = sorted(cast or DEFAULT_CAST, key=lambda e: -e[3])
     for e in cast:
         if e[0] == "prop":
-            s.prop(e[1], e[2], e[3])
+            s.prop(e[1], cam_x + e[2], e[3])
         else:
-            s.actor(e[0], e[1], e[2], e[3], e[4], e[5] if len(e) > 5 else 0)
-    s.put_center(load("Effects", "FX_HitBig_01"), x0 + 950, 80 + 150)
-
-    if area == "street":
-        s.layer("FG_LampPost", cam_x + 560, CAM_Z, 1.0)
-    else:
-        s.layer("FG_Pillar", cam_x + 600, CAM_Z, 1.0)
+            s.actor(e[0], e[1], cam_x + e[2], e[3], e[4], e[5] if len(e) > 5 else 0, e[6] if len(e) > 6 else None)
+    if spark:
+        s.put_center(load("Effects", "FX_HitBig_01"), cam_x + spark[0], spark[1])
+    if a["fg"]:
+        s.layer(a["fg"], cam_x + 560, CAM_Z, 1.0)
 
     # HUD-Andeutung
     k = SCALE
@@ -105,3 +132,9 @@ if __name__ == "__main__":
     compose(1000, "street", "Preview_Scene.png")
     compose(5300, "ubahn", "Preview_UBahn.png")
     compose(2900, "street", "Preview_Street2.png")
+    compose(1500, "gallery", "Preview_Gallery.png", [
+        ("Zoe", "Zoe_attack2_02", 170, 90, True), ("Kai", "Kai_hurt_00", 20, 80, False),
+        ("Micha", "Micha_weapon_swing_00", -260, 150, False, 0, "Knife"), ("Nina", "Nina_idle_00", 480, 180, True)], spark=(60, 250))
+    compose(2500, "construction", "Preview_Construction.png", [
+        ("Harald", "Harald_weapon_swing_01", 190, 100, True, 0, "Golf"), ("Kai", "Kai_weapon_swing_02", -60, 110, False, 0, "Pipe"),
+        ("Brecher", "Brecher_attack1_00", -420, 190, False), ("Zoe", "Zoe_fall_01", 420, 40, True, 70)], spark=(120, 270))

@@ -620,6 +620,76 @@
    "ppu": 2
   },
   {
+   "file": "Sprites/Kai/Kai_weapon_swing_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_swing_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_swing_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_swing_03.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_throw_00.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_throw_01.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kai/Kai_weapon_throw_02.png",
+   "package": "/Game/Sprites/Kai",
+   "name": "Kai_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/UI/Portrait_Kai.png",
    "package": "/Game/Sprites/UI",
    "name": "Portrait_Kai",
@@ -920,6 +990,76 @@
    "ppu": 2
   },
   {
+   "file": "Sprites/Kalle/Kalle_weapon_swing_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_swing_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_swing_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_swing_03.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_throw_00.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_throw_01.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Kalle/Kalle_weapon_throw_02.png",
+   "package": "/Game/Sprites/Kalle",
+   "name": "Kalle_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/UI/Portrait_Kalle.png",
    "package": "/Game/Sprites/UI",
    "name": "Portrait_Kalle",
@@ -1213,6 +1353,76 @@
    "file": "Sprites/Ronny/Ronny_attack2_03.png",
    "package": "/Game/Sprites/Ronny",
    "name": "Ronny_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_swing_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_swing_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_swing_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_swing_03.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_throw_00.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_throw_01.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Ronny/Ronny_weapon_throw_02.png",
+   "package": "/Game/Sprites/Ronny",
+   "name": "Ronny_weapon_throw_02",
    "size": [
     640,
     640
@@ -2130,6 +2340,76 @@
    "ppu": 2
   },
   {
+   "file": "Sprites/Brecher/Brecher_weapon_swing_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_swing_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_swing_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_swing_03.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_throw_00.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_throw_01.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Brecher/Brecher_weapon_throw_02.png",
+   "package": "/Game/Sprites/Brecher",
+   "name": "Brecher_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/UI/Portrait_Brecher.png",
    "package": "/Game/Sprites/UI",
    "name": "Portrait_Brecher",
@@ -2440,9 +2720,2119 @@
    "ppu": 2
   },
   {
+   "file": "Sprites/Rolf/Rolf_weapon_swing_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_swing_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_swing_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_swing_03.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_throw_00.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_throw_01.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Rolf/Rolf_weapon_throw_02.png",
+   "package": "/Game/Sprites/Rolf",
+   "name": "Rolf_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/UI/Portrait_Rolf.png",
    "package": "/Game/Sprites/UI",
    "name": "Portrait_Rolf",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_idle_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_idle_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_idle_02.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_idle_03.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_02.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_03.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_04.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_05.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_06.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_walk_07.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_hurt_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_hurt_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_grabbed_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_grabbed_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_fall_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_fall_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_down_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_getup_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_getup_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_getup_02.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack1_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack1_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack1_02.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack2_00.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack2_01.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack2_02.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Zoe/Zoe_attack2_03.png",
+   "package": "/Game/Sprites/Zoe",
+   "name": "Zoe_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Zoe.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Zoe",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_idle_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_idle_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_idle_02.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_idle_03.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_02.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_03.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_04.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_05.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_06.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_walk_07.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_hurt_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_hurt_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_grabbed_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_grabbed_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_fall_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_fall_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_down_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_getup_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_getup_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_getup_02.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack1_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack1_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack1_02.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack2_00.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack2_01.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack2_02.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Nina/Nina_attack2_03.png",
+   "package": "/Game/Sprites/Nina",
+   "name": "Nina_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Nina.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Nina",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_idle_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_idle_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_idle_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_idle_03.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_03.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_04.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_05.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_06.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_walk_07.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_hurt_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_hurt_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_grabbed_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_grabbed_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_fall_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_fall_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_down_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_getup_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_getup_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_getup_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack1_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack1_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack1_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack2_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack2_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack2_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_attack2_03.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_swing_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_swing_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_swing_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_swing_03.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_throw_00.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_throw_01.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Micha/Micha_weapon_throw_02.png",
+   "package": "/Game/Sprites/Micha",
+   "name": "Micha_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Micha.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Micha",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_idle_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_idle_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_idle_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_idle_03.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_03.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_04.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_05.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_06.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_walk_07.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_hurt_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_hurt_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_grabbed_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_grabbed_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_fall_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_fall_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_down_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_getup_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_getup_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_getup_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack1_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack1_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack1_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack1_03.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack1_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack2_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack2_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack2_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_attack2_03.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_attack2_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_swing_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_swing_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_swing_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_swing_03.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_throw_00.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_throw_01.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Sven/Sven_weapon_throw_02.png",
+   "package": "/Game/Sprites/Sven",
+   "name": "Sven_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Sven.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Sven",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_idle_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_idle_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_idle_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_idle_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_04.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_05.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_06.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_walk_07.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_hurt_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_hurt_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grabbed_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grabbed_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_fall_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_fall_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_down_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_getup_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_getup_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_getup_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack1_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack1_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack1_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack2_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack2_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack2_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack3_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack3_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack3_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack3_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack3_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack3_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack3_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack3_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack4_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack4_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack4_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack4_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack4_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack4_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack4_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack4_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_attack4_04.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_attack4_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_jump_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_jump_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_jump_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_jump_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_jump_kick_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_jump_kick_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_jump_kick_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_jump_kick_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_04.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_special_05.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_special_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_back_attack_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_back_attack_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_back_attack_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_back_attack_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_back_attack_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_back_attack_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grab_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grab_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grab_knee_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grab_knee_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grab_knee_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grab_knee_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_grab_knee_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_grab_knee_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_throw_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_throw_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_throw_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_throw_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_throw_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_pickup_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_pickup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_victory_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_victory_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_victory_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_victory_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_swing_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_swing_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_swing_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_swing_03.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_throw_00.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_throw_01.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Harald/Harald_weapon_throw_02.png",
+   "package": "/Game/Sprites/Harald",
+   "name": "Harald_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Harald.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Harald",
    "size": [
     256,
     256
@@ -2700,6 +5090,56 @@
    "ppu": 2
   },
   {
+   "file": "Sprites/Weapons/Weapon_Pipe.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Pipe",
+   "size": [
+    240,
+    56
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Bat.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Bat",
+   "size": [
+    260,
+    64
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Knife.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Knife",
+   "size": [
+    128,
+    48
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Bottle.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Bottle",
+   "size": [
+    140,
+    60
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Golf.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Golf",
+   "size": [
+    280,
+    80
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/UI/UI_Go.png",
    "package": "/Game/Sprites/UI",
    "name": "UI_Go",
@@ -2793,6 +5233,156 @@
    "file": "Sprites/Backgrounds/FG_Pillar.png",
    "package": "/Game/Sprites/Backgrounds",
    "name": "FG_Pillar",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkySpree.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkySpree",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Gallery_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Gallery_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPromenade.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorPromenade",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Backyard_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Backyard_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorCobble.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorCobble",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Tree.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Tree",
+   "size": [
+    520,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyAlex.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkyAlex",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Construction_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Construction_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorConstruction.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorConstruction",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyRooftop.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkyRooftop",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Rooftop_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Rooftop_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorRooftop.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorRooftop",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Scaffold.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Scaffold",
    "size": [
     400,
     1800
