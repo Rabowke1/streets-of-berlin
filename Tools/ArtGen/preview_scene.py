@@ -30,7 +30,7 @@ HOLD = {"Pipe": 80, "Bat": 80, "Golf": 80, "Knife": 70, "Bottle": 80}
 def with_weapon(frame_img, frame_name, weapon):
     """Zeichnet eine Waffe am Hand-Anker (wie Spiel/Engine)."""
     import json
-    anchors = json.load(open(os.path.join(os.path.dirname(OUT_DIR), "..", "Content", "Data", "anchors.json")))
+    anchors = json.load(open(os.path.join(OUT_DIR, "anchors.json")))
     if frame_name not in anchors["frames"]:
         return frame_img
     ax, ay, ang = anchors["frames"][frame_name]

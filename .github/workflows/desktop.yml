@@ -1,0 +1,62 @@
+# Baut die Windows-Version (StreetsOfBerlin.exe) auf einem echten Windows-Runner, testet sie
+# (Start, Menue, Vollbild, Spielen, Bot-Durchlauf aller Stages) und stellt das ZIP bereit:
+#  - bei jedem Push/PR als Download unter "Actions" -> Lauf -> Artifacts
+#  - bei einem Tag v* (z.B. v1.0.0) zusaetzlich als GitHub-Release
+name: Desktop-Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Abhaengigkeiten
+        run: npm ci
+
+      - name: Windows-Build
+        run: npm run build:win
+
+      - name: Test der gebauten .exe
+        run: node smoke-test.mjs --exe dist/StreetsOfBerlin-win32-x64/StreetsOfBerlin.exe --full
+
+      - name: ZIP hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: StreetsOfBerlin-win-x64
+          path: desktop/dist/StreetsOfBerlin-win-x64.zip
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: StreetsOfBerlin-win-x64
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: StreetsOfBerlin-win-x64.zip
+          generate_release_notes: true

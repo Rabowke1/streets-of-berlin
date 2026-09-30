@@ -2,7 +2,7 @@
 
 Erzeugt Figuren-Frames im gezeichneten Comic-Stil mit einem Bildmodell (Stable Diffusion XL, Flux …) und
 **exakt den Posen aus dem Spiel**. Die Ergebnisse landen als Overrides in `Art/Custom/` und ersetzen beim nächsten
-`generate_all.py` die Puppet-Grafiken. Import nach Unreal und die Browser-Version funktionieren danach unverändert.
+`generate_all.py` die Puppet-Grafiken. Das Spiel (Browser und .exe) übernimmt sie nach `build_web.py` unverändert.
 
 ```
 Puppet-Pose (Tools/ArtGen)  ──►  OpenPose-Skelett + Lineart + Maske   (poses.py)
@@ -43,7 +43,7 @@ python Tools/ArtGen/generate_all.py          # nimmt Art/Custom automatisch
 python Tools/WebBuild/build_web.py           # Browser-Version aktualisieren
 ```
 
-Im Unreal-Editor erkennt das Import-Skript das geänderte Manifest und importiert beim nächsten Start neu.
+Danach die .exe neu bauen (`cd desktop && npm run build:win`).
 
 ## Einheitlichkeit über alle Frames
 

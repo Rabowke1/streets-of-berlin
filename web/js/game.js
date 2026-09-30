@@ -25,6 +25,7 @@ export class Game {
     this.settings = new Settings();
     if (opts.character && PLAYERS[opts.character]) this.settings.character = opts.character;
     this.menu = new Menu(this); this.menu.reset('main');
+    this.setupFullscreen();
     this.lastRender = performance.now();
     this.audio = null; this.music = null; this.musicGain = null;
     this.stats = { hits: 0, kills: 0, stagesCleared: 0, deaths: 0, frames: 0 };
@@ -91,6 +92,25 @@ export class Game {
     this.musicGain = this.audio.createGain(); this.musicGain.gain.value = this.musicVolume();
     this.music.connect(this.musicGain).connect(this.audio.destination);
     this.music.start();
+  }
+  // --- Vollbild / Desktop-Version --------------------------------------------------
+  /** In der .exe (Electron) stellt preload.js window.sobDesktop bereit */
+  get desktop() { return window.sobDesktop || null; }
+  setupFullscreen() {
+    this.fullscreen = false;
+    if (this.desktop) {
+      this.desktop.onFullscreen((on) => { this.fullscreen = on; this.settings.fullscreen = on; this.settings.save(); });
+      if (this.settings.fullscreen) this.desktop.setFullscreen(true);
+    } else {
+      document.addEventListener('fullscreenchange', () => { this.fullscreen = !!document.fullscreenElement; });
+    }
+  }
+  canFullscreen() { return !!this.desktop || !!document.fullscreenEnabled; }
+  isFullscreen() { return this.fullscreen; }
+  toggleFullscreen() {
+    if (this.desktop) { this.desktop.setFullscreen(!this.fullscreen); return; }
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else document.documentElement.requestFullscreen().catch(() => {});
   }
   musicVolume() { return 0.45 * this.settings.musicVol * 1.4; }
   /** Nach Aenderungen im Optionsmenue: Musik an/aus, Lautstaerke */

@@ -1,0 +1,23 @@
+{
+  "name": "streets-of-berlin",
+  "productName": "Streets of Berlin",
+  "version": "1.0.0",
+  "description": "2D-Brawler im Stil von Streets of Rage 4 – spielt in Berlin",
+  "author": "Streets of Berlin",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "stage": "node build.mjs --stage-only",
+    "start": "node build.mjs --stage-only && electron .",
+    "build:win": "node build.mjs --platform win32",
+    "build:linux": "node build.mjs --platform linux",
+    "test": "node smoke-test.mjs"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^44.5.1",
+    "playwright-core": "^1.63.0",
+    "resedit": "^3.1.0"
+  }
+}

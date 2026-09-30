@@ -97,7 +97,7 @@ class Assets {
   return { Assets };
 })();
 const __mod_data_js = (function () {
-// Spieldaten – spiegeln die Werte aus dem Unreal-Code (Source/StreetsOfBerlin), plus Stage 2/3 und Waffen.
+// Spieldaten: Figuren, Angriffe, Gegner, Waffen und Stages.
 
 const W = {
   DepthMin: 0, DepthMax: 240, FloorTopZ: 300, Gravity: 2600,
@@ -1094,7 +1094,7 @@ const DEFAULT_KEYS = {
 const DEFAULT_PAD = { left: 14, right: 15, up: 12, down: 13, attack: 2, jump: 0, special: 3, back: 1, start: 9 };
 const PAD_NAMES = ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'BACK', 'START', 'L3', 'R3', '↑', '↓', '←', '→', 'HOME'];
 
-const DEFAULTS = { music: true, musicVol: 0.7, sfx: true, sfxVol: 0.8, character: 'Kai' };
+const DEFAULTS = { music: true, musicVol: 0.7, sfx: true, sfxVol: 0.8, character: 'Kai', fullscreen: false };
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
@@ -1207,6 +1207,8 @@ class Menu {
       case 'main': return [
         { label: 'SPIEL STARTEN', act: () => this.open('select') },
         { label: 'OPTIONEN', act: () => this.open('options') },
+        // nur in der Desktop-Version (.exe)
+        ...(g.desktop ? [{ label: 'BEENDEN', act: () => g.desktop.quit() }] : []),
       ];
       case 'pause': return [
         { label: 'WEITER', act: () => g.resume() },
@@ -1219,6 +1221,7 @@ class Menu {
         { label: 'SOUNDS', value: () => (s.sfx ? 'AN' : 'AUS'), act: toggle('sfx'), adj: toggle('sfx') },
         { label: 'SOUND-LAUTSTÄRKE', value: () => pct(s.sfxVol), adj: vol('sfxVol'), act: () => vol('sfxVol')(1), dim: () => !s.sfx },
         { label: 'STEUERUNG ANPASSEN', act: () => this.open('controls') },
+        ...(g.canFullscreen() ? [{ label: 'VOLLBILD', value: () => (g.isFullscreen() ? 'AN' : 'AUS'), act: () => g.toggleFullscreen(), adj: () => g.toggleFullscreen() }] : []),
         { label: 'ZURÜCK', act: () => this.close() },
       ];
       case 'controls': return [
@@ -1430,6 +1433,7 @@ class Game {
     this.settings = new Settings();
     if (opts.character && PLAYERS[opts.character]) this.settings.character = opts.character;
     this.menu = new Menu(this); this.menu.reset('main');
+    this.setupFullscreen();
     this.lastRender = performance.now();
     this.audio = null; this.music = null; this.musicGain = null;
     this.stats = { hits: 0, kills: 0, stagesCleared: 0, deaths: 0, frames: 0 };
@@ -1496,6 +1500,25 @@ class Game {
     this.musicGain = this.audio.createGain(); this.musicGain.gain.value = this.musicVolume();
     this.music.connect(this.musicGain).connect(this.audio.destination);
     this.music.start();
+  }
+  // --- Vollbild / Desktop-Version --------------------------------------------------
+  /** In der .exe (Electron) stellt preload.js window.sobDesktop bereit */
+  get desktop() { return window.sobDesktop || null; }
+  setupFullscreen() {
+    this.fullscreen = false;
+    if (this.desktop) {
+      this.desktop.onFullscreen((on) => { this.fullscreen = on; this.settings.fullscreen = on; this.settings.save(); });
+      if (this.settings.fullscreen) this.desktop.setFullscreen(true);
+    } else {
+      document.addEventListener('fullscreenchange', () => { this.fullscreen = !!document.fullscreenElement; });
+    }
+  }
+  canFullscreen() { return !!this.desktop || !!document.fullscreenEnabled; }
+  isFullscreen() { return this.fullscreen; }
+  toggleFullscreen() {
+    if (this.desktop) { this.desktop.setFullscreen(!this.fullscreen); return; }
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else document.documentElement.requestFullscreen().catch(() => {});
   }
   musicVolume() { return 0.45 * this.settings.musicVol * 1.4; }
   /** Nach Aenderungen im Optionsmenue: Musik an/aus, Lautstaerke */

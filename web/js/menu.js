@@ -40,6 +40,8 @@ export class Menu {
       case 'main': return [
         { label: 'SPIEL STARTEN', act: () => this.open('select') },
         { label: 'OPTIONEN', act: () => this.open('options') },
+        // nur in der Desktop-Version (.exe)
+        ...(g.desktop ? [{ label: 'BEENDEN', act: () => g.desktop.quit() }] : []),
       ];
       case 'pause': return [
         { label: 'WEITER', act: () => g.resume() },
@@ -52,6 +54,7 @@ export class Menu {
         { label: 'SOUNDS', value: () => (s.sfx ? 'AN' : 'AUS'), act: toggle('sfx'), adj: toggle('sfx') },
         { label: 'SOUND-LAUTSTÄRKE', value: () => pct(s.sfxVol), adj: vol('sfxVol'), act: () => vol('sfxVol')(1), dim: () => !s.sfx },
         { label: 'STEUERUNG ANPASSEN', act: () => this.open('controls') },
+        ...(g.canFullscreen() ? [{ label: 'VOLLBILD', value: () => (g.isFullscreen() ? 'AN' : 'AUS'), act: () => g.toggleFullscreen(), adj: () => g.toggleFullscreen() }] : []),
         { label: 'ZURÜCK', act: () => this.close() },
       ];
       case 'controls': return [

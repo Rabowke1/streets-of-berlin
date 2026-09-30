@@ -1,6 +1,6 @@
 """Mal-Werkzeuge fuer die gemalten Hintergruende.
 
-Alle Koordinaten sind Welt-Units (1 Unit = 1 Unreal-Unit). Intern wird mit
+Alle Koordinaten sind Welt-Units (1 Unit = 1 Spiel-Pixel bei 1600x900). Intern wird mit
 RES (Ausgabe-Aufloesung) * K (Supersampling) Pixeln pro Unit gezeichnet.
 Licht-Effekte (Glow, Lichtkegel, Schatten) werden in niedriger Aufloesung
 gemalt, weichgezeichnet und dann additiv bzw. multiplikativ aufgetragen –

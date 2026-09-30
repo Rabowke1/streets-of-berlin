@@ -1,4 +1,4 @@
-// Spieldaten – spiegeln die Werte aus dem Unreal-Code (Source/StreetsOfBerlin), plus Stage 2/3 und Waffen.
+// Spieldaten: Figuren, Angriffe, Gegner, Waffen und Stages.
 
 export const W = {
   DepthMin: 0, DepthMax: 240, FloorTopZ: 300, Gravity: 2600,

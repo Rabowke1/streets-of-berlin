@@ -4,8 +4,8 @@ Aufruf:  python Tools/ArtGen/generate_all.py   (benoetigt Pillow + numpy)
 
 Ergebnis:
   Art/Generated/...           PNG/WAV-Dateien
-  Art/Generated/manifest.json Liste aller Assets inkl. Ziel-Pfad in Unreal
-                              (wird von Tools/Unreal/import_assets.py gelesen)
+  Art/Generated/manifest.json Liste aller Assets (Ordner, Name, Groesse) fuer Tools/WebBuild/build_web.py
+  Art/Generated/anchors.json  Hand-Anker pro Figuren-Frame + Waffen-Griffpunkte
 """
 import json
 import os
@@ -34,9 +34,9 @@ CUSTOM_DIR = os.path.join(ROOT, "Art", "Custom")
 
 manifest = {"frame_size": list(FRAME), "foot": list(FOOT), "pixels_per_unit": RES, "sprites": [], "sounds": []}
 custom_used = []
-# Hand-Anker pro Figuren-Frame + Waffen-Griffpunkte (fuer Waffen in der Hand), gelesen von C++ und Web
+# Hand-Anker pro Figuren-Frame + Waffen-Griffpunkte (fuer Waffen in der Hand), gelesen vom Spiel
 anchors = {"frames": {}, "weapons": {}}
-DATA_DIR = os.path.join(ROOT, "Content", "Data")
+DATA_DIR = OUT_DIR
 
 
 def add_sprite(img, folder, name):
@@ -53,7 +53,7 @@ def add_sprite(img, folder, name):
     save(img, rel)
     manifest["sprites"].append({
         "file": rel.replace("\\", "/"),
-        "package": "/Game/Sprites/" + folder,
+        "folder": folder,
         "name": name,
         "size": [img.width, img.height],
         "ppu": RES,
@@ -159,7 +159,6 @@ def gen_audio():
     for name, path in audio.generate(os.path.join(OUT_DIR, "Audio")):
         manifest["sounds"].append({
             "file": os.path.relpath(path, OUT_DIR).replace("\\", "/"),
-            "package": "/Game/Audio",
             "name": name,
         })
 
@@ -188,8 +187,11 @@ def main():
                     drop |= keep_folders[lab]
             char_names = set(make_characters().keys())
             for spr in prev.get("sprites", []):
-                folder = spr["package"].rsplit("/", 1)[-1]
-                if folder in drop or ("Figuren" in only and (folder in char_names or spr["name"].startswith("Portrait_"))):
+                folder = spr["folder"]
+                portrait = spr["name"].startswith("Portrait_")  # entstehen im Schritt "Figuren", liegen aber in UI/
+                if "Figuren" in only and (folder in char_names or portrait):
+                    continue
+                if folder in drop and not portrait:
                     continue
                 manifest["sprites"].append(spr)
         oa = os.path.join(DATA_DIR, "anchors.json")

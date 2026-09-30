@@ -15,7 +15,7 @@ export const DEFAULT_KEYS = {
 export const DEFAULT_PAD = { left: 14, right: 15, up: 12, down: 13, attack: 2, jump: 0, special: 3, back: 1, start: 9 };
 const PAD_NAMES = ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'BACK', 'START', 'L3', 'R3', '↑', '↓', '←', '→', 'HOME'];
 
-export const DEFAULTS = { music: true, musicVol: 0.7, sfx: true, sfxVol: 0.8, character: 'Kai' };
+export const DEFAULTS = { music: true, musicVol: 0.7, sfx: true, sfxVol: 0.8, character: 'Kai', fullscreen: false };
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 

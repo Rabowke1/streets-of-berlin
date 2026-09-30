@@ -1,8 +1,8 @@
 """Figuren-Definitionen und Animationen (Posen) fuer Streets of Berlin.
 
-Alle Figuren schauen im Sprite nach rechts; die Engine spiegelt sie.
-Animationsnamen sind fuer alle Figuren gleich, damit der C++-Code sie
-einheitlich ansprechen kann (siehe BrawlerAnimTable in C++).
+Alle Figuren schauen im Sprite nach rechts; das Spiel spiegelt sie.
+Animationsnamen sind fuer alle Figuren gleich, damit das Spiel sie
+einheitlich ansprechen kann (siehe ANIM in web/js/data.js).
 """
 import math
 

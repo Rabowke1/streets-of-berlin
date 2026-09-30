@@ -1,7 +1,7 @@
 # Eigene Grafiken (Overrides)
 
 Jede PNG-Datei hier ersetzt beim nächsten `python Tools/ArtGen/generate_all.py` die gleichnamige generierte
-Grafik – egal ob handgezeichnet, gemalt oder mit einem Bild-KI-Tool erzeugt. Alles andere (Import nach Unreal,
+Grafik – egal ob handgezeichnet, gemalt oder mit einem Bild-KI-Tool erzeugt. Alles andere (Atlanten fürs Spiel,
 Animation, Kollision) funktioniert unverändert.
 
 ```
