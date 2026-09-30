@@ -1,6 +1,8 @@
 // Spielablauf, Stages, Kamera, HUD, Eingabe und Audio (Portierung von ABrawlerGameMode/HUD/Stage/Controller).
-import { STAGES, W, WEAPONS } from './data.js';
+import { PLAYERS, STAGES, W, WEAPONS } from './data.js';
 import { Effect, Enemy, Fighter, Pickup, Player, Prop, WeaponItem, Projectile } from './entities.js';
+import { Menu } from './menu.js';
+import { Settings } from './settings.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -18,7 +20,12 @@ export class Game {
     this.lastHit = null; this.lastHitT = 0;
     this.tokens = new Set();
     this.nextEnc = 0; this.activeEnc = -1; this.nextGroup = 0; this.groupT = 0; this.bossActive = false;
-    this.keys = new Set(); this.pressed = new Set(); this.padPrev = []; this.virtual = { x: 0, y: 0 };
+    this.keys = new Set(); this.pressed = new Set(); this.menuKeys = new Set(); this.padPrev = []; this.padDir = { x: 0, y: 0 };
+    this.virtual = { x: 0, y: 0 }; this.virtualPrev = { x: 0, y: 0 };
+    this.settings = new Settings();
+    if (opts.character && PLAYERS[opts.character]) this.settings.character = opts.character;
+    this.menu = new Menu(this); this.menu.reset('main');
+    this.lastRender = performance.now();
     this.audio = null; this.music = null; this.musicGain = null;
     this.stats = { hits: 0, kills: 0, stagesCleared: 0, deaths: 0, frames: 0 };
     this.log = [];
@@ -40,7 +47,8 @@ export class Game {
     if (!e.dead) this.add(e);
   }
   sfx(name, vol = 1, pitchVar = 0.08) {
-    if (!this.audio || this.opts.mute) return;
+    if (!this.audio || this.opts.mute || !this.settings.sfx) return;
+    vol *= this.settings.sfxVol;
     const el = this.assets.soundEls && this.assets.soundEls[name];
     if (el && !this.assets.sounds[name]) {
       const c = el.cloneNode();
@@ -69,32 +77,51 @@ export class Game {
     } catch (e) { console.warn('Audio nicht verfuegbar', e); }
   }
   playMusic() {
-    if (!this.audio || this.music) return;
+    if (!this.audio || this.music || !this.settings.music) return;
     const el = this.assets.soundEls && this.assets.soundEls.MUS_Stage1;
     if (el && !this.assets.sounds.MUS_Stage1) {
-      el.loop = true; el.volume = 0.45; el.currentTime = 0;
+      el.loop = true; el.volume = this.musicVolume(); el.currentTime = 0;
       el.play().catch(() => {});
-      this.music = { stop: () => el.pause() };
+      this.music = { stop: () => el.pause(), el };
       return;
     }
     if (!this.assets.sounds.MUS_Stage1) return;
     this.music = this.audio.createBufferSource();
     this.music.buffer = this.assets.sounds.MUS_Stage1; this.music.loop = true;
-    this.musicGain = this.audio.createGain(); this.musicGain.gain.value = 0.45;
+    this.musicGain = this.audio.createGain(); this.musicGain.gain.value = this.musicVolume();
     this.music.connect(this.musicGain).connect(this.audio.destination);
     this.music.start();
+  }
+  musicVolume() { return 0.45 * this.settings.musicVol * 1.4; }
+  /** Nach Aenderungen im Optionsmenue: Musik an/aus, Lautstaerke */
+  applyAudio() {
+    if (!this.settings.music) { this.stopMusic(); return; }
+    if (this.music) {
+      if (this.music.el) this.music.el.volume = Math.min(1, this.musicVolume());
+      else if (this.musicGain) this.musicGain.gain.value = this.musicVolume();
+    } else if (this.stage && ['intro', 'playing', 'clear'].includes(this.flow)) this.playMusic();
   }
   stopMusic() { if (this.music) { try { this.music.stop(); } catch (e) { /* schon gestoppt */ } this.music = null; } }
 
   // --- Ablauf ------------------------------------------------------------------
   setFlow(f) { this.flow = f; this.flowTime = 0; this.note('flow ' + f); }
+  /** Figurenauswahl bestaetigt: neues Spiel */
+  beginGame(character) {
+    this.settings.character = PLAYERS[character] ? character : 'Kai';
+    this.settings.save();
+    this.menu.reset();
+    this.initAudio(); this.score = 0; this.lives = 3;
+    this.startStage(this.opts.stage || 0);
+  }
+  pause() { this.paused = true; this.menu.reset('pause'); this.sfx('SFX_Pickup', 0.3, 0); }
+  resume() { this.paused = false; this.menu.reset(); }
   onStart() {
-    if (this.flow === 'title') { this.initAudio(); this.score = 0; this.lives = 3; this.startStage(this.opts.stage || 0); }
+    if (this.flow === 'title') return; // Titel wird ueber das Menue bedient
     else if (this.flow === 'clear' && this.flowTime > 1.5) this.nextStage();
     else if ((this.flow === 'gameover' || this.flow === 'ending') && this.flowTime > 1.5) this.toTitle();
-    else if (this.flow === 'playing' || this.flow === 'intro') this.paused = !this.paused;
+    else if ((this.flow === 'playing' || this.flow === 'intro') && !this.paused) this.pause();
   }
-  toTitle() { this.stopMusic(); this.entities = []; this.player = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
+  toTitle() { this.paused = false; this.menu.reset('main'); this.stopMusic(); this.entities = []; this.player = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
   nextStage() {
     if (this.stageIndex + 1 >= STAGES.length) { this.setFlow('ending'); return; }
     this.startStage(this.stageIndex + 1, true);
@@ -107,7 +134,7 @@ export class Game {
     this.lastHit = null; this.combo = 0; this.respawnT = -1; this.timeScale = 1;
     for (const [type, x, d, drop] of this.stage.props) { const p = new Prop(this, type, drop); p.x = x; p.depth = d; this.add(p); }
     for (const [type, x, d] of this.stage.weapons) { const w = new WeaponItem(this, type); w.x = x; w.depth = d; this.add(w); }
-    const pl = new Player(this); pl.x = 260; pl.depth = 110;
+    const pl = new Player(this, this.settings.character); pl.x = 260; pl.depth = 110;
     if (hpCarry) pl.health = pl.maxHealth;
     this.player = this.add(pl);
     this.playMusic();
@@ -117,10 +144,20 @@ export class Game {
   // --- Update ------------------------------------------------------------------
   update(dtReal) {
     this.pollGamepad();
-    if (this.pressed.has('start')) this.onStart();
-    if (this.opts.autoplay && ['title', 'clear', 'gameover', 'ending'].includes(this.flow) && this.flowTime > 2) {
-      if (this.flow === 'title') this.onStart(); else if (this.flow === 'clear') this.onStart();
+    this.virtualEdges();
+    if (this.menu.active) {
+      const p = new Set(this.menuKeys);
+      for (const a of ['up', 'down', 'left', 'right', 'start']) if (this.pressed.has(a)) p.add(a);
+      if (this.pressed.has('attack')) p.add('ok');
+      if (this.pressed.has('back')) p.add('back');
+      this.menu.input(p);
+      this.menuKeys.clear(); this.pressed.clear();
+      if (this.opts.autoplay && this.flow === 'title' && this.menu.t > 1) this.beginGame(this.settings.character);
+      if (this.flow === 'title' || this.paused) return;
     }
+    this.menuKeys.clear();
+    if (this.pressed.has('start')) this.onStart();
+    if (this.opts.autoplay && this.flow === 'clear' && this.flowTime > 2) this.onStart();
     if (this.paused) { this.pressed.clear(); return; }
     this.stats.frames++;
     if (this.slowT > 0) { this.slowT -= dtReal; if (this.slowT <= 0) this.timeScale = 1; }
@@ -244,16 +281,37 @@ export class Game {
 
   // --- Eingabe -----------------------------------------------------------------
   bindInput() {
-    const map = { KeyJ: 'attack', KeyK: 'jump', Space: 'jump', KeyL: 'special', KeyI: 'back', Enter: 'start', KeyP: 'start' };
-    this.keyMap = map;
+    const MENU = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', Enter: 'ok', NumpadEnter: 'ok', Space: 'ok', Escape: 'back', Backspace: 'back' };
     window.addEventListener('keydown', (ev) => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(ev.code)) ev.preventDefault();
-      if (!this.keys.has(ev.code) && map[ev.code]) this.pressed.add(map[ev.code]);
-      this.keys.add(ev.code);
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Backspace', 'Tab'].includes(ev.code)) ev.preventDefault();
       this.initAudio();
+      if (this.menu.wait) { if (!ev.repeat) this.menu.captureKey(ev.code); return; }
+      const action = this.settings.keyToAction[ev.code];
+      if (!this.keys.has(ev.code)) {
+        if (action) this.pressed.add(action);
+        if (MENU[ev.code]) this.menuKeys.add(MENU[ev.code]);
+        // Esc pausiert immer, auch wenn Start umbelegt wurde
+        if (ev.code === 'Escape' && !this.menu.active && ['playing', 'intro'].includes(this.flow)) this.pressed.add('start');
+      }
+      this.keys.add(ev.code);
     });
     window.addEventListener('keyup', (ev) => this.keys.delete(ev.code));
-    window.addEventListener('blur', () => this.keys.clear());
+    window.addEventListener('blur', () => { this.keys.clear(); if (['playing', 'intro'].includes(this.flow) && !this.paused && !this.opts.autoplay) this.pause(); });
+    // Maus / Touch fuer Menues
+    const pos = (ev) => {
+      const r = this.canvas.getBoundingClientRect();
+      return [(ev.clientX - r.left) * W.ScreenW / r.width, (ev.clientY - r.top) * W.ScreenH / r.height];
+    };
+    this.canvas.addEventListener('pointerdown', (ev) => {
+      this.initAudio();
+      if (!this.menu.active) {
+        if (['clear', 'gameover', 'ending'].includes(this.flow)) this.pressed.add('start');
+        return;
+      }
+      ev.preventDefault();
+      this.menu.click(...pos(ev));
+    });
+    this.canvas.addEventListener('pointermove', (ev) => { if (this.menu.active && ev.pointerType === 'mouse') this.menu.hover(...pos(ev)); });
   }
   pollGamepad() {
     const pads = navigator.getGamepads ? navigator.getGamepads() : [];
@@ -261,20 +319,40 @@ export class Game {
     this.pad = null;
     if (!p) return;
     const btn = (i) => !!(p.buttons[i] && p.buttons[i].pressed);
-    const map = { 0: 'jump', 2: 'attack', 3: 'special', 1: 'back', 9: 'start' };
-    for (const [i, name] of Object.entries(map)) if (btn(+i) && !this.padPrev[i]) this.pressed.add(name);
+    const edge = (i) => btn(i) && !this.padPrev[i];
+    if (this.menu.wait && this.menu.wait.col !== 2) {
+      if (edge(1)) this.menu.wait = null; // B bricht das Neubelegen einer Taste ab
+    } else if (this.menu.wait && this.menu.wait.col === 2) {
+      const i = p.buttons.findIndex((b, j) => b.pressed && !this.padPrev[j]);
+      if (i >= 0) this.menu.capturePad(i);
+    } else {
+      const map = this.settings.pad;
+      for (const a of ['attack', 'jump', 'special', 'back', 'start']) if (edge(map[a])) this.pressed.add(a);
+      // Menues: A bestaetigt, B zurueck (Standard-Konvention, unabhaengig von der Belegung)
+      if (edge(0)) this.menuKeys.add('ok');
+      if (edge(1)) this.menuKeys.add('back');
+    }
     this.padPrev = p.buttons.map((b) => b.pressed);
     let x = p.axes[0] || 0, y = -(p.axes[1] || 0);
     if (Math.hypot(x, y) < 0.25) { x = 0; y = 0; }
-    if (btn(14)) x = -1; if (btn(15)) x = 1; if (btn(12)) y = 1; if (btn(13)) y = -1;
+    const m = this.settings.pad;
+    if (btn(m.left)) x = -1; if (btn(m.right)) x = 1; if (btn(m.up)) y = 1; if (btn(m.down)) y = -1;
     this.pad = { x, y };
+    this.dirEdges(this.padDir, x, y); this.padDir = { x, y };
   }
+  /** Richtungs-"Tastendruecke" fuer Menues aus Stick/Steuerkreuz */
+  dirEdges(prev, x, y) {
+    const d = (v) => (v > 0.6 ? 1 : v < -0.6 ? -1 : 0);
+    if (d(x) !== d(prev.x) && d(x)) this.menuKeys.add(d(x) > 0 ? 'right' : 'left');
+    if (d(y) !== d(prev.y) && d(y)) this.menuKeys.add(d(y) > 0 ? 'up' : 'down');
+  }
+  virtualEdges() { this.dirEdges(this.virtualPrev, this.virtual.x, this.virtual.y); this.virtualPrev = { ...this.virtual }; }
   applyInput() {
     const pl = this.player;
     if (this.opts.autoplay) { this.botControl(pl); return; }
-    const k = (...c) => c.some((code) => this.keys.has(code));
-    let x = (k('KeyD', 'ArrowRight') ? 1 : 0) - (k('KeyA', 'ArrowLeft') ? 1 : 0);
-    let y = (k('KeyW', 'ArrowUp') ? 1 : 0) - (k('KeyS', 'ArrowDown') ? 1 : 0);
+    const k = (a) => this.settings.isDown(a, this.keys);
+    let x = (k('right') ? 1 : 0) - (k('left') ? 1 : 0);
+    let y = (k('up') ? 1 : 0) - (k('down') ? 1 : 0);
     if (this.pad) { x = clamp(x + this.pad.x, -1, 1); y = clamp(y + this.pad.y, -1, 1); }
     x = clamp(x + this.virtual.x, -1, 1); y = clamp(y + this.virtual.y, -1, 1);
     pl.move2 = { x, y };
@@ -328,6 +406,9 @@ export class Game {
     this.drawForeground(st);
     ctx.restore();
     this.drawHUD();
+    const now = performance.now();
+    this.menu.render(Math.min(0.1, (now - this.lastRender) / 1000));
+    this.lastRender = now;
   }
   bgImg(name) { return this.assets.bg[name]; }
   bgSize(name) { return this.assets.index.backgrounds[name].size; }
@@ -444,13 +525,7 @@ export class Game {
     const blink = (performance.now() % 800) < 500;
     if (this.flow === 'title') {
       ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0, 0, 1600, 900);
-      if (A.has('UI_Logo')) A.draw(ctx, 'UI_Logo', 800, 120, 550, 0);
-      if (blink) this.text('DRÜCKE ENTER / START', 800, 480, 40, '#fff', 'center');
-      const lines = ['Laufen: WASD / Pfeile / Stick     Schlag & Aufheben: J / X     Sprung: K / A',
-        'Spezial: L / Y (kostet Energie)     Rückschlag / Waffe werfen: I / B     Pause: Enter / Start',
-        'In Gegner hineinlaufen = Griff  →  Schlag = Knie, weg + Schlag = Wurf',
-        '3 Stages: Kreuzberg · East Side Gallery · Baustelle am Alex'];
-      lines.forEach((l, i) => this.text(l, 800, 620 + i * 42, 22, i === 3 ? '#ffd24a' : '#fff', 'center'));
+      if (A.has('UI_Logo') && this.menu.top && this.menu.top.id === 'main') A.draw(ctx, 'UI_Logo', 800, 90, 550, 0);
       return;
     }
     if (this.player) {
@@ -487,7 +562,6 @@ export class Game {
       this.text(`ENDPUNKTE: ${this.score}`, 800, 440, 40, '#fff', 'center');
       if (this.flowTime > 1.5 && blink) this.text('ENTER: TITEL', 800, 540, 30, '#fff', 'center');
     }
-    if (this.paused) { dim(0.5); this.text('PAUSE', 800, 400, 64, '#fff', 'center'); }
   }
 }
 

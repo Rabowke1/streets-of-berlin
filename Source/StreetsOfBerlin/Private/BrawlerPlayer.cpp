@@ -32,6 +32,7 @@ ABrawlerPlayer::ABrawlerPlayer()
 	WalkSpeed = 280.f;
 	DepthSpeed = 180.f;
 	GetUpInvulnerability = 1.2f;
+	Profile = &GetProfiles()[0];
 }
 
 void ABrawlerPlayer::BeginPlay()
@@ -43,30 +44,42 @@ void ABrawlerPlayer::BeginPlay()
 // ---------------------------------------------------------------------------
 // Angriffsdaten
 // ---------------------------------------------------------------------------
-const FBrawlerAttack& ABrawlerPlayer::ComboAttack(int32 Step)
+namespace
 {
-	static TArray<FBrawlerAttack> Combo = []()
+	FPlayerProfile MakeKai()
 	{
-		TArray<FBrawlerAttack> Out;
+		FPlayerProfile P;
+		P.Id = TEXT("Kai");
+		P.SpriteSet = TEXT("Kai");
+		P.DisplayName = TEXT("KAI");
+		P.MaxHealth = 120.f;
+		P.WalkSpeed = 280.f;
+		P.DepthSpeed = 180.f;
+		P.JumpSpeed = 860.f;
+		P.Power = 4;
+		P.Speed = 3;
+		P.Reach = 3;
+		P.Description = { TEXT("Ausgewogener Strassenkaempfer"), TEXT("Combo: Jab - Gerade - Uppercut - Kick"),
+			TEXT("Spezial: Wirbelwind (trifft rundum)"), TEXT("Sprung + Schlag: Flugkick") };
 
 		FBrawlerAttack Jab = MakeAttack(TEXT("attack1"), 1, 1, 4.f, 98.f, EHitType::Light);
 		Jab.Knockback = 30.f;
 		Jab.CancelFrame = 1;
 		Jab.Hitstop = 0.06f;
-		Out.Add(Jab);
+		P.Combo.Add(Jab);
 
 		FBrawlerAttack Cross = MakeAttack(TEXT("attack2"), 1, 1, 5.f, 104.f, EHitType::Light);
 		Cross.Knockback = 40.f;
 		Cross.Lunge = 90.f;
 		Cross.CancelFrame = 1;
 		Cross.Hitstop = 0.07f;
-		Out.Add(Cross);
+		P.Combo.Add(Cross);
 
 		FBrawlerAttack Upper = MakeAttack(TEXT("attack3"), 1, 2, 7.f, 92.f, EHitType::Heavy);
 		Upper.Knockback = 60.f;
 		Upper.CancelFrame = 2;
 		Upper.Hitstop = 0.09f;
-		Out.Add(Upper);
+		P.Combo.Add(Upper);
 
 		FBrawlerAttack Kick = MakeAttack(TEXT("attack4"), 1, 2, 11.f, 138.f, EHitType::Knockdown);
 		Kick.Knockback = 360.f;
@@ -74,58 +87,140 @@ const FBrawlerAttack& ABrawlerPlayer::ComboAttack(int32 Step)
 		Kick.Lunge = 60.f;
 		Kick.Hitstop = 0.12f;
 		Kick.CancelFrame = 99;
-		Out.Add(Kick);
-		return Out;
-	}();
-	return Combo[FMath::Clamp(Step, 0, Combo.Num() - 1)];
+		P.Combo.Add(Kick);
+
+		P.JumpKick = MakeAttack(TEXT("jump_kick"), 1, 1, 10.f, 120.f, EHitType::Knockdown);
+		P.JumpKick.HeightMin = -40.f;
+		P.JumpKick.HeightMax = 140.f;
+		P.JumpKick.Knockback = 300.f;
+		P.JumpKick.Launch = 420.f;
+		P.JumpKick.Hitstop = 0.09f;
+
+		P.Special = MakeAttack(TEXT("special"), 1, 4, 14.f, 130.f, EHitType::Knockdown);
+		P.Special.bHitsBothSides = true;
+		P.Special.DepthRange = 42.f;
+		P.Special.Knockback = 400.f;
+		P.Special.Launch = 560.f;
+		P.Special.Hitstop = 0.1f;
+		P.Special.bInvulnerable = true;
+		P.Special.HealthCost = 10.f;
+		P.Special.CancelFrame = 99;
+
+		P.Back = MakeAttack(TEXT("back_attack"), 1, 1, 9.f, 105.f, EHitType::Knockdown);
+		P.Back.bHitsBehind = true;
+		P.Back.Knockback = 300.f;
+		P.Back.Launch = 420.f;
+		P.Back.Hitstop = 0.1f;
+		P.Back.CancelFrame = 99;
+		return P;
+	}
+
+	/** Leyla: schneller, weniger Energie, Kicks mit mehr Reichweite */
+	FPlayerProfile MakeLeyla()
+	{
+		FPlayerProfile P;
+		P.Id = TEXT("Leyla");
+		P.SpriteSet = TEXT("Leyla");
+		P.DisplayName = TEXT("LEYLA");
+		P.MaxHealth = 100.f;
+		P.WalkSpeed = 330.f;
+		P.DepthSpeed = 205.f;
+		P.JumpSpeed = 920.f;
+		P.Power = 3;
+		P.Speed = 5;
+		P.Reach = 4;
+		P.Description = { TEXT("Schnelle Kickboxerin aus Neukoelln"), TEXT("Combo: Jab - Front-Kick - Knie - Dreh-Roundhouse"),
+			TEXT("Spezial: Helikopter-Kick (Mehrfachtreffer)"), TEXT("Sprung + Schlag: Hechtsprung-Kick") };
+
+		FBrawlerAttack Jab = MakeAttack(TEXT("attack1"), 1, 1, 4.f, 96.f, EHitType::Light);
+		Jab.Knockback = 30.f;
+		Jab.CancelFrame = 1;
+		Jab.Hitstop = 0.05f;
+		Jab.FPS = 17.f;
+		P.Combo.Add(Jab);
+
+		FBrawlerAttack Front = MakeAttack(TEXT("attack2"), 1, 1, 6.f, 124.f, EHitType::Light);
+		Front.Knockback = 50.f;
+		Front.Lunge = 60.f;
+		Front.CancelFrame = 1;
+		Front.FPS = 16.f;
+		P.Combo.Add(Front);
+
+		FBrawlerAttack Knee = MakeAttack(TEXT("attack3"), 1, 1, 7.f, 86.f, EHitType::Heavy);
+		Knee.HeightMin = 20.f;
+		Knee.Knockback = 50.f;
+		Knee.Hitstop = 0.09f;
+		Knee.FPS = 15.f;
+		P.Combo.Add(Knee);
+
+		FBrawlerAttack Round = MakeAttack(TEXT("attack4"), 1, 2, 12.f, 148.f, EHitType::Knockdown);
+		Round.Knockback = 380.f;
+		Round.Launch = 520.f;
+		Round.Lunge = 80.f;
+		Round.Hitstop = 0.12f;
+		Round.CancelFrame = 99;
+		Round.FPS = 14.f;
+		P.Combo.Add(Round);
+
+		P.JumpKick = MakeAttack(TEXT("jump_kick"), 1, 1, 11.f, 125.f, EHitType::Knockdown);
+		P.JumpKick.HeightMin = -60.f;
+		P.JumpKick.HeightMax = 130.f;
+		P.JumpKick.Knockback = 340.f;
+		P.JumpKick.Launch = 380.f;
+		P.JumpKick.Hitstop = 0.09f;
+		P.JumpKick.bDive = true;
+
+		// Helikopter-Kick: trifft mehrfach auf beiden Seiten und jongliert
+		P.Special = MakeAttack(TEXT("special"), 1, 4, 4.f, 135.f, EHitType::Knockdown);
+		P.Special.bHitsBothSides = true;
+		P.Special.bMultiHit = true;
+		P.Special.DepthRange = 40.f;
+		P.Special.Knockback = 180.f;
+		P.Special.Launch = 420.f;
+		P.Special.Hitstop = 0.06f;
+		P.Special.bInvulnerable = true;
+		P.Special.HealthCost = 12.f;
+		P.Special.CancelFrame = 99;
+		P.Special.FPS = 14.f;
+
+		P.Back = MakeAttack(TEXT("back_attack"), 1, 1, 10.f, 118.f, EHitType::Knockdown);
+		P.Back.bHitsBehind = true;
+		P.Back.Knockback = 340.f;
+		P.Back.Launch = 400.f;
+		P.Back.Hitstop = 0.1f;
+		P.Back.CancelFrame = 99;
+		P.Back.FPS = 13.f;
+		return P;
+	}
 }
 
-const FBrawlerAttack& ABrawlerPlayer::JumpKickAttack()
+const TArray<FPlayerProfile>& ABrawlerPlayer::GetProfiles()
 {
-	static FBrawlerAttack A = []()
-	{
-		FBrawlerAttack K = MakeAttack(TEXT("jump_kick"), 1, 1, 10.f, 120.f, EHitType::Knockdown);
-		K.HeightMin = -40.f;
-		K.HeightMax = 140.f;
-		K.Knockback = 300.f;
-		K.Launch = 420.f;
-		K.Hitstop = 0.09f;
-		return K;
-	}();
-	return A;
+	static TArray<FPlayerProfile> Profiles = { MakeKai(), MakeLeyla() };
+	return Profiles;
 }
 
-const FBrawlerAttack& ABrawlerPlayer::SpecialAttack()
+const FPlayerProfile& ABrawlerPlayer::GetProfile(FName Id)
 {
-	static FBrawlerAttack A = []()
+	for (const FPlayerProfile& P : GetProfiles())
 	{
-		FBrawlerAttack S = MakeAttack(TEXT("special"), 1, 4, 14.f, 130.f, EHitType::Knockdown);
-		S.bHitsBothSides = true;
-		S.DepthRange = 42.f;
-		S.Knockback = 400.f;
-		S.Launch = 560.f;
-		S.Hitstop = 0.1f;
-		S.bInvulnerable = true;
-		S.HealthCost = 10.f;
-		S.CancelFrame = 99;
-		return S;
-	}();
-	return A;
+		if (P.Id == Id)
+		{
+			return P;
+		}
+	}
+	return GetProfiles()[0];
 }
 
-const FBrawlerAttack& ABrawlerPlayer::BackAttack()
+void ABrawlerPlayer::InitCharacter(FName Id)
 {
-	static FBrawlerAttack A = []()
-	{
-		FBrawlerAttack B = MakeAttack(TEXT("back_attack"), 1, 1, 9.f, 105.f, EHitType::Knockdown);
-		B.bHitsBehind = true;
-		B.Knockback = 300.f;
-		B.Launch = 420.f;
-		B.Hitstop = 0.1f;
-		B.CancelFrame = 99;
-		return B;
-	}();
-	return A;
+	Profile = &GetProfile(Id);
+	SpriteSet = Profile->SpriteSet;
+	DisplayName = Profile->DisplayName;
+	MaxHealth = Profile->MaxHealth;
+	Health = MaxHealth;
+	WalkSpeed = Profile->WalkSpeed;
+	DepthSpeed = Profile->DepthSpeed;
 }
 
 const FBrawlerAttack& ABrawlerPlayer::KneeAttack(bool bFinisher)
@@ -233,7 +328,7 @@ void ABrawlerPlayer::TickControl(float DeltaSeconds)
 			AttackBuffer = 0.f;
 			bJumpAttackUsed = true;
 			bInComboAttack = false;
-			StartAttack(JumpKickAttack());
+			StartJumpKick();
 		}
 		break;
 
@@ -252,7 +347,7 @@ void ABrawlerPlayer::TickGroundControl(float DeltaSeconds)
 	{
 		JumpBuffer = 0.f;
 		bJumpAttackUsed = false;
-		VelZ = 860.f;
+		VelZ = Profile->JumpSpeed;
 		VelX = MoveInput.X * WalkSpeed * 1.05f;
 		VelDepth = MoveInput.Y * DepthSpeed * 0.6f;
 		if (FMath::Abs(MoveInput.X) > 0.2f)
@@ -401,6 +496,19 @@ void ABrawlerPlayer::StartCombo(int32 Step)
 		Facing = FMath::Sign(MoveInput.X);
 	}
 	StartAttack(ComboAttack(Step));
+}
+
+void ABrawlerPlayer::StartJumpKick()
+{
+	const FBrawlerAttack& Kick = JumpKickAttack();
+	StartAttack(Kick);
+	if (Kick.bDive)
+	{
+		// Hechtsprung: schraeg nach vorn-unten schiessen
+		VelX = Facing * WalkSpeed * 1.9f;
+		VelZ = FMath::Min(VelZ, -120.f);
+		VelDepth *= 0.5f;
+	}
 }
 
 void ABrawlerPlayer::StartSpecial()

@@ -10,6 +10,556 @@
  "pixels_per_unit": 2,
  "sprites": [
   {
+   "file": "Sprites/Effects/FX_HitSpark_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_00",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_01",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_02",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitSpark_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitSpark_03",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_00",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_01",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_02",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_03",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_HitBig_04.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_HitBig_04",
+   "size": [
+    384,
+    384
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_00",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_01",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_02",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Dust_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Dust_03",
+   "size": [
+    320,
+    160
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_00.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_00",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_01.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_01",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_02.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_02",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_SpecialRing_03.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_SpecialRing_03",
+   "size": [
+    512,
+    512
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Effects/FX_Shadow.png",
+   "package": "/Game/Sprites/Effects",
+   "name": "FX_Shadow",
+   "size": [
+    220,
+    60
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_TrashCan_00.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_TrashCan_00",
+   "size": [
+    220,
+    280
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_TrashCan_01.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_TrashCan_01",
+   "size": [
+    220,
+    280
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_Crate_00.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_Crate_00",
+   "size": [
+    240,
+    240
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Prop_Crate_01.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Prop_Crate_01",
+   "size": [
+    240,
+    240
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Doener.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Doener",
+   "size": [
+    160,
+    120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Currywurst.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Currywurst",
+   "size": [
+    160,
+    100
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Props/Pickup_Money.png",
+   "package": "/Game/Sprites/Props",
+   "name": "Pickup_Money",
+   "size": [
+    120,
+    88
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Pipe.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Pipe",
+   "size": [
+    240,
+    56
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Bat.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Bat",
+   "size": [
+    260,
+    64
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Knife.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Knife",
+   "size": [
+    128,
+    48
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Bottle.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Bottle",
+   "size": [
+    140,
+    60
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Weapons/Weapon_Golf.png",
+   "package": "/Game/Sprites/Weapons",
+   "name": "Weapon_Golf",
+   "size": [
+    280,
+    80
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/UI_Go.png",
+   "package": "/Game/Sprites/UI",
+   "name": "UI_Go",
+   "size": [
+    400,
+    220
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/UI_Logo.png",
+   "package": "/Game/Sprites/UI",
+   "name": "UI_Logo",
+   "size": [
+    2200,
+    600
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Sky.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Sky",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Street_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Street_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_UBahn_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_UBahn_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorStreet.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorStreet",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPlatform.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorPlatform",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_LampPost.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_LampPost",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Pillar.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Pillar",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkySpree.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkySpree",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Gallery_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Gallery_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPromenade.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorPromenade",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Backyard_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Backyard_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorCobble.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorCobble",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Tree.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Tree",
+   "size": [
+    520,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyAlex.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkyAlex",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Construction_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_01.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Construction_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorConstruction.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorConstruction",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyRooftop.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_SkyRooftop",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Rooftop_00.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_Rooftop_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorRooftop.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "BG_FloorRooftop",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Scaffold.png",
+   "package": "/Game/Sprites/Backgrounds",
+   "name": "FG_Scaffold",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
    "file": "Sprites/Kai/Kai_idle_00.png",
    "package": "/Game/Sprites/Kai",
    "name": "Kai_idle_00",
@@ -693,6 +1243,686 @@
    "file": "Sprites/UI/Portrait_Kai.png",
    "package": "/Game/Sprites/UI",
    "name": "Portrait_Kai",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_idle_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_idle_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_idle_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_idle_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_04.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_05.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_06.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_walk_07.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_hurt_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_hurt_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grabbed_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grabbed_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_fall_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_fall_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_down_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_getup_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_getup_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_getup_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack1_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack1_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack1_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack2_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack2_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack2_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack3_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack3_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack3_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack3_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack3_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack3_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack4_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack4_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack4_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack4_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack4_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack4_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack4_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack4_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_attack4_04.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_attack4_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_jump_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_jump_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_jump_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_jump_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_jump_kick_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_jump_kick_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_jump_kick_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_jump_kick_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_04.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_special_05.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_special_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_back_attack_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_back_attack_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_back_attack_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_back_attack_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_back_attack_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_back_attack_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grab_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grab_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grab_knee_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grab_knee_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grab_knee_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grab_knee_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_grab_knee_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_grab_knee_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_throw_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_throw_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_throw_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_throw_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_throw_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_pickup_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_pickup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_victory_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_victory_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_victory_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_victory_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_swing_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_swing_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_swing_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_swing_03.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_throw_00.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_throw_01.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Leyla/Leyla_weapon_throw_02.png",
+   "package": "/Game/Sprites/Leyla",
+   "name": "Leyla_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Leyla.png",
+   "package": "/Game/Sprites/UI",
+   "name": "Portrait_Leyla",
    "size": [
     256,
     256
@@ -4836,556 +6066,6 @@
    "size": [
     256,
     256
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitSpark_00.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitSpark_00",
-   "size": [
-    256,
-    256
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitSpark_01.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitSpark_01",
-   "size": [
-    256,
-    256
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitSpark_02.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitSpark_02",
-   "size": [
-    256,
-    256
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitSpark_03.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitSpark_03",
-   "size": [
-    256,
-    256
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitBig_00.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitBig_00",
-   "size": [
-    384,
-    384
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitBig_01.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitBig_01",
-   "size": [
-    384,
-    384
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitBig_02.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitBig_02",
-   "size": [
-    384,
-    384
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitBig_03.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitBig_03",
-   "size": [
-    384,
-    384
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_HitBig_04.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_HitBig_04",
-   "size": [
-    384,
-    384
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_Dust_00.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_Dust_00",
-   "size": [
-    320,
-    160
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_Dust_01.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_Dust_01",
-   "size": [
-    320,
-    160
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_Dust_02.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_Dust_02",
-   "size": [
-    320,
-    160
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_Dust_03.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_Dust_03",
-   "size": [
-    320,
-    160
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_SpecialRing_00.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_SpecialRing_00",
-   "size": [
-    512,
-    512
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_SpecialRing_01.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_SpecialRing_01",
-   "size": [
-    512,
-    512
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_SpecialRing_02.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_SpecialRing_02",
-   "size": [
-    512,
-    512
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_SpecialRing_03.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_SpecialRing_03",
-   "size": [
-    512,
-    512
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Effects/FX_Shadow.png",
-   "package": "/Game/Sprites/Effects",
-   "name": "FX_Shadow",
-   "size": [
-    220,
-    60
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Prop_TrashCan_00.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Prop_TrashCan_00",
-   "size": [
-    220,
-    280
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Prop_TrashCan_01.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Prop_TrashCan_01",
-   "size": [
-    220,
-    280
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Prop_Crate_00.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Prop_Crate_00",
-   "size": [
-    240,
-    240
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Prop_Crate_01.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Prop_Crate_01",
-   "size": [
-    240,
-    240
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Pickup_Doener.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Pickup_Doener",
-   "size": [
-    160,
-    120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Pickup_Currywurst.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Pickup_Currywurst",
-   "size": [
-    160,
-    100
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Props/Pickup_Money.png",
-   "package": "/Game/Sprites/Props",
-   "name": "Pickup_Money",
-   "size": [
-    120,
-    88
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Weapons/Weapon_Pipe.png",
-   "package": "/Game/Sprites/Weapons",
-   "name": "Weapon_Pipe",
-   "size": [
-    240,
-    56
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Weapons/Weapon_Bat.png",
-   "package": "/Game/Sprites/Weapons",
-   "name": "Weapon_Bat",
-   "size": [
-    260,
-    64
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Weapons/Weapon_Knife.png",
-   "package": "/Game/Sprites/Weapons",
-   "name": "Weapon_Knife",
-   "size": [
-    128,
-    48
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Weapons/Weapon_Bottle.png",
-   "package": "/Game/Sprites/Weapons",
-   "name": "Weapon_Bottle",
-   "size": [
-    140,
-    60
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Weapons/Weapon_Golf.png",
-   "package": "/Game/Sprites/Weapons",
-   "name": "Weapon_Golf",
-   "size": [
-    280,
-    80
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/UI/UI_Go.png",
-   "package": "/Game/Sprites/UI",
-   "name": "UI_Go",
-   "size": [
-    400,
-    220
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/UI/UI_Logo.png",
-   "package": "/Game/Sprites/UI",
-   "name": "UI_Logo",
-   "size": [
-    2200,
-    600
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Sky.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Sky",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Street_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Street_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Street_01.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Street_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_UBahn_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_UBahn_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorStreet.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorStreet",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorPlatform.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorPlatform",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_LampPost.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "FG_LampPost",
-   "size": [
-    400,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Pillar.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "FG_Pillar",
-   "size": [
-    400,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkySpree.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_SkySpree",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Gallery_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Gallery_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Gallery_01.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Gallery_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorPromenade.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorPromenade",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Backyard_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Backyard_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorCobble.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorCobble",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Tree.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "FG_Tree",
-   "size": [
-    520,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkyAlex.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_SkyAlex",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Construction_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Construction_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Construction_01.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Construction_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorConstruction.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorConstruction",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkyRooftop.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_SkyRooftop",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Rooftop_00.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_Rooftop_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorRooftop.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "BG_FloorRooftop",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Scaffold.png",
-   "package": "/Game/Sprites/Backgrounds",
-   "name": "FG_Scaffold",
-   "size": [
-    400,
-    1800
    ],
    "ppu": 2
   }

@@ -39,6 +39,38 @@ export const PLAYER_ATTACKS = {
   throw: atk({ anim: 'throw', start: 99, end: 99, dmg: 0, invuln: true }),
 };
 
+// Leyla: schneller, weniger Energie, Kicks mit mehr Reichweite
+export const LEYLA_ATTACKS = {
+  combo: [
+    atk({ anim: 'attack1', dmg: 4, rmax: 96, kb: 30, cancel: 1, stop: 0.05, fps: 17 }),
+    atk({ anim: 'attack2', dmg: 6, rmax: 124, kb: 50, lunge: 60, cancel: 1, fps: 16 }),
+    atk({ anim: 'attack3', start: 1, end: 1, dmg: 7, rmax: 86, hmin: 20, type: 'heavy', kb: 50, stop: 0.09, fps: 15 }),
+    atk({ anim: 'attack4', start: 1, end: 2, dmg: 12, rmax: 148, type: 'kd', kb: 380, launch: 520, lunge: 80, stop: 0.12, cancel: 99, fps: 14 }),
+  ],
+  // Hechtsprung-Kick: schraeg nach unten, reisst Gegner um
+  jumpKick: atk({ anim: 'jump_kick', dmg: 11, rmax: 125, hmin: -60, hmax: 130, type: 'kd', kb: 340, launch: 380, stop: 0.09, dive: true }),
+  // Helikopter-Kick: trifft mehrfach auf beiden Seiten und jongliert
+  special: atk({ anim: 'special', start: 1, end: 4, dmg: 4, rmax: 135, both: true, multi: true, depth: 40, type: 'kd', kb: 180, launch: 420, stop: 0.06, invuln: true, cost: 12, cancel: 99, fps: 14 }),
+  back: atk({ anim: 'back_attack', dmg: 10, rmax: 118, behind: true, type: 'kd', kb: 340, launch: 400, stop: 0.1, cancel: 99, fps: 13 }),
+  knee: PLAYER_ATTACKS.knee,
+  kneeFinal: PLAYER_ATTACKS.kneeFinal,
+  throw: PLAYER_ATTACKS.throw,
+};
+
+// Spielbare Figuren (Werte fuer die Figurenauswahl: 1..5)
+export const PLAYERS = {
+  Kai: {
+    sprite: 'Kai', name: 'KAI', hp: 120, walk: 280, depth: 180, jump: 860, attacks: PLAYER_ATTACKS,
+    stats: { power: 4, speed: 3, reach: 3 },
+    desc: ['Ausgewogener Straßenkämpfer', 'Combo: Jab · Gerade · Uppercut · Kick', 'Spezial: Wirbelwind (trifft rundum)', 'Sprung + Schlag: Flugkick'],
+  },
+  Leyla: {
+    sprite: 'Leyla', name: 'LEYLA', hp: 100, walk: 330, depth: 205, jump: 920, attacks: LEYLA_ATTACKS,
+    stats: { power: 3, speed: 5, reach: 4 },
+    desc: ['Schnelle Kickboxerin aus Neukölln', 'Combo: Jab · Front-Kick · Knie · Dreh-Roundhouse', 'Spezial: Helikopter-Kick (Mehrfachtreffer)', 'Sprung + Schlag: Hechtsprung-Kick'],
+  },
+};
+
 // Waffen: Schaden, Reichweite, Haltbarkeit (Treffer), Wurfschaden, Haltewinkel relativ zum Unterarm
 export const WEAPONS = {
   Pipe:   { name: 'ROHR', dmg: 12, reach: 140, dur: 8, type: 'heavy', throwDmg: 14, hold: 80, fps: 13 },
