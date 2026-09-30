@@ -340,246 +340,6 @@
    "ppu": 2
   },
   {
-   "file": "Sprites/Backgrounds/BG_Sky.png",
-   "folder": "Backgrounds",
-   "name": "BG_Sky",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Street_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_Street_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Street_01.png",
-   "folder": "Backgrounds",
-   "name": "BG_Street_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_UBahn_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_UBahn_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorStreet.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorStreet",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorPlatform.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorPlatform",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_LampPost.png",
-   "folder": "Backgrounds",
-   "name": "FG_LampPost",
-   "size": [
-    400,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Pillar.png",
-   "folder": "Backgrounds",
-   "name": "FG_Pillar",
-   "size": [
-    400,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FX_Train.png",
-   "folder": "Backgrounds",
-   "name": "FX_Train",
-   "size": [
-    3200,
-    460
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkySpree.png",
-   "folder": "Backgrounds",
-   "name": "BG_SkySpree",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Gallery_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_Gallery_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Gallery_01.png",
-   "folder": "Backgrounds",
-   "name": "BG_Gallery_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorPromenade.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorPromenade",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Backyard_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_Backyard_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorCobble.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorCobble",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Tree.png",
-   "folder": "Backgrounds",
-   "name": "FG_Tree",
-   "size": [
-    520,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkyAlex.png",
-   "folder": "Backgrounds",
-   "name": "BG_SkyAlex",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Construction_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_Construction_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Construction_01.png",
-   "folder": "Backgrounds",
-   "name": "BG_Construction_01",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorConstruction.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorConstruction",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_SkyRooftop.png",
-   "folder": "Backgrounds",
-   "name": "BG_SkyRooftop",
-   "size": [
-    4800,
-    1400
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_Rooftop_00.png",
-   "folder": "Backgrounds",
-   "name": "BG_Rooftop_00",
-   "size": [
-    4096,
-    1120
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/BG_FloorRooftop.png",
-   "folder": "Backgrounds",
-   "name": "BG_FloorRooftop",
-   "size": [
-    2048,
-    840
-   ],
-   "ppu": 2
-  },
-  {
-   "file": "Sprites/Backgrounds/FG_Scaffold.png",
-   "folder": "Backgrounds",
-   "name": "FG_Scaffold",
-   "size": [
-    400,
-    1800
-   ],
-   "ppu": 2
-  },
-  {
    "file": "Sprites/Kai/Kai_idle_00.png",
    "folder": "Kai",
    "name": "Kai_idle_00",
@@ -7346,6 +7106,1056 @@
    "size": [
     256,
     256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_idle_00.png",
+   "folder": "Alex",
+   "name": "Alex_idle_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_idle_01.png",
+   "folder": "Alex",
+   "name": "Alex_idle_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_idle_02.png",
+   "folder": "Alex",
+   "name": "Alex_idle_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_idle_03.png",
+   "folder": "Alex",
+   "name": "Alex_idle_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_00.png",
+   "folder": "Alex",
+   "name": "Alex_walk_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_01.png",
+   "folder": "Alex",
+   "name": "Alex_walk_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_02.png",
+   "folder": "Alex",
+   "name": "Alex_walk_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_03.png",
+   "folder": "Alex",
+   "name": "Alex_walk_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_04.png",
+   "folder": "Alex",
+   "name": "Alex_walk_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_05.png",
+   "folder": "Alex",
+   "name": "Alex_walk_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_06.png",
+   "folder": "Alex",
+   "name": "Alex_walk_06",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_walk_07.png",
+   "folder": "Alex",
+   "name": "Alex_walk_07",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_hurt_00.png",
+   "folder": "Alex",
+   "name": "Alex_hurt_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_hurt_01.png",
+   "folder": "Alex",
+   "name": "Alex_hurt_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grabbed_00.png",
+   "folder": "Alex",
+   "name": "Alex_grabbed_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grabbed_01.png",
+   "folder": "Alex",
+   "name": "Alex_grabbed_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_fall_00.png",
+   "folder": "Alex",
+   "name": "Alex_fall_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_fall_01.png",
+   "folder": "Alex",
+   "name": "Alex_fall_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_down_00.png",
+   "folder": "Alex",
+   "name": "Alex_down_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_getup_00.png",
+   "folder": "Alex",
+   "name": "Alex_getup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_getup_01.png",
+   "folder": "Alex",
+   "name": "Alex_getup_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_getup_02.png",
+   "folder": "Alex",
+   "name": "Alex_getup_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack1_00.png",
+   "folder": "Alex",
+   "name": "Alex_attack1_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack1_01.png",
+   "folder": "Alex",
+   "name": "Alex_attack1_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack1_02.png",
+   "folder": "Alex",
+   "name": "Alex_attack1_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack2_00.png",
+   "folder": "Alex",
+   "name": "Alex_attack2_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack2_01.png",
+   "folder": "Alex",
+   "name": "Alex_attack2_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack2_02.png",
+   "folder": "Alex",
+   "name": "Alex_attack2_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack3_00.png",
+   "folder": "Alex",
+   "name": "Alex_attack3_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack3_01.png",
+   "folder": "Alex",
+   "name": "Alex_attack3_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack3_02.png",
+   "folder": "Alex",
+   "name": "Alex_attack3_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack3_03.png",
+   "folder": "Alex",
+   "name": "Alex_attack3_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack4_00.png",
+   "folder": "Alex",
+   "name": "Alex_attack4_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack4_01.png",
+   "folder": "Alex",
+   "name": "Alex_attack4_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack4_02.png",
+   "folder": "Alex",
+   "name": "Alex_attack4_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack4_03.png",
+   "folder": "Alex",
+   "name": "Alex_attack4_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_attack4_04.png",
+   "folder": "Alex",
+   "name": "Alex_attack4_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_jump_00.png",
+   "folder": "Alex",
+   "name": "Alex_jump_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_jump_01.png",
+   "folder": "Alex",
+   "name": "Alex_jump_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_jump_kick_00.png",
+   "folder": "Alex",
+   "name": "Alex_jump_kick_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_jump_kick_01.png",
+   "folder": "Alex",
+   "name": "Alex_jump_kick_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_00.png",
+   "folder": "Alex",
+   "name": "Alex_special_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_01.png",
+   "folder": "Alex",
+   "name": "Alex_special_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_02.png",
+   "folder": "Alex",
+   "name": "Alex_special_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_03.png",
+   "folder": "Alex",
+   "name": "Alex_special_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_04.png",
+   "folder": "Alex",
+   "name": "Alex_special_04",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_special_05.png",
+   "folder": "Alex",
+   "name": "Alex_special_05",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_back_attack_00.png",
+   "folder": "Alex",
+   "name": "Alex_back_attack_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_back_attack_01.png",
+   "folder": "Alex",
+   "name": "Alex_back_attack_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_back_attack_02.png",
+   "folder": "Alex",
+   "name": "Alex_back_attack_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grab_00.png",
+   "folder": "Alex",
+   "name": "Alex_grab_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grab_knee_00.png",
+   "folder": "Alex",
+   "name": "Alex_grab_knee_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grab_knee_01.png",
+   "folder": "Alex",
+   "name": "Alex_grab_knee_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_grab_knee_02.png",
+   "folder": "Alex",
+   "name": "Alex_grab_knee_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_throw_00.png",
+   "folder": "Alex",
+   "name": "Alex_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_throw_01.png",
+   "folder": "Alex",
+   "name": "Alex_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_throw_02.png",
+   "folder": "Alex",
+   "name": "Alex_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_throw_03.png",
+   "folder": "Alex",
+   "name": "Alex_throw_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_pickup_00.png",
+   "folder": "Alex",
+   "name": "Alex_pickup_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_victory_00.png",
+   "folder": "Alex",
+   "name": "Alex_victory_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_victory_01.png",
+   "folder": "Alex",
+   "name": "Alex_victory_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_bell_00.png",
+   "folder": "Alex",
+   "name": "Alex_bell_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_bell_01.png",
+   "folder": "Alex",
+   "name": "Alex_bell_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_point_00.png",
+   "folder": "Alex",
+   "name": "Alex_point_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_point_01.png",
+   "folder": "Alex",
+   "name": "Alex_point_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_swing_00.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_swing_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_swing_01.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_swing_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_swing_02.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_swing_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_swing_03.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_swing_03",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_throw_00.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_throw_00",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_throw_01.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_throw_01",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Alex/Alex_weapon_throw_02.png",
+   "folder": "Alex",
+   "name": "Alex_weapon_throw_02",
+   "size": [
+    640,
+    640
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/UI/Portrait_Alex.png",
+   "folder": "UI",
+   "name": "Portrait_Alex",
+   "size": [
+    256,
+    256
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Sky.png",
+   "folder": "Backgrounds",
+   "name": "BG_Sky",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Street_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Street_01.png",
+   "folder": "Backgrounds",
+   "name": "BG_Street_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_UBahn_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_UBahn_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorStreet.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorStreet",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPlatform.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorPlatform",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_LampPost.png",
+   "folder": "Backgrounds",
+   "name": "FG_LampPost",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Pillar.png",
+   "folder": "Backgrounds",
+   "name": "FG_Pillar",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FX_Train.png",
+   "folder": "Backgrounds",
+   "name": "FX_Train",
+   "size": [
+    3200,
+    460
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FX_Tram.png",
+   "folder": "Backgrounds",
+   "name": "FX_Tram",
+   "size": [
+    3000,
+    540
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyTram.png",
+   "folder": "Backgrounds",
+   "name": "BG_SkyTram",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_TramStop_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_TramStop_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_TramStop_01.png",
+   "folder": "Backgrounds",
+   "name": "BG_TramStop_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorTram.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorTram",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Depot_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Depot_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorDepot.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorDepot",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Mast.png",
+   "folder": "Backgrounds",
+   "name": "FG_Mast",
+   "size": [
+    400,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkySpree.png",
+   "folder": "Backgrounds",
+   "name": "BG_SkySpree",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Gallery_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Gallery_01.png",
+   "folder": "Backgrounds",
+   "name": "BG_Gallery_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorPromenade.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorPromenade",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Backyard_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Backyard_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorCobble.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorCobble",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Tree.png",
+   "folder": "Backgrounds",
+   "name": "FG_Tree",
+   "size": [
+    520,
+    1800
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyAlex.png",
+   "folder": "Backgrounds",
+   "name": "BG_SkyAlex",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Construction_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Construction_01.png",
+   "folder": "Backgrounds",
+   "name": "BG_Construction_01",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorConstruction.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorConstruction",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_SkyRooftop.png",
+   "folder": "Backgrounds",
+   "name": "BG_SkyRooftop",
+   "size": [
+    4800,
+    1400
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_Rooftop_00.png",
+   "folder": "Backgrounds",
+   "name": "BG_Rooftop_00",
+   "size": [
+    4096,
+    1120
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/BG_FloorRooftop.png",
+   "folder": "Backgrounds",
+   "name": "BG_FloorRooftop",
+   "size": [
+    2048,
+    840
+   ],
+   "ppu": 2
+  },
+  {
+   "file": "Sprites/Backgrounds/FG_Scaffold.png",
+   "folder": "Backgrounds",
+   "name": "FG_Scaffold",
+   "size": [
+    400,
+    1800
    ],
    "ppu": 2
   }

@@ -192,7 +192,7 @@ export class Menu {
     });
     const hint = main ? this.controlsHint() : '↑↓ WÄHLEN   ←→ ÄNDERN   ENTER OK   ESC ZURÜCK';
     g.text(hint, 800, main ? 700 : 830, 22, '#cfc6e0', 'center');
-    if (main) g.text('3 Stages: Kreuzberg · East Side Gallery · Baustelle am Alex', 800, 745, 22, '#ffd24a', 'center');
+    if (main) g.text('4 Stages: Kreuzberg · East Side Gallery · Baustelle am Alex · Tram M10', 800, 745, 22, '#ffd24a', 'center');
   }
   controlsHint() {
     const s = this.game.settings;

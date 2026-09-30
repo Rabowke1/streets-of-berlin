@@ -1,6 +1,6 @@
 // Spielablauf, Stages, Kamera, HUD, Eingabe und Audio (Portierung von ABrawlerGameMode/HUD/Stage/Controller).
-import { ENEMIES, PLAYERS, STAGES, W, WEAPONS, atk } from './data.js';
-import { Effect, Enemy, FallingBeam, Fighter, GolfBall, Pickup, Player, Prop, WeaponItem, Projectile } from './entities.js';
+import { ENEMIES, PLAYERS, STAGES, TRAM_LANES, W, WEAPONS, atk } from './data.js';
+import { BellWave, Effect, Enemy, FallingBeam, Fighter, GolfBall, Pickup, Player, Prop, WeaponItem, Projectile, ZapMark } from './entities.js';
 import { Menu } from './menu.js';
 import { Settings } from './settings.js';
 
@@ -26,7 +26,7 @@ export class Game {
     // Eingaben je Geraet ('kb' = Tastatur + Touch, 'pad0'..'pad3'): Aktionen und Menue-Impulse dieses Frames
     this.devPressed = new Map(); this.devMenu = new Map(); this.pads = {}; this.lastMenuDev = 'kb';
     // Boss-Mechaniken der Stage und Einblendungen
-    this.train = null; this.spot = null; this.popups = []; this.bossIntro = null; this.flash = 0;
+    this.train = null; this.spot = null; this.trams = []; this.popups = []; this.bossIntro = null; this.flash = 0;
     this.virtual = { x: 0, y: 0 }; this.virtualPrev = { x: 0, y: 0 };
     this.settings = new Settings();
     if (opts.character && PLAYERS[opts.character]) this.settings.character = opts.character;
@@ -166,7 +166,7 @@ export class Game {
     else if ((this.flow === 'gameover' || this.flow === 'ending') && this.flowTime > 1.5) this.toTitle();
     else if ((this.flow === 'playing' || this.flow === 'intro') && !this.paused) this.pause();
   }
-  toTitle() { this.paused = false; this.menu.reset('main'); this.stopMusic(); this.entities = []; this.players = []; this.train = null; this.spot = null; this.bossIntro = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
+  toTitle() { this.paused = false; this.menu.reset('main'); this.stopMusic(); this.entities = []; this.players = []; this.train = null; this.spot = null; this.trams = []; this.bossIntro = null; this.camX = 800; this.lockX = -1; this.stageIndex = 0; this.stage = null; this.setFlow('title'); }
   nextStage() {
     if (this.stageIndex + 1 >= STAGES.length) { this.setFlow('ending'); return; }
     this.startStage(this.stageIndex + 1, true);
@@ -177,7 +177,7 @@ export class Game {
     this.entities = []; this.tokens.clear();
     this.camX = 800; this.lockX = -1; this.nextEnc = 0; this.activeEnc = -1; this.bossActive = false; this.goT = 0;
     this.lastHit = null; this.combo = 0; this.timeScale = 1;
-    this.train = null; this.spot = null; this.popups = []; this.bossIntro = null;
+    this.train = null; this.spot = null; this.trams = []; this.popups = []; this.bossIntro = null;
     for (const [type, x, d, drop] of this.stage.props) { const p = new Prop(this, type, drop); p.x = x; p.depth = d; this.add(p); }
     for (const [type, x, d] of this.stage.weapons) { const w = new WeaponItem(this, type); w.x = x; w.depth = d; this.add(w); }
     this.players = this.party.map((m, idx) => {
@@ -265,6 +265,11 @@ export class Game {
     this.sfx('SFX_Go', 0.8, 0); this.note('train');
   }
   get trainZone() { return W.DepthMax - 75; }
+  /** Tramfahrer Alex: nach Warnung (Gleis leuchtet) faehrt eine Tram ueber Spur lane (0 hinten, 1 vorne) */
+  startTram(lane, dir, delay = 0) {
+    this.trams.push({ lane, c: TRAM_LANES[lane], dir, t: -delay, phase: 'warn', x: 0, hit: new Set() });
+    this.note('tram');
+  }
   /** Die Tuer: Spotlight verfolgt einen Spieler, dann Bass-Drop */
   startSpot(target) {
     this.spot = { target, x: target.x, depth: target.depth, t: 0 };
@@ -293,6 +298,26 @@ export class Game {
         if (tr.x - 1600 > this.viewMax + 100) this.train = null;
       }
     }
+    for (const tm of this.trams) {
+      tm.t += dt;
+      if (tm.phase === 'warn' && tm.t > 1.7) {
+        tm.phase = 'pass'; tm.x = tm.dir > 0 ? this.viewMin - 40 : this.viewMax + 40;
+        this.sfx('SFX_Whoosh', 1, 0); this.shake(5, 0.8);
+      }
+      if (tm.phase !== 'pass') continue;
+      tm.x += tm.dir * 2600 * dt;
+      const a = atk({ dmg: 20, type: 'kd', kb: 480, launch: 460, stop: 0.1 });
+      for (const f of this.fighters()) {
+        if (f.boss || tm.hit.has(f) || !f.alive || f.h > 150 || Math.abs(f.depth - tm.c) > 38) continue;
+        const rear = tm.x - tm.dir * 1500;
+        if ((f.x - rear) * tm.dir > 0 && (tm.x - f.x) * tm.dir > 0) {
+          tm.hit.add(f);
+          f.receiveHit({ team: 'hazard', x: f.x - tm.dir * 50, h: 0, facing: tm.dir }, f.team === 'enemy' ? { ...a, dmg: 35 } : a, tm.dir);
+        }
+      }
+      tm.done = (tm.x - tm.dir * 1500 - (tm.dir > 0 ? this.viewMax + 100 : this.viewMin - 100)) * tm.dir > 0;
+    }
+    this.trams = this.trams.filter((tm) => !tm.done);
     const sp = this.spot;
     if (sp) {
       sp.t += dt;
@@ -406,7 +431,7 @@ export class Game {
     this.addScore(e.lastAttacker, e.profile.score);
     if (e.boss) {
       this.note('boss down ' + e.type);
-      this.train = null; this.spot = null;
+      this.train = null; this.spot = null; this.trams = [];
       const enc = this.stage && this.stage.encounters[this.activeEnc];
       if (enc) this.nextGroup = enc.g.length; // nach dem Boss keine weiteren Wellen
     }
@@ -541,6 +566,12 @@ export class Game {
     if (this.spot && this.spot.t > 1.6 && Math.hypot((pl.x - this.spot.x) / 150, (pl.depth - this.spot.depth) / 48) < 1.4) {
       pl.move2 = { x: Math.sign(pl.x - this.spot.x) || 1, y: Math.sign(pl.depth - this.spot.depth) || 1 }; return;
     }
+    const lane = this.trams.find((tm) => Math.abs(pl.depth - tm.c) < 50);
+    if (lane) { pl.move2 = { x: 0, y: pl.depth >= lane.c ? 1 : -1 }; return; }
+    const wave = this.entities.find((w) => w instanceof BellWave && Math.abs(Math.hypot(pl.x - w.x, (pl.depth - w.depth) * 3.2) - w.r) < 90 && Math.hypot(pl.x - w.x, (pl.depth - w.depth) * 3.2) > w.r);
+    if (wave && pl.h <= 0) pl.press('jump');
+    const zap = this.entities.find((z) => z instanceof ZapMark && !z.struck && Math.abs(z.x - pl.x) < 120 && Math.abs(z.depth - pl.depth) < 45);
+    if (zap) { pl.move2 = { x: Math.sign(pl.x - zap.x) || 1, y: 0 }; return; }
     const beam = this.entities.find((b) => b instanceof FallingBeam && !b.landed && Math.abs(b.x - pl.x) < 150 && Math.abs(b.depth - pl.depth) < 40);
     if (beam) { pl.move2 = { x: Math.sign(pl.x - beam.x) || 1, y: 0 }; return; }
     const near = foes.filter((e) => Math.abs(e.x - pl.x) < 130 && Math.abs(e.depth - pl.depth) < 30).length;
@@ -625,9 +656,23 @@ export class Game {
       A.draw(ctx, 'FX_Shadow', this.sx(e.x), this.sy(e.depth), 55, 15, false, e.shadow * fade, 1);
     }
     this.drawHazards(list);
+    // Trams werden mit den Figuren nach Tiefe sortiert (vor der Spur stehende Figuren bleiben sichtbar)
+    for (const tm of this.trams) if (tm.phase === 'pass') list.push({ tram: tm, depth: tm.c - 36, h: 0, front: 0 });
     list.sort((a, b) => (a.front - b.front) || (b.depth - a.depth) || (a.h - b.h));
     for (const e of list) {
       if (e.blink > 0 && (e.blink % 0.12) < 0.06) continue;
+      if (e.tram) {
+        const tm = e.tram, img = this.bgImg('FX_Tram');
+        if (img) {
+          const [w, h] = this.bgSize('FX_Tram');
+          const y = this.sy(tm.c - 22) - h;
+          ctx.save();
+          if (tm.dir > 0) ctx.drawImage(img, this.sx(tm.x) - w, y, w, h);
+          else { ctx.translate(this.sx(tm.x) + w, y); ctx.scale(-1, 1); ctx.drawImage(img, 0, 0, w, h); }
+          ctx.restore();
+        }
+        continue;
+      }
       if (e instanceof GolfBall) {
         ctx.beginPath(); ctx.arc(this.sx(e.x), this.sy(e.depth + e.h), 10, 0, Math.PI * 2);
         ctx.fillStyle = '#fbfbf4'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#0a0610'; ctx.stroke();
@@ -666,6 +711,37 @@ export class Game {
       const k = b.warn;
       floorEllipse(b.x, b.depth, 40 + 90 * k, 10 + 18 * k, `rgba(10,0,0,${0.25 + 0.45 * k})`);
       ctx.lineWidth = 3; ctx.strokeStyle = `rgba(255,60,60,${0.4 + 0.5 * Math.abs(Math.sin(now * 12))})`; ctx.stroke();
+    }
+    // Tram-Gleise: leuchten gelb vor der Durchfahrt
+    for (const tm of this.trams) {
+      if (tm.phase !== 'warn' || tm.t < 0) continue;
+      const y0 = this.sy(tm.c + 36), y1 = this.sy(tm.c - 36);
+      ctx.fillStyle = `rgba(255,210,40,${0.15 + 0.25 * Math.abs(Math.sin(now * 10))})`;
+      ctx.fillRect(0, y0, W.ScreenW, y1 - y0);
+      this.text(tm.dir > 0 ? '▶ ▶ ▶' : '◀ ◀ ◀', tm.dir > 0 ? 120 : 1480, (y0 + y1) / 2 - 18, 32, '#ffd24a', 'center');
+    }
+    // Oberleitungs-Blitze: blaue Warnkreise, dann Blitz von oben
+    for (const z of list) {
+      if (!(z instanceof ZapMark)) continue;
+      if (!z.struck) {
+        const k = z.warn;
+        floorEllipse(z.x, z.depth, 95, 32, `rgba(80,180,255,${0.12 + 0.3 * k})`);
+        ctx.lineWidth = 3; ctx.strokeStyle = `rgba(160,220,255,${0.5 + 0.5 * Math.abs(Math.sin(now * (8 + 14 * k)))})`; ctx.stroke();
+      } else {
+        const x = this.sx(z.x), y = this.sy(z.depth);
+        ctx.strokeStyle = '#e8f6ff'; ctx.lineWidth = 6; ctx.shadowColor = '#60c8ff'; ctx.shadowBlur = 24;
+        ctx.beginPath(); ctx.moveTo(x + rand(-30, 30), 0);
+        for (let i = 1; i <= 8; i++) ctx.lineTo(x + rand(-26, 26) * (1 - i / 9), (y * i) / 8);
+        ctx.stroke(); ctx.shadowBlur = 0;
+        floorEllipse(z.x, z.depth, 95, 32, 'rgba(200,240,255,0.45)');
+      }
+    }
+    // Klingel-Welle: gelber Ring am Boden
+    for (const r of list) {
+      if (!(r instanceof BellWave)) continue;
+      ctx.beginPath(); ctx.ellipse(this.sx(r.x), this.sy(r.depth), r.r, r.r / 3.2, 0, 0, Math.PI * 2);
+      ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(255,210,60,0.35)'; ctx.stroke();
+      ctx.lineWidth = 4; ctx.strokeStyle = '#ffe070'; ctx.stroke();
     }
     // U-Bahn: Warnstreifen, dann der Zug in der hinteren Spur
     const tr = this.train;
@@ -799,6 +875,7 @@ export class Game {
     if (boss) this.bossBar(boss);
     if (this.bossIntro) this.drawBossIntro(this.bossIntro);
     if (this.train && this.train.phase === 'warn' && blink) this.text('ZURÜCKBLEIBEN, BITTE!', 800, 180, 48, '#ffd24a', 'center');
+    if (this.trams.some((tm) => tm.phase === 'warn' && tm.t >= 0) && blink) this.text('BIMM BIMM – GLEISE FREI!', 800, 180, 48, '#ffd24a', 'center');
     if (this.combo >= 2 && this.comboT > 0) {
       const pop = 1 + clamp(this.comboT - 1.2, 0, 0.2) * 2;
       this.text(String(this.combo), 40, 170, 64 * pop, '#ffc71a');
@@ -823,7 +900,8 @@ export class Game {
     } else if (this.flow === 'ending') {
       dim(0.7);
       this.text('BERLIN IST GERETTET!', 800, 260, 64, '#ffc71a', 'center');
-      this.text('Harald Immobilien ist pleite – die Mieten bleiben bezahlbar.', 800, 360, 30, '#fff', 'center');
+      this.text('Harald Immobilien ist pleite – die Mieten bleiben bezahlbar.', 800, 350, 30, '#fff', 'center');
+      this.text('Und die M10 fährt wieder nach Fahrplan.', 800, 392, 30, '#fff', 'center');
       this.text(`ENDPUNKTE: ${this.score}`, 800, 440, 40, '#fff', 'center');
       if (this.players.length > 1) this.text(this.players.map((p, i) => `${i + 1}P ${p.score}`).join('   ·   '), 800, 490, 26, '#cfc6e0', 'center');
       if (this.flowTime > 1.5 && blink) this.text('ENTER: TITEL', 800, 540, 30, '#fff', 'center');
@@ -831,4 +909,4 @@ export class Game {
   }
 }
 
-const ENEMY_FROM_RIGHT = new Set(['Rolf', 'Sven', 'Harald', 'Klaus', 'Tuer']);
+const ENEMY_FROM_RIGHT = new Set(['Rolf', 'Sven', 'Harald', 'Klaus', 'Tuer', 'Alex']);

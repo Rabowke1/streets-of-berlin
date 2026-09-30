@@ -1,5 +1,5 @@
 // Spielobjekte: Portierung von ABrawlerEntity/Fighter/Player/Enemy/Prop/Pickup/Effect + Waffen.
-import { ANIM, ENEMIES, PLAYERS, W, WEAPONS, atk, weaponAttack } from './data.js';
+import { ANIM, ENEMIES, PLAYERS, TRAM_LANES, W, WEAPONS, atk, weaponAttack } from './data.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const sign = (v) => (v > 0 ? 1 : v < 0 ? -1 : 0);
@@ -766,6 +766,45 @@ export class Enemy extends Fighter {
       return false;
     }
 
+    if (this.brain === 'alex') {
+      // Tram faehrt durch: die Spur mit den meisten Spielern (in der Wut-Phase beide, gegenlaeufig)
+      if (bt.c <= 0 && !g.trams.length) {
+        bt.c = rand(9, 11) * rage;
+        g.popup('BIMM BIMM!', this.x, this.depth, 270, '#ffd24a');
+        this.begin(atk({ anim: 'bell', start: 99, end: 99, dmg: 0, fps: 4, whoosh: false }));
+        const count = (c) => g.players.filter((p) => !p.out && Math.abs(p.depth - c) < 45).length;
+        const lane = count(TRAM_LANES[0]) >= count(TRAM_LANES[1]) ? 0 : 1;
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        g.startTram(lane, dir, 0);
+        if (this.enraged) g.startTram(1 - lane, -dir, 1.0);
+        return true;
+      }
+      // Oberleitung: Blitze auf markierten Kreisen
+      if (bt.b <= 0) {
+        bt.b = rand(7, 9) * rage;
+        g.popup('STROM!', this.x, this.depth, 270, '#8fd8ff');
+        g.note('zap');
+        this.begin(atk({ anim: 'point', start: 99, end: 99, dmg: 0, fps: 3, whoosh: false }));
+        const waves = this.enraged ? 2 : 1;
+        for (let w = 0; w < waves; w++) {
+          const spots = g.players.filter((p) => p.alive && !p.out).map((p) => [p.x, p.depth]);
+          while (spots.length < 5) spots.push([rand(g.viewMin + 120, g.viewMax - 120), rand(W.DepthMin + 20, W.DepthMax - 20)]);
+          spots.forEach(([x, d], i) => g.add(new ZapMark(g, x + (w ? rand(-160, 160) : 0), d, 1.2 + w * 1.1 + i * 0.12)));
+        }
+        return true;
+      }
+      // Klingel-Welle: Schockwelle am Boden, nur durch Springen auszuweichen
+      if (bt.a <= 0 && adx < 600) {
+        bt.a = rand(5, 7) * rage;
+        g.popup('KLINGELING!', this.x, this.depth, 260, '#fff');
+        g.note('bellwave');
+        this.begin(atk({ anim: 'bell', start: 99, end: 99, dmg: 0, fps: 4, whoosh: false }));
+        g.add(new BellWave(g, this));
+        return true;
+      }
+      return false;
+    }
+
     if (this.brain === 'harald') {
       // Kran: Stahltraeger fallen auf markierte Stellen
       if (bt.c <= 0) {
@@ -1005,5 +1044,52 @@ export class FallingBeam extends Entity {
         }
       } else this.h = 900;
     } else if (this.t > 1.6) this.destroy();
+  }
+}
+
+/** Alex: Blitz aus der Oberleitung – blauer Warnkreis, dann Einschlag */
+export class ZapMark extends Entity {
+  constructor(game, x, depth, delay) {
+    super(game);
+    this.x = x; this.depth = clamp(depth, W.DepthMin, W.DepthMax); this.delay = delay; this.t = 0; this.struck = false;
+    this.shadow = 0; this.frames = []; this.zap = true;
+  }
+  get warn() { return clamp(this.t / this.delay, 0, 1); }
+  tick(dt) {
+    const g = this.game;
+    this.t += dt;
+    if (!this.struck && this.t >= this.delay) {
+      this.struck = true; this.t = 0;
+      g.shake(6, 0.15); g.sfx('SFX_Special', 0.7, 0.2);
+      g.effect('FX_HitBig', this.x, this.depth, 20, 1, 22, 1.3);
+      const a = atk({ dmg: 16, type: 'kd', kb: 200, launch: 360, stop: 0.1 });
+      for (const f of g.fighters()) {
+        if (f.boss || !f.alive || f.h > 80) continue;
+        const nx = (f.x - this.x) / 95, nd = (f.depth - this.depth) / 32;
+        if (nx * nx + nd * nd <= 1) f.receiveHit({ team: 'hazard', x: this.x, h: 0, facing: 1 }, a, sign(f.x - this.x) || 1);
+      }
+    } else if (this.struck && this.t > 0.3) this.destroy();
+  }
+}
+
+/** Alex: Klingel-Schockwelle – waechst als Ring ueber den Boden, trifft nur, wer nicht springt */
+export class BellWave extends Entity {
+  constructor(game, owner) {
+    super(game);
+    this.x = owner.x; this.depth = owner.depth; this.r = 40; this.hit = new Set(); this.shadow = 0; this.frames = []; this.ring = true;
+  }
+  tick(dt) {
+    const g = this.game;
+    this.r += 620 * dt;
+    const a = atk({ dmg: 13, type: 'kd', kb: 260, launch: 380, stop: 0.08 });
+    for (const f of g.players) {
+      if (f.dead || this.hit.has(f) || !f.isHittable('hazard') || f.h > 28) continue;
+      const dist = Math.hypot(f.x - this.x, (f.depth - this.depth) * 3.2);
+      if (Math.abs(dist - this.r) < 34) {
+        this.hit.add(f);
+        f.receiveHit({ team: 'hazard', x: this.x, h: 0, facing: 1 }, a, sign(f.x - this.x) || 1);
+      }
+    }
+    if (this.r > 950) this.destroy();
   }
 }

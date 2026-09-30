@@ -19,6 +19,7 @@ from PIL import Image  # noqa: E402
 import audio  # noqa: E402
 import backgrounds as bg  # noqa: E402
 import backgrounds2 as bg2  # noqa: E402
+import backgrounds3 as bg3  # noqa: E402
 import effects as fx  # noqa: E402
 from characters import ANIMS_BY_STYLE, make_characters, stance  # noqa: E402
 from common import OUT_DIR, RES, ROOT, ensure_dir, save  # noqa: E402
@@ -138,6 +139,15 @@ def gen_backgrounds():
     add_sprite(bg.lamp_post(), "Backgrounds", "FG_LampPost")
     add_sprite(bg.pillar(), "Backgrounds", "FG_Pillar")
     add_sprite(fx.ubahn_train(), "Backgrounds", "FX_Train")
+    add_sprite(fx.tram(), "Backgrounds", "FX_Tram")
+    # Stage 4
+    add_sprite(bg3.sky_tram(), "Backgrounds", "BG_SkyTram")
+    add_sprite(bg3.tramstop_tile(0), "Backgrounds", "BG_TramStop_00")
+    add_sprite(bg3.tramstop_tile(1), "Backgrounds", "BG_TramStop_01")
+    add_sprite(bg3.floor_tram(), "Backgrounds", "BG_FloorTram")
+    add_sprite(bg3.depot_tile(), "Backgrounds", "BG_Depot_00")
+    add_sprite(bg3.floor_depot(), "Backgrounds", "BG_FloorDepot")
+    add_sprite(bg3.mast(), "Backgrounds", "FG_Mast")
     # Stage 2
     add_sprite(bg2.sky_spree(), "Backgrounds", "BG_SkySpree")
     add_sprite(bg2.gallery_tile(0), "Backgrounds", "BG_Gallery_00")

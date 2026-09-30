@@ -13,7 +13,7 @@ export const ANIM = {
   jump: [0, false], jump_kick: [14, false], special: [16, false], back_attack: [14, false], grab: [1, true],
   grab_knee: [14, false], throw: [11, false], pickup: [1, false], victory: [4, true],
   weapon_swing: [13, false], weapon_throw: [12, false],
-  whistle: [4, false], point: [3, false], guard: [3, true], shove: [7, false],
+  whistle: [4, false], point: [3, false], guard: [3, true], shove: [7, false], bell: [4, false],
 };
 
 // Angriffs-Vorlage (entspricht FBrawlerAttack)
@@ -110,6 +110,8 @@ export const ENEMIES = {
     tips: ['Blockt von vorne: von hinten angreifen', 'Spotlight: raus aus dem Licht!', 'Würfe und Spezial durchbrechen die Deckung'] },
   Harald:  { name: 'BAULÖWE HARALD', title: 'Das wird alles Luxus!', style: 'suit', hp: 600, speed: 200, score: 10000, grab: false, armor: 2, cd: 1.0, boss: true, brain: 'harald', weapon: 'Golf', shadow: 1.2, summon: ['Zoe', 'Brecher'],
     tips: ['Kran: Schatten am Boden meiden', 'Golfbälle aus der Distanz', 'Ruft Verstärkung'] },
+  Alex:    { name: 'TRAMFAHRER ALEX', title: 'Bitte nicht in die Gleise treten!', style: 'suit', hp: 650, speed: 210, score: 12000, grab: false, armor: 2, cd: 1.0, boss: true, brain: 'alex', weapon: 'Pipe', shadow: 1.2, summon: ['Jojo', 'Deniz'],
+    tips: ['Bimm Bimm: Gleise räumen, die Tram kommt!', 'Oberleitung: blaue Kreise meiden', 'Klingel-Welle: drüberspringen!'] },
 };
 
 // Stages: Bereiche (Kulisse), Kaempfe, Kisten, Waffen am Boden
@@ -170,4 +172,25 @@ export const STAGES = [
       ['Crate', 4700, 215, 'Money'], ['TrashCan', 5600, 225, 'Doener'], ['Crate', 6900, 100, 'Doener']],
     weapons: [['Pipe', 900, 160], ['Bat', 3100, 60], ['Knife', 5100, 140], ['Pipe', 6600, 200]],
   },
+  {
+    name: 'STAGE 4', title: 'NACHTFAHRT MIT DER M10',
+    areas: [
+      { x0: 0, x1: 4096, walls: ['BG_TramStop_00', 'BG_TramStop_01'], floor: 'BG_FloorTram', sky: 'BG_SkyTram', fg: ['FG_Mast', [1400, 2800, 3800]] },
+      { x0: 4096, x1: 10240, walls: ['BG_Depot_00', 'BG_Depot_00', 'BG_Depot_00'], floor: 'BG_FloorDepot', sky: 'BG_SkyTram', fg: ['FG_Mast', [5200, 6600]] },
+    ],
+    encounters: [
+      { t: 560, lock: 900, g: [G(['Kontrolli', 'Jojo']), G(['Deniz', 'Kalle'], 1, 10)] },
+      { t: 1760, lock: 2100, g: [G(['Zoe', 'Kontrolli', 'Micha']), G(['Nina', 'Ronny'], 1, 12)] },
+      { t: 2960, lock: 3300, g: [G(['Brecher', 'Kontrolli']), G(['Jojo', 'Deniz', 'Zoe'], 1, 10)] },
+      { t: 4560, lock: 4900, g: [G(['RolfII', 'Nina']), G(['Micha', 'Kontrolli'], 1, 12)] },
+      { t: 5860, lock: 6200, g: [G(['Sven', 'Zoe']), G(['Brecher', 'Deniz', 'Kontrolli'], 1, 12)] },
+      { t: 7050, lock: 7392, boss: true, g: [G(['Alex']), G(['Kontrolli', 'Micha'], 1, 22)] },
+    ],
+    props: [['TrashCan', 1150, 225, 'Currywurst'], ['Crate', 2400, 215, 'Money'], ['TrashCan', 3650, 220, 'Doener'],
+      ['Crate', 4800, 225, 'Currywurst'], ['TrashCan', 5700, 215, 'Doener'], ['Crate', 6950, 120, 'Doener']],
+    weapons: [['Bottle', 1000, 120], ['Pipe', 3200, 200], ['Bat', 5300, 120], ['Knife', 6500, 60]],
+  },
 ];
+
+// Strassenbahn-Gleise in Stage 4 (Tiefe der Gleismitte), gleiche Werte wie Tools/ArtGen/backgrounds3.py
+export const TRAM_LANES = [170, 70];

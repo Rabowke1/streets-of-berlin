@@ -133,6 +133,14 @@ def make_characters():
         beard=True, beard_color=(58, 56, 60, 255), face_tattoo=(30, 44, 96, 255), piercings=True,
         coat=(16, 16, 20, 255), chain=(210, 214, 222, 255), shades=False, skin=(214, 170, 146, 255),
         hair=(60, 60, 64, 255), **dict(heavy, chest_w=66, waist_w=54, belly=4)), style="boss_tuer", scale=1.24)
+    # Stage 4: Strassenbahnfahrer Alex (Uniformjacke mit gelbem Kragen, Weichenstange)
+    chars["Alex"] = dict(char=Character(
+        "Alex", top=(30, 40, 74, 255), top_inner=(246, 200, 40, 255), sleeve_upper=(30, 40, 74, 255),
+        sleeve_lower=(30, 40, 74, 255), pants=(44, 46, 56, 255), stripe=(246, 200, 40, 255),
+        shoe=(24, 22, 22, 255), sole=(60, 60, 60, 255), hair_style="buzz", hair=(210, 180, 110, 255),
+        beard=True, beard_color=(190, 150, 90, 255), shades=True, skin=(230, 176, 140, 255), glove=(28, 28, 32, 255),
+        chest_w=60, waist_w=48, belly=6, arm_w=(10.5, 11.5, 8.5), fore_w=(9.0, 9.5, 7.5), fist_r=10.5),
+        style="boss_alex", scale=1.16)
     return chars
 
 
@@ -140,7 +148,7 @@ def make_characters():
 # Animationen
 # ---------------------------------------------------------------------------
 def stance(style):
-    style = {"boss_klaus": "heavy", "boss_tuer": "heavy", "boss_harald": "player"}.get(style, style)
+    style = {"boss_klaus": "heavy", "boss_tuer": "heavy", "boss_harald": "player", "boss_alex": "player"}.get(style, style)
     if style == "heavy":
         return pose(t=4, af=(26, 70), ab=(16, 60), lf=(14, 10, 0), lb=(-12, 10, 0), face="angry")
     if style == "punk":
@@ -472,6 +480,21 @@ def boss_harald_anims():
     return A
 
 
+def boss_alex_anims():
+    A = player_anims()
+    # Klingel: Arm hoch an die Leine, Oberkoerper zurueck
+    A["bell"] = [
+        pose(t=-4, face="shout", af=(158, 40), ab=(20, 60), lf=(20, 18, 0), lb=(-16, 20, 0)),
+        pose(t=-8, h=-8, face="shout", af=(150, 90), ab=(24, 70), lf=(20, 18, 0), lb=(-16, 20, 0)),
+    ]
+    # Oberleitung anrufen: beide Arme hoch
+    A["point"] = [
+        pose(t=2, face="shout", af=(165, 10), ab=(150, 20), lf=(22, 16, 0), lb=(-18, 18, 0)),
+        pose(t=4, face="shout", af=(170, 4), ab=(158, 10), lf=(22, 16, 0), lb=(-18, 18, 0)),
+    ]
+    return A
+
+
 def _with_weapons(fn, style):
     def make():
         A = fn()
@@ -490,4 +513,5 @@ ANIMS_BY_STYLE = {
     "boss_klaus": _with_weapons(boss_klaus_anims, "heavy"),
     "boss_tuer": _with_weapons(boss_tuer_anims, "heavy"),
     "boss_harald": _with_weapons(boss_harald_anims, "player"),
+    "boss_alex": _with_weapons(boss_alex_anims, "player"),
 }

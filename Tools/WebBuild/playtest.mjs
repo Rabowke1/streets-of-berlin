@@ -7,7 +7,7 @@
 // Ablauf: 0) Laden im abgeschotteten iframe (wie im Artifact-Viewer)
 //         1) Titelmenue + Figurenauswahl + manueller Start per Tastatur (Screenshots)
 //         2) Optionsmenue: Musik/Sounds, Tastenbelegung aendern, Leyla spielen, Pause, Speichern
-//         3) Bot spielt alle 3 Stages mit Kai und mit Leyla durch (?autoplay&god&speed=8).
+//         3) Bot spielt alle Stages mit Kai und mit Leyla durch (?autoplay&god&speed=8).
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -186,7 +186,7 @@ const state = (page) => page.evaluate(() => {
 }
 
 // --- 4) Bots spielen alle Stages: Kai, Leyla und zu zweit ---------------------------------
-const BOSS_EVENTS = ['boss Klaus', 'train', 'boss down Klaus', 'boss Tuer', 'spot', 'bass drop', 'boss down Tuer', 'boss Harald', 'crane', 'boss down Harald'];
+const BOSS_EVENTS = ['boss Klaus', 'train', 'boss down Klaus', 'boss Tuer', 'spot', 'bass drop', 'boss down Tuer', 'boss Harald', 'crane', 'boss down Harald', 'boss Alex', 'tram', 'zap', 'bellwave', 'boss down Alex'];
 for (const who of ['kai', 'leyla', 'duo']) {
   const query = who === 'duo' ? '?autoplay&god&mute&speed=8&players=2' : `?autoplay&god&mute&speed=8&char=${who}`;
   const page = await newPage(query);
