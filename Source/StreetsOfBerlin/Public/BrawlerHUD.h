@@ -5,6 +5,8 @@
 #include "BrawlerHUD.generated.h"
 
 class ABrawlerFighter;
+class ABrawlerGameMode;
+class UBrawlerMenu;
 class UTexture2D;
 
 /** Canvas-HUD im SoR-Stil: Portrait + Energiebalken, Gegnerbalken, Combo-Zaehler, GO-Pfeil, Menues. */
@@ -27,4 +29,13 @@ private:
 	void Tex(UTexture2D* Texture, float X, float Y, float W, float H, float Alpha = 1.f);
 	void Bar(float X, float Y, float W, float H, float Value, float Recoverable, const FLinearColor& Color, bool bRightToLeft);
 	void FighterPanel(ABrawlerFighter* Fighter, bool bRightSide, float Recoverable);
+	void Frame(float X, float Y, float W, float H, float Thickness, const FLinearColor& Color);
+	void Highlight(float X, float Y, float W, float H);
+
+	// --- Menues ----------------------------------------------------------------
+	void DrawMenu(ABrawlerGameMode* GM);
+	void DrawMenuList(UBrawlerMenu* Menu);
+	void DrawControls(UBrawlerMenu* Menu);
+	void DrawCharacterSelect(UBrawlerMenu* Menu);
+	FString ControlsHint(UBrawlerMenu* Menu) const;
 };

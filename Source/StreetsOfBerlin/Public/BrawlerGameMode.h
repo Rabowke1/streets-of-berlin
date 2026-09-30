@@ -12,6 +12,8 @@ class ABrawlerFighter;
 class ABrawlerCamera;
 class ABrawlerStage;
 class UAudioComponent;
+class UBrawlerMenu;
+class UBrawlerSettings;
 
 UENUM(BlueprintType)
 enum class EBrawlerFlow : uint8
@@ -60,6 +62,18 @@ public:
 	float GetLastHitEnemyTimer() const { return LastHitEnemyTimer; }
 	int32 GetAliveEnemyCount() const;
 
+	UBrawlerMenu* GetMenu() const { return Menu; }
+	UBrawlerSettings* GetSettings() const { return Settings; }
+
+	// --- Menue-Aktionen -----------------------------------------------------
+	/** Figurenauswahl bestaetigt: neues Spiel mit dieser Figur */
+	void BeginGame(FName Character);
+	void PauseGame();
+	void ResumeGame();
+	void ReturnToTitle();
+	/** Nach Aenderungen im Optionsmenue: Musik an/aus, Lautstaerken */
+	void ApplyAudioSettings();
+
 	// --- Ereignisse ---------------------------------------------------------
 	void OnStartPressed();
 	void OnDamageDealt(ABrawlerFighter* Attacker, ABrawlerFighter* Victim, float Damage);
@@ -81,7 +95,8 @@ public:
 	ABrawlerEnemy* SpawnEnemy(FName Type, float X, float Depth);
 
 private:
-	void StartGame();
+	void StartMusic();
+	float GetMusicVolume() const;
 	void StartStage(int32 Index);
 	void ClearStageActors();
 	void SpawnPlayer(float X, float Depth, bool bDropIn);
@@ -101,6 +116,12 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UAudioComponent> Music;
+
+	UPROPERTY()
+	TObjectPtr<UBrawlerSettings> Settings;
+
+	UPROPERTY()
+	TObjectPtr<UBrawlerMenu> Menu;
 
 	UPROPERTY()
 	TArray<TObjectPtr<ABrawlerEnemy>> Enemies;

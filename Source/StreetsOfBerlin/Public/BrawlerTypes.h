@@ -143,6 +143,29 @@ struct FBrawlerAttack
 	FName Weapon;
 	/** Sprungangriff (Gegner springen dabei ab) */
 	bool bJump = false;
+	/** Hechtsprung: schiesst schraeg nach vorn-unten (Leylas Sprungkick) */
+	bool bDive = false;
+};
+
+/** Spielbare Figur (Kai, Leyla): Werte und eigene Angriffe */
+struct FPlayerProfile
+{
+	FName Id;
+	FString SpriteSet;
+	FString DisplayName;
+	float MaxHealth = 120.f;
+	float WalkSpeed = 280.f;
+	float DepthSpeed = 180.f;
+	float JumpSpeed = 860.f;
+	TArray<FBrawlerAttack> Combo;
+	FBrawlerAttack JumpKick;
+	FBrawlerAttack Special;
+	FBrawlerAttack Back;
+	/** Werte 1..5 fuer die Figurenauswahl */
+	int32 Power = 3;
+	int32 Speed = 3;
+	int32 Reach = 3;
+	TArray<FString> Description;
 };
 
 /** Frames einer Sprite-Animation */

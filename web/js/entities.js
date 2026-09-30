@@ -1,5 +1,5 @@
 // Spielobjekte: Portierung von ABrawlerEntity/Fighter/Player/Enemy/Prop/Pickup/Effect + Waffen.
-import { ANIM, ENEMIES, PLAYER_ATTACKS, W, WEAPONS, atk, weaponAttack } from './data.js';
+import { ANIM, ENEMIES, PLAYERS, W, WEAPONS, atk, weaponAttack } from './data.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const sign = (v) => (v > 0 ? 1 : v < 0 ? -1 : 0);
@@ -375,10 +375,12 @@ export class Fighter extends Entity {
 // Spieler
 // ---------------------------------------------------------------------------
 export class Player extends Fighter {
-  constructor(game) {
+  constructor(game, id = 'Kai') {
     super(game);
-    this.team = 'player'; this.sprite = 'Kai'; this.displayName = 'KAI';
-    this.maxHealth = this.health = 120; this.walkSpeed = 280; this.depthSpeed = 180; this.getupInvuln = 1.2;
+    const def = PLAYERS[id] || PLAYERS.Kai;
+    this.def = def; this.moves = def.attacks; this.jumpSpeed = def.jump;
+    this.team = 'player'; this.sprite = def.sprite; this.displayName = def.name;
+    this.maxHealth = this.health = def.hp; this.walkSpeed = def.walk; this.depthSpeed = def.depth; this.getupInvuln = 1.2;
     this.move2 = { x: 0, y: 0 }; this.buf = { attack: 0, jump: 0, special: 0, back: 0 };
     this.comboStep = 0; this.inCombo = false; this.fromGrab = false; this.throwReleased = false; this.jumpAtkUsed = false;
     this.knees = 0; this.grabCd = 0; this.walkInto = 0; this.recoverable = 0;
@@ -388,7 +390,7 @@ export class Player extends Fighter {
   tick(dt) {
     for (const k in this.buf) this.buf[k] = Math.max(0, this.buf[k] - dt);
     this.grabCd = Math.max(0, this.grabCd - dt);
-    const P = PLAYER_ATTACKS;
+    const P = this.moves;
     if (this.state === 'attack' && this.h <= 0) {
       if (this.buf.special > 0 && this.connected && this.attack.anim !== 'special' && this.health > P.special.cost + 1) {
         this.buf.special = 0; this.startSpecial();
@@ -419,7 +421,7 @@ export class Player extends Fighter {
     if (this.state === 'idle' || this.state === 'walk') this.ground(dt);
     else if (this.state === 'jump') {
       if (this.buf.attack > 0 && !this.jumpAtkUsed) {
-        this.buf.attack = 0; this.jumpAtkUsed = true; this.inCombo = false; this.startAttack(PLAYER_ATTACKS.jumpKick);
+        this.buf.attack = 0; this.jumpAtkUsed = true; this.inCombo = false; this.startJumpKick();
       }
     } else if (this.state === 'grabbing') this.grabControl();
   }
@@ -427,18 +429,18 @@ export class Player extends Fighter {
     const m = this.move2;
     if (this.buf.jump > 0) {
       this.buf.jump = 0; this.jumpAtkUsed = false;
-      this.vz = 860; this.vx = m.x * this.walkSpeed * 1.05; this.vd = m.y * this.depthSpeed * 0.6;
+      this.vz = this.jumpSpeed; this.vx = m.x * this.walkSpeed * 1.05; this.vd = m.y * this.depthSpeed * 0.6;
       if (Math.abs(m.x) > 0.2) this.facing = sign(m.x);
       this.h = 0.1; this.enter('jump'); return;
     }
     if (this.buf.special > 0) {
       this.buf.special = 0;
-      if (this.health > PLAYER_ATTACKS.special.cost + 1) { this.startSpecial(); return; }
+      if (this.health > this.moves.special.cost + 1) { this.startSpecial(); return; }
     }
     if (this.buf.back > 0) {
       this.buf.back = 0; this.inCombo = false;
       if (this.weapon) { this.startAttack(atk({ anim: 'weapon_throw', start: 99, end: 99, dmg: 0, fps: 12, whoosh: false })); return; }
-      this.startAttack(PLAYER_ATTACKS.back); return;
+      this.startAttack(this.moves.back); return;
     }
     if (this.buf.attack > 0) {
       this.buf.attack = 0;
@@ -464,21 +466,27 @@ export class Player extends Fighter {
       const away = Math.abs(this.move2.x) > 0.5 && sign(this.move2.x) !== this.facing;
       if (away) {
         this.facing = -this.facing; p.x = this.x + this.facing * 40; p.facing = -this.facing;
-        this.throwReleased = false; this.startAttack(PLAYER_ATTACKS.throw);
+        this.throwReleased = false; this.startAttack(this.moves.throw);
       } else {
-        this.knees++; this.startAttack(this.knees >= 3 ? PLAYER_ATTACKS.kneeFinal : PLAYER_ATTACKS.knee);
+        this.knees++; this.startAttack(this.knees >= 3 ? this.moves.kneeFinal : this.moves.knee);
       }
     }
   }
   startCombo(step) {
     this.comboStep = step; this.inCombo = true; this.fromGrab = false;
     if (Math.abs(this.move2.x) > 0.2) this.facing = sign(this.move2.x);
-    this.startAttack(PLAYER_ATTACKS.combo[step]);
+    this.startAttack(this.moves.combo[step]);
+  }
+  startJumpKick() {
+    const a = this.moves.jumpKick;
+    this.startAttack(a);
+    // Hechtsprung: schraeg nach vorn-unten schiessen
+    if (a.dive) { this.vx = this.facing * this.walkSpeed * 1.9; this.vz = Math.min(this.vz, -120); this.vd *= 0.5; }
   }
   startSpecial() {
     this.inCombo = false; this.fromGrab = false; this.releaseGrab();
-    this.recoverable = Math.min(this.recoverable + PLAYER_ATTACKS.special.cost, this.maxHealth);
-    this.startAttack(PLAYER_ATTACKS.special);
+    this.recoverable = Math.min(this.recoverable + this.moves.special.cost, this.maxHealth);
+    this.startAttack(this.moves.special);
     this.game.sfx('SFX_Special', 0.9, 0.05);
     this.game.effect('FX_SpecialRing', this.x, this.depth, 20, this.facing, 12);
   }

@@ -5,7 +5,7 @@
 #include "BrawlerPlayer.generated.h"
 
 /**
- * Spielfigur "Kai".
+ * Spielfigur (Kai oder Leyla, siehe FPlayerProfile).
  *  - 4er-Combo (Jab, Gerade, Uppercut, Kick) – Kette laeuft nur weiter, wenn getroffen wird
  *  - Sprungkick, Rueckwaerts-Ellbogen
  *  - Spezialangriff (kostet rueckgewinnbare Energie, unverwundbar)
@@ -19,6 +19,13 @@ class STREETSOFBERLIN_API ABrawlerPlayer : public ABrawlerFighter
 
 public:
 	ABrawlerPlayer();
+
+	/** Alle spielbaren Figuren in Reihenfolge der Figurenauswahl */
+	static const TArray<FPlayerProfile>& GetProfiles();
+	static const FPlayerProfile& GetProfile(FName Id);
+	/** Vor FinishSpawning aufrufen */
+	void InitCharacter(FName Id);
+	const FPlayerProfile& GetPlayerProfile() const { return *Profile; }
 
 	// --- Eingabe (vom PlayerController) -----------------------------------
 	void SetMoveInput(const FVector2D& InMove) { MoveInput = InMove; }
@@ -51,12 +58,15 @@ private:
 	void StartCombo(int32 Step);
 	void StartSpecial();
 
-	static const FBrawlerAttack& ComboAttack(int32 Step);
-	static const FBrawlerAttack& JumpKickAttack();
-	static const FBrawlerAttack& SpecialAttack();
-	static const FBrawlerAttack& BackAttack();
+	void StartJumpKick();
+	const FBrawlerAttack& ComboAttack(int32 Step) const { return Profile->Combo[FMath::Clamp(Step, 0, Profile->Combo.Num() - 1)]; }
+	const FBrawlerAttack& JumpKickAttack() const { return Profile->JumpKick; }
+	const FBrawlerAttack& SpecialAttack() const { return Profile->Special; }
+	const FBrawlerAttack& BackAttack() const { return Profile->Back; }
 	static const FBrawlerAttack& KneeAttack(bool bFinisher);
 	static const FBrawlerAttack& ThrowAttack();
+
+	const FPlayerProfile* Profile = nullptr;
 
 	FVector2D MoveInput = FVector2D::ZeroVector;
 	float AttackBuffer = 0.f;

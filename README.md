@@ -17,7 +17,7 @@ generieren lassen, in exakt den Posen des Spiels.
 
 | Bereich | Umfang |
 |---|---|
-| Spielfigur | **Kai**: 4er-Combo (Jab → Gerade → Uppercut → Kick), Sprungkick, Rückwärts-Ellbogen, Spezialangriff (kostet Energie, die man wie in SoR4 durch Treffer zurückholt), Griff mit Knie ×3 oder Wurf, Essen aufheben |
+| Spielfiguren | **Kai** (ausgewogen, viel Energie): 4er-Combo (Jab → Gerade → Uppercut → Kick), Flugkick, Rückwärts-Ellbogen, Spezial *Wirbelwind* (trifft rundum).<br>**Leyla** (schnelle Kickboxerin aus Neukölln, weniger Energie, mehr Reichweite): Jab → Front-Kick → Knie → Dreh-Roundhouse, *Hechtsprung-Kick* schräg nach unten, Esel-Tritt nach hinten, Spezial *Helikopter-Kick* mit Mehrfachtreffern.<br>Beide: Spezialangriff kostet Energie, die man wie in SoR4 durch Treffer zurückholt; Griff mit Knie ×3 oder Wurf; Essen und Waffen aufheben |
 | Gegner | **Kalle / Ronny** (Punks, Haken), **Messer-Micha** (sticht und wirft sein Messer), **Jojo / Deniz** (Skater, Rutschkick), **Zoe / Nina** (Kickboxerinnen, schnelle Kicks, fliegender Roundhouse), **Brecher** (schwer, Super-Armor, Sturmangriff) |
 | Bosse | Stage 1 **Türsteher Rolf** · Stage 2 **Hool-Sven** mit Baseballschläger · Stage 3 **Baulöwe Harald** mit Golfschläger, Sprungkicks und Verstärkung bei 66 %/33 % Energie. Alle mit Wut-Phase unter 50 % |
 | Waffen | **Rohr, Baseballschläger, Messer, Flasche, Golfschläger**: aufheben mit Schlag, zuschlagen mit Schlag, werfen mit Rückschlag. Haltbarkeit pro Waffe, Flaschen zerbrechen, Gegner lassen ihre Waffen beim Umfallen fallen. Die Waffe sitzt über Hand-Anker pro Animations-Frame in der Hand |
@@ -26,7 +26,8 @@ generieren lassen, in exakt den Posen des Spiels.
 | Stage 2 | *East Side Gallery*: Mauer-Wandbilder, Oberbaumbrücke mit U1 → Club-Hinterhof mit Lichterketten und Container-Bar |
 | Stage 3 | *Baustelle am Alex*: Rohbau mit Gerüst, Flutlicht, „Harald Immobilien“-Banner → Showdown auf dem Dach über der Stadt |
 | Ablauf | je Stage 6 Kampfabschnitte mit Kamera-Sperre und „GO →“-Pfeil, Stage-Wechsel mit Punkte-Übernahme, Abspann |
-| Extras | zerstörbare Mülltonnen/Obstkisten mit Döner (volle Heilung), Currywurst und Geld, Combo-Zähler, Punkte, 3 Leben mit Wiedereinstieg, Titelbild, Pause, Game Over, Stage Clear, Zeitlupe beim Boss-KO |
+| Menüs | Titelmenü, **Figurenauswahl** (Werte + Moves), **Optionen**: Musik an/aus + Lautstärke, Sounds an/aus + Lautstärke, **Steuerung anpassen** (2 Tasten + 1 Gamepad-Knopf pro Aktion, Tausch bei Doppelbelegung, Standard wiederherstellen), Pause-Menü (Weiter / Optionen / Zum Titel). Alles wird gespeichert (Unreal: SaveGame-Slot `SobSettings`, Browser: `localStorage`) |
+| Extras | zerstörbare Mülltonnen/Obstkisten mit Döner (volle Heilung), Currywurst und Geld, Combo-Zähler, Punkte, 3 Leben mit Wiedereinstieg, Game Over, Stage Clear, Zeitlupe beim Boss-KO |
 
 ## Schnellstart
 
@@ -36,7 +37,7 @@ Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit 
 1. `StreetsOfBerlin.uproject` doppelklicken und die Frage „Module neu kompilieren?“ mit **Ja** beantworten
    (oder Rechtsklick → *Generate Visual Studio project files* und in Visual Studio `Development Editor` bauen).
 2. Beim ersten Editor-Start importiert `Content/Python/init_unreal.py` automatisch alle Assets aus
-   `Art/Generated` (≈540 Sprites, 10 Sounds) und legt die Map `/Game/Maps/Stage1` an. Das dauert beim ersten Mal
+   `Art/Generated` (≈610 Sprites, 10 Sounds) und legt die Map `/Game/Maps/Stage1` an. Das dauert beim ersten Mal
    ein paar Minuten, danach wird nur noch geprüft.
 3. Falls die Map beim Start noch leer oder nicht geöffnet ist: `Content/Maps/Stage1` öffnen.
 4. **Play** drücken (am besten *Standalone Game* oder *New Editor Window*, 16:9).
@@ -46,6 +47,10 @@ Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit 
 
 ## Steuerung
 
+Standardbelegung – änderbar unter **Optionen → Steuerung anpassen** (Eintrag wählen, *Enter*, neue Taste bzw.
+Gamepad-Knopf drücken; *Rücktaste* leert die Taste, *Esc* bricht ab). Menüs lassen sich unabhängig von der Belegung
+immer mit Pfeilen/D-Pad, *Enter*/A und *Esc*/B bedienen, im Browser auch per Maus oder Antippen.
+
 | Aktion | Tastatur | Gamepad |
 |---|---|---|
 | Laufen (8 Richtungen) | WASD / Pfeiltasten | Linker Stick / D-Pad |
@@ -53,7 +58,10 @@ Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit 
 | Sprung (+ Schlag = Sprungkick) | K / Leertaste | A / ✕ |
 | Spezialangriff | L | Y / △ |
 | Rückschlag (nach hinten) / Waffe werfen | I | B / ○ |
-| Start / Pause | Enter / P | Start |
+| Start / Pause | Enter / P (Esc pausiert immer) | Start |
+
+> Im Unreal-Editor beendet *Esc* standardmäßig das Play-in-Editor. Zum Testen des Pause-Menüs *Enter*/*P* nutzen oder als
+> *Standalone Game* starten.
 
 **Griff:** in einen Gegner hineinlaufen. Dann *Schlag* = Knie (das dritte wirft um), *weg drücken + Schlag* = Wurf,
 *Sprung* = loslassen. Die Combo läuft nur weiter, wenn die Schläge treffen – sonst beginnt sie wieder beim Jab.
@@ -68,10 +76,14 @@ python Tools/WebBuild/build_web.py               # Texturatlanten + Hintergründ
 python -m http.server 8000 --directory web       # dann http://localhost:8000 öffnen
 ```
 
-URL-Parameter: `?stage=2` (direkt in Stage 2/3 starten), `?mute`, `?autoplay&god&speed=8` (Bot spielt selbst).
+URL-Parameter: `?stage=2` (direkt in Stage 2/3 starten), `?char=leyla` (Figur vorwählen), `?mute`,
+`?autoplay&god&speed=8` (Bot spielt selbst).
 
-**Automatischer Playtest** (headless Chromium über Playwright): Titel, Start per Tastatur, Laufen und Schlagen,
-danach spielt ein Bot alle drei Stages bis zum Abspann durch und prüft auf JavaScript-Fehler.
+**Automatischer Playtest** (headless Chromium über Playwright): Laden im abgeschotteten iframe, Titelmenü und
+Figurenauswahl per Tastatur, Laufen und Schlagen; dann Optionsmenü (Musik/Sounds aus, Lautstärke, Schlag-Taste auf *U*
+umbelegen), Spiel mit Leyla inklusive Spezialangriff und Pause-Menü, Prüfung der gespeicherten Einstellungen nach dem
+Neuladen. Zum Schluss spielt ein Bot mit Kai und mit Leyla alle drei Stages bis zum Abspann durch; dabei wird auf
+JavaScript-Fehler geprüft.
 
 ```bash
 npm i playwright                                  # einmalig
@@ -133,14 +145,16 @@ Animationssatz (`player`, `punk`, `skater`, `heavy`) zuweisen. In C++ genügt da
 
 ```
 ABrawlerGameMode        Ablauf (Titel/Intro/Spiel/Clear/GameOver/Abspann), Stage-Wechsel, Kampfabschnitte & Wellen,
-                        Kamera, Punkte, Combo, Angriffs-Tokens, Effekte & Sounds
+                        Kamera, Punkte, Combo, Angriffs-Tokens, Effekte & Sounds, Pause
+ ├─ UBrawlerMenu        Menü-Logik: Titel, Figurenauswahl, Optionen, Steuerung (Neubelegen), Pause
+ ├─ UBrawlerSettings    SaveGame: Musik/Sounds, Lautstärken, Tastenbelegung, zuletzt gewählte Figur
  ├─ ABrawlerStage       Kulissen-Layer je Stage-Abschnitt mit Parallaxe (Himmel 0.15, Fassaden/Boden 1.0, Vordergrund 1.25)
  ├─ ABrawlerCamera      orthografische Kamera, 2D-taugliches Post-Processing
  └─ ABrawlerHUD         Canvas-HUD: Portraits, Energiebalken (gelb + grün rückgewinnbar), Combo, GO, Menüs
 
 ABrawlerEntity          Belt-Scroll-Position (X, Tiefe, Höhe), Sprite-Animation, Schatten, Tiefensortierung, Hitstop
  ├─ ABrawlerFighter     Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe, Waffe in der Hand
- │   ├─ ABrawlerPlayer  Eingabepuffer, Combo-Kette, Spezial, Griff-Steuerung
+ │   ├─ ABrawlerPlayer  Eingabepuffer, Combo-Kette, Spezial, Griff-Steuerung; Figuren-Profile (Kai, Leyla)
  │   └─ ABrawlerEnemy   KI (Betreten, Einkreisen, Token, Stil-Spezialangriffe, Messerwurf, Boss-Verstärkung), Profile
  ├─ ABrawlerProp        zerstörbare Objekte mit Drops
  ├─ ABrawlerPickup      Essen / Geld
@@ -152,14 +166,15 @@ BrawlerData             Stages (Abschnitte, Wellen, Kisten, Waffen) und Waffenwe
 UBrawlerAssets          lädt Sprites/Texturen/Sounds per Namenskonvention (/Game/Sprites/<Ordner>/<Name>_NN)
                         und die Hand-/Waffen-Anker aus Content/Data/anchors.json
 UBrawlerEditorLibrary   (nur Editor) erzeugt Paper2D-Sprites für das Import-Skript
-ABrawlerPlayerController fragt Tastatur/Gamepad direkt ab
+ABrawlerPlayerController fragt Tastatur/Gamepad nach der Belegung aus UBrawlerSettings ab, steuert Menüs
+                        (läuft auch während der Pause) und fängt beim Neubelegen die nächste Taste ab
 ```
 
 **Koordinaten:** Die Spiellogik rechnet in *(X, Tiefe, Höhe)*. Für die Darstellung gilt
 `Welt = (X, -Tiefe, Tiefe + Höhe)` – Figuren weiter hinten stehen weiter oben im Bild, die Kamera schaut
 orthografisch entlang −Y. Die Zeichenreihenfolge wird über die *Translucency Sort Priority* aus der Tiefe bestimmt.
 
-**Balancing** passiert direkt im Code: Angriffswerte in `BrawlerPlayer.cpp` (`ComboAttack`, `SpecialAttack`, …)
+**Balancing** passiert direkt im Code: Figurenwerte und Angriffe in `BrawlerPlayer.cpp` (`MakeKai`, `MakeLeyla`)
 und `BrawlerEnemy.cpp` (`MakeMelee`, `MakeRush`), Gegnerwerte in `ABrawlerEnemy::GetProfile`, Stages, Wellen,
 Kisten und Waffen in `BrawlerStageData.cpp`, Animationsgeschwindigkeiten in `ABrawlerFighter::GetAnimInfo`.
 Die Browser-Version spiegelt diese Werte in `web/js/data.js`. Wer balanciert, sollte beide Stellen anpassen.
@@ -170,5 +185,8 @@ Die Browser-Version spiegelt diese Werte in `web/js/data.js`. Wer balanciert, so
 - Der C++-Code wurde ohne Unreal-Installation geschrieben. Die Spiellogik ist über die Browser-Version automatisch
   durchgespielt, der C++-Code nur per Syntaxprüfung gegen nachgebildete Engine-Header. Beim ersten Build in Unreal
   können einzelne API-Details nachzubessern sein.
-- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler, Star-Moves, weitere Stages
+- Eine weitere Figur braucht: Eintrag in `Tools/ArtGen/characters.py` (Aussehen + Animationen), ein Profil in
+  `BrawlerPlayer.cpp` (`GetProfiles`) und in `web/js/data.js` (`PLAYERS`). Figurenauswahl, HUD und Portrait laufen
+  automatisch über den Namen.
+- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler gleichzeitig, Star-Moves, weitere Stages
   (Tempelhofer Feld, Berghain-Schlange 😉), Figuren-LoRAs für die KI-Pipeline.

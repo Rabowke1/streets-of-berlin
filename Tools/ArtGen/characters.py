@@ -27,6 +27,21 @@ def make_characters():
         style="player", scale=1.0,
     )
 
+    # Zweite Spielfigur: Leyla – schnelle Kickboxerin/Streetdancerin
+    LILAC = (126, 70, 196, 255)
+    chars["Leyla"] = dict(
+        char=Character(
+            "Leyla",
+            head_r=17, torso=57, chest_w=42, waist_w=30, arm_w=(8.0, 8.5, 6.5), fore_w=(7.0, 7.5, 5.5), fist_r=8.5,
+            thigh=47, shin=45, thigh_w=(11.5, 11.5, 8.0), shin_w=(8.5, 8.5, 6.5), shoe_len=27, shoe_h=12,
+            top=LILAC, top_inner=(40, 200, 190, 255), sleeve_upper=LILAC, sleeve_lower=(40, 200, 190, 255),
+            glove=(250, 210, 60, 255), pants=(34, 30, 44, 255), stripe=(250, 210, 60, 255),
+            shoe=(250, 250, 246, 255), sole=(250, 210, 60, 255), hair=(150, 40, 36, 255), hair_style="ponytail",
+            skin=(200, 140, 104, 255), earring=True,
+        ),
+        style="player2", scale=0.98,
+    )
+
     punk = dict(
         top=(70, 96, 140, 255), top_inner=(226, 170, 132, 255), pants=(34, 32, 36, 255),
         shoe=(60, 40, 34, 255), sole=(24, 22, 22, 255), hair_style="mohawk", earring=True,
@@ -105,6 +120,8 @@ def stance(style):
         return pose(t=4, af=(26, 70), ab=(16, 60), lf=(14, 10, 0), lb=(-12, 10, 0), face="angry")
     if style == "punk":
         return pose(t=12, h=-4, af=(32, 95), ab=(16, 100), lf=(16, 16, 0), lb=(-14, 16, 0), face="angry")
+    if style == "player2":
+        return pose(t=6, af=(34, 112), ab=(20, 122), lf=(24, 14, 0), lb=(-20, 20, 0))
     if style == "kicker":
         return pose(t=4, af=(38, 110), ab=(24, 120), lf=(24, 14, 0), lb=(-20, 18, 0), face="angry")
     if style == "skater":
@@ -155,7 +172,7 @@ def with_legs(p, base):
 def common_anims(style):
     """Animationen, die jede Figur hat."""
     st = stance(style)
-    face = "angry" if style != "player" else "normal"
+    face = "angry" if style not in ("player", "player2") else "normal"
     A = {}
     A["idle"] = idle_anim(style)
     A["walk"] = walk_anim(style)
@@ -252,6 +269,59 @@ def player_anims():
     return A
 
 
+def leyla_anims():
+    """Leyla: gleiche Grundbewegungen wie Kai, aber eigene Angriffe (Kicks statt Faeuste)."""
+    A = player_anims()
+    st = stance("player2")
+    for k, v in common_anims("player2").items():
+        if k in ("idle", "walk"):
+            A[k] = v
+    A["attack1"] = [
+        pose(t=4, af=(40, 110), ab=st["ab"], lf=(26, 18, 0), lb=(-20, 18, 0)),
+        pose(t=12, af=(92, 0), ab=(20, 120), lf=(28, 14, 0), lb=(-24, 10, 0)),
+        pose(t=8, af=(60, 70), ab=(20, 120), lf=(26, 16, 0), lb=(-22, 14, 0)),
+    ]
+    A["attack2"] = [  # schneller Front-Kick
+        pose(t=-4, af=st["af"], ab=st["ab"], lf=(70, 100, 10), lb=(-10, 10, 0)),
+        pose(t=-14, af=(50, 100), ab=(10, 110), lf=(84, 4, 20), lb=(-8, 6, 0)),
+        pose(t=-2, af=st["af"], ab=st["ab"], lf=(40, 60, 0), lb=(-14, 12, 0)),
+    ]
+    A["attack3"] = [  # steigendes Knie
+        pose(t=10, af=(60, 90), ab=(50, 90), lf=(40, 60, 0), lb=(-16, 20, 0)),
+        pose(t=-8, h=10, af=(120, 40), ab=(110, 50), lf=(104, 130, 0), lb=(-12, 4, -20)),
+        pose(t=0, af=st["af"], ab=st["ab"], lf=(40, 50, 0), lb=(-14, 12, 0)),
+    ]
+    A["attack4"] = [  # Dreh-Roundhouse
+        pose(t=-6, rot=-8, af=(60, 100), ab=(-20, 80), lf=(90, 120, 10), lb=(-6, 6, 0)),
+        pose(t=-30, rot=-14, h=8, af=(80, 40), ab=(-70, 30), lf=(118, 2, 24), lb=(-6, 2, 0), face="shout"),
+        pose(t=-26, rot=-10, h=8, af=(70, 50), ab=(-60, 40), lf=(112, 6, 20), lb=(-6, 2, 0), face="shout"),
+        pose(t=-6, af=(50, 100), ab=(10, 110), lf=(60, 90, 0), lb=(-8, 8, 0)),
+        pose(t=6, af=st["af"], ab=st["ab"], lf=(26, 22, 0), lb=(-18, 22, 0)),
+    ]
+    A["jump_kick"] = [  # Hechtsprung-Kick schraeg nach unten
+        pose(t=-6, af=(80, 80), ab=(40, 100), lf=(80, 110, 10), lb=(20, 100, -10)),
+        pose(t=-34, rot=-24, h=4, af=(20, 60), ab=(150, 30), lf=(62, 0, 10), lb=(30, 110, -10), face="shout"),
+    ]
+    A["special"] = [  # Helikopter-Kick: Beine gespreizt, Koerper dreht
+        pose(t=30, af=(90, 120), ab=(90, 120), lf=(40, 80, 0), lb=(-30, 80, 0), face="shout"),
+        pose(t=0, rot=-80, af=(170, 10), ab=(150, 20), lf=(90, 0, 0), lb=(-80, 0, 0), face="shout"),
+        pose(t=0, rot=-130, af=(170, 10), ab=(150, 20), lf=(-80, 0, 0), lb=(90, 0, 0), face="shout"),
+        pose(t=0, rot=-80, af=(170, 10), ab=(150, 20), lf=(90, 0, 0), lb=(-80, 0, 0), face="shout"),
+        pose(t=0, rot=-130, af=(170, 10), ab=(150, 20), lf=(-80, 0, 0), lb=(90, 0, 0), face="shout"),
+        pose(t=14, af=st["af"], ab=st["ab"], lf=(30, 40, 0), lb=(-22, 40, 0)),
+    ]
+    A["back_attack"] = [  # Rueck-Tritt (Esel-Kick)
+        pose(t=24, h=-6, af=(40, 110), ab=(20, 110), lf=(20, 30, 0), lb=(-40, 90, 0)),
+        pose(t=46, h=-14, af=(30, 80), ab=(10, 80), lf=(10, 20, 0), lb=(-104, 4, -30), face="shout"),
+        pose(t=10, af=st["af"], ab=st["ab"], lf=(20, 20, 0), lb=(-20, 30, 0)),
+    ]
+    A["victory"] = [
+        pose(t=-4, h=12, af=(160, 60), ab=(20, 120), lf=(20, 10, 0), lb=(-30, 20, 0), face="shout", hf="open"),
+        pose(t=-8, h=16, af=(166, 50), ab=(24, 118), lf=(22, 8, 0), lb=(-34, 24, 0), face="shout", hf="open"),
+    ]
+    return A
+
+
 def punk_anims():
     A = common_anims("punk")
     st = stance("punk")
@@ -297,7 +367,7 @@ def heavy_anims():
 def weapon_anims(style):
     """Waffen-Animationen (Waffe selbst wird von der Engine am Hand-Anker gezeichnet)."""
     st = stance(style)
-    face = "angry" if style != "player" else "normal"
+    face = "angry" if style not in ("player", "player2") else "normal"
     return {
         "weapon_swing": [
             pose(t=-12, face=face, af=(168, 40), ab=(30, 100), lf=(20, 18, 0), lb=(-18, 16, 0)),
@@ -340,6 +410,7 @@ def _with_weapons(fn, style):
 
 ANIMS_BY_STYLE = {
     "player": _with_weapons(player_anims, "player"),
+    "player2": _with_weapons(leyla_anims, "player"),
     "punk": _with_weapons(punk_anims, "punk"),
     "skater": skater_anims,
     "heavy": _with_weapons(heavy_anims, "heavy"),

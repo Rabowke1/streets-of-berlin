@@ -5,9 +5,11 @@
 #include "BrawlerEffect.h"
 #include "BrawlerEnemy.h"
 #include "BrawlerHUD.h"
+#include "BrawlerMenu.h"
 #include "BrawlerPlayer.h"
 #include "BrawlerPlayerController.h"
 #include "BrawlerProp.h"
+#include "BrawlerSettings.h"
 #include "BrawlerStage.h"
 #include "BrawlerWeaponItem.h"
 #include "EngineUtils.h"
@@ -36,6 +38,11 @@ ABrawlerGameMode::ABrawlerGameMode()
 void ABrawlerGameMode::StartPlay()
 {
 	Super::StartPlay();
+
+	Settings = UBrawlerSettings::LoadOrCreate();
+	Menu = NewObject<UBrawlerMenu>(this);
+	Menu->Init(this, Settings);
+	Menu->Reset(EMenuScreen::Main);
 
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -88,8 +95,7 @@ void ABrawlerGameMode::OnStartPressed()
 	switch (Flow)
 	{
 	case EBrawlerFlow::Title:
-		StartGame();
-		break;
+		break; // Titel wird ueber das Menue bedient
 	case EBrawlerFlow::StageClear:
 		if (FlowTime > 1.5f)
 		{
@@ -107,19 +113,102 @@ void ABrawlerGameMode::OnStartPressed()
 	case EBrawlerFlow::Ending:
 		if (FlowTime > 1.5f)
 		{
-			UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this)));
+			ReturnToTitle();
 		}
+		break;
+	case EBrawlerFlow::Intro:
+	case EBrawlerFlow::Playing:
+		PauseGame();
 		break;
 	default:
 		break;
 	}
 }
 
-void ABrawlerGameMode::StartGame()
+void ABrawlerGameMode::BeginGame(FName Character)
 {
+	if (Settings)
+	{
+		Settings->Character = ABrawlerPlayer::GetProfile(Character).Id;
+		Settings->Save();
+	}
+	if (Menu)
+	{
+		Menu->Reset();
+	}
 	Score = 0;
 	Lives = 3;
 	StartStage(0);
+}
+
+void ABrawlerGameMode::PauseGame()
+{
+	if (UGameplayStatics::SetGamePaused(this, true) && Menu)
+	{
+		Menu->Reset(EMenuScreen::Pause);
+		PlaySfx(TEXT("SFX_Pickup"), 0.3f, 0.f);
+	}
+}
+
+void ABrawlerGameMode::ResumeGame()
+{
+	UGameplayStatics::SetGamePaused(this, false);
+	if (Menu)
+	{
+		Menu->Reset();
+	}
+}
+
+void ABrawlerGameMode::ReturnToTitle()
+{
+	UGameplayStatics::SetGamePaused(this, false);
+	UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this)));
+}
+
+float ABrawlerGameMode::GetMusicVolume() const
+{
+	// Standard (70 %) entspricht der bisherigen Lautstaerke 0.5
+	return Settings ? 0.5f * Settings->MusicVolume / 0.7f : 0.5f;
+}
+
+void ABrawlerGameMode::StartMusic()
+{
+	if (Settings && !Settings->bMusic)
+	{
+		return;
+	}
+	if (Music && IsValid(Music) && Music->IsPlaying())
+	{
+		return;
+	}
+	if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
+	{
+		if (USoundBase* Track = Assets->GetSound(TEXT("MUS_Stage1")))
+		{
+			Music = UGameplayStatics::SpawnSound2D(this, Track, GetMusicVolume());
+		}
+	}
+}
+
+void ABrawlerGameMode::ApplyAudioSettings()
+{
+	const bool bRunning = Flow == EBrawlerFlow::Intro || Flow == EBrawlerFlow::Playing || Flow == EBrawlerFlow::StageClear;
+	if (Settings && !Settings->bMusic)
+	{
+		if (Music && IsValid(Music))
+		{
+			Music->Stop();
+		}
+		Music = nullptr;
+	}
+	else if (Music && IsValid(Music) && Music->IsPlaying())
+	{
+		Music->SetVolumeMultiplier(GetMusicVolume());
+	}
+	else if (bRunning)
+	{
+		StartMusic();
+	}
 }
 
 void ABrawlerGameMode::ClearStageActors()
@@ -185,16 +274,7 @@ void ABrawlerGameMode::StartStage(int32 Index)
 
 	SpawnPlayer(260.f, 110.f, false);
 
-	if (!Music || !Music->IsPlaying())
-	{
-		if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
-		{
-			if (USoundBase* Track = Assets->GetSound(TEXT("MUS_Stage1")))
-			{
-				Music = UGameplayStatics::SpawnSound2D(this, Track, 0.5f);
-			}
-		}
-	}
+	StartMusic();
 	SetFlow(EBrawlerFlow::Intro);
 }
 
@@ -206,6 +286,7 @@ void ABrawlerGameMode::SpawnPlayer(float X, float Depth, bool bDropIn)
 	Player = GetWorld()->SpawnActor<ABrawlerPlayer>(ABrawlerPlayer::StaticClass(), FTransform::Identity, Params);
 	if (Player)
 	{
+		Player->InitCharacter(Settings ? Settings->Character : FName(TEXT("Kai")));
 		Player->SetBeltPosition(X, Depth, 0.f);
 		Player->FinishSpawning(FTransform::Identity);
 		if (bDropIn)
@@ -554,6 +635,11 @@ void ABrawlerGameMode::SpawnEffect(const FString& Prefix, float X, float Depth, 
 
 void ABrawlerGameMode::PlaySfx(const FString& Name, float Volume, float PitchVariance)
 {
+	if (Settings && !Settings->bSfx)
+	{
+		return;
+	}
+	Volume *= Settings ? Settings->SfxVolume : 1.f;
 	if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
 	{
 		if (USoundBase* Sound = Assets->GetSound(Name))
