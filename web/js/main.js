@@ -15,6 +15,14 @@ const opts = {
 const canvas = document.getElementById('game');
 const status = document.getElementById('status');
 
+// Fehler sichtbar machen statt stumm haengenzubleiben
+function showError(msg) {
+  if (status && status.isConnected) status.textContent = 'Fehler: ' + msg;
+  else console.error(msg);
+}
+window.addEventListener('error', (e) => showError(e.message || String(e.error)));
+window.addEventListener('unhandledrejection', (e) => showError((e.reason && e.reason.message) || String(e.reason)));
+
 function fit() {
   const host = document.getElementById('stage') || document.body;
   const s = Math.min(host.clientWidth / 1600, host.clientHeight / 900);
@@ -29,7 +37,7 @@ async function boot() {
   try {
     await assets.load((p) => { status.textContent = `Lade Grafiken … ${Math.round(p * 100)} %`; });
   } catch (e) {
-    status.textContent = 'Fehler beim Laden: ' + e.message + ' (Seite über einen Webserver öffnen, nicht per file://)';
+    status.textContent = 'Fehler beim Laden: ' + e.message;
     throw e;
   }
   status.remove();

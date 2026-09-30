@@ -36,6 +36,22 @@ const state = (page) => page.evaluate(() => {
     enemies: g.aliveEnemies(), enc: g.nextEnc, score: g.score, stats: g.stats, weapon: g.player && g.player.weapon };
 });
 
+// --- 0) Abgeschotteter Frame (wie im Artifact-Viewer: iframe sandbox, Origin "null") ---
+{
+  const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+  const frameErrors = [];
+  page.on('pageerror', (e) => frameErrors.push(e.message));
+  await page.setContent(`<iframe sandbox="allow-scripts" src="${URL}/index.html?mute" style="width:1600px;height:900px;border:0"></iframe>`);
+  await page.waitForTimeout(5000);
+  const frame = page.frames().find((f) => f !== page.mainFrame());
+  const status = frame ? await frame.evaluate(() => { const s = document.getElementById('status'); return s ? s.textContent : null; }) : 'kein Frame';
+  console.log('Sandbox-Frame:', status === null ? 'Spiel geladen' : status);
+  if (status !== null) fail('Spiel laedt im abgeschotteten Frame nicht: ' + status);
+  if (frameErrors.length) fail('Fehler im Sandbox-Frame: ' + frameErrors.join('; '));
+  await page.screenshot({ path: path.join(OUT, '00_sandbox.png') });
+  await page.close();
+}
+
 // --- 1) Manuell: Titel, Start, laufen, schlagen --------------------------------
 {
   const page = await newPage('?mute');
