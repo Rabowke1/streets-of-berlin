@@ -154,6 +154,13 @@ class Character:
         self.logo_color = None
         self.stripe = None  # Farbe fuer Streifen auf Hose (Trainingshose)
         self.earring = False
+        # Boss-Details
+        self.vest = None  # Warnweste (Farbe) mit Reflexstreifen
+        self.mustache = False
+        self.face_tattoo = None  # Farbe der Gesichts-Tattoos
+        self.piercings = False
+        self.coat = None  # langer Mantel (Farbe), ueberdeckt die Oberschenkel
+        self.chain = None  # Kette um den Hals (Farbe)
         self.__dict__.update(kw)
 
     # -- Skelett ---------------------------------------------------------
@@ -319,10 +326,32 @@ class Character:
         if self.logo_color is not None:
             c = local_poly(j["hip"], -t, [(cw * 0.25, 0.62 * L)])[0]
             shapes.append(Shape([c], 6.5, self.logo_color, outline=False, light_shift=0))
+        if self.vest is not None:
+            vl = [(-ww * 1.0, 0.12 * L), (-cw * 0.92, 0.66 * L), (-cw * 0.62, 0.92 * L), (cw * 0.30, 0.92 * L),
+                  (cw * 0.92, 0.74 * L), (cw * 0.92 + bl * 0.4, 0.50 * L), (ww + bl, 0.22 * L), (ww * 0.8, 0.12 * L)]
+            v = Shape(local_poly(j["hip"], -t, vl), 2.2, self.vest, light_shift=4.0)
+            for yy in (0.34, 0.56):
+                v.details.append(("line", local_poly(j["hip"], -t, [(-cw * 0.88, yy * L), (cw * 0.86 + bl * 0.4, yy * L)]),
+                                  (225, 230, 236, 255), 3.4))
+            shapes.append(v)
+        if self.chain is not None:
+            ch = local_poly(j["hip"], -t, [(-cw * 0.30, 0.98 * L), (cw * 0.10, 0.78 * L), (cw * 0.50, 0.96 * L)])
+            shapes.append(Shape(ch, 1.4, self.chain, outline=False, light_shift=0))
         # Guertel
         belt = local_poly(j["hip"], -t, [(-ww * 0.95, 0.08 * L), (ww + bl * 0.4, 0.08 * L)])
         shapes.append(Shape(belt, 3.4, self.belt, outline=False, light_shift=0))
         return shapes
+
+    def _coat(self, j, p):
+        # Mantelschoss: vom Becken bis ueber die Knie, folgt der Rumpfneigung
+        t = p["t"]
+        ww = self.waist_w / 2.0
+        Lc = self.thigh * 0.95
+        loc = [(-ww * 1.05, 6.0), (ww * 1.1, 6.0), (ww * 1.35, -Lc), (-ww * 1.45, -Lc * 0.96)]
+        s = Shape(local_poly(j["hip"], -t, loc), 3.0, self.coat, light_shift=4.0)
+        s.details.append(("line", local_poly(j["hip"], -t, [(ww * 0.35, 2.0), (ww * 0.45, -Lc * 0.9)]),
+                          shade(self.coat, 0.6), 1.4))
+        return s
 
     def _pelvis(self, j):
         c = add(j["hip"], mul(j["up"], 3))
@@ -387,6 +416,19 @@ class Character:
             det.append(("ellipse", mo, (3.2, 3.6), (90, 20, 30, 255)))
         else:
             det.append(("line", [m0, m1], shade(self.skin, 0.45), 1.8))
+        if self.mustache:
+            mc = self.beard_color or self.hair
+            det.append(("line", [local_poly(c, a, [(0.56 * R, -0.30 * R)])[0], local_poly(c, a, [(0.96 * R, -0.28 * R)])[0]],
+                        mc, 4.2))
+        if self.face_tattoo is not None:
+            tc = self.face_tattoo
+            for seg in (((0.12, 0.60), (0.40, 0.44)), ((0.20, 0.30), (0.34, -0.10)), ((0.34, -0.10), (0.18, -0.40)),
+                        ((0.40, 0.66), (0.70, 0.60))):
+                det.append(("line", [local_poly(c, a, [(seg[0][0] * R, seg[0][1] * R)])[0],
+                                     local_poly(c, a, [(seg[1][0] * R, seg[1][1] * R)])[0]], tc, 2.8))
+        if self.piercings:
+            for q in ((0.84, 0.34), (0.80, -0.56), (-0.24, -0.20)):
+                det.append(("ellipse", local_poly(c, a, [(q[0] * R, q[1] * R)])[0], (1.8, 1.8), (220, 224, 232, 255)))
         # Nasenschatten
         n0 = local_poly(c, a, [(0.86 * R, -0.12 * R)])[0]
         n1 = local_poly(c, a, [(0.96 * R, -0.04 * R)])[0]
@@ -434,6 +476,21 @@ class Character:
                (0.60, 0.56), (0.20, 0.72), (-0.30, 0.60), (-0.56, 0.24), (-0.60, -0.02)], r=1.6, ls=2.2)
             out.append(Shape(local_poly(c, a, [(-0.40 * R, 0.84 * R), (0.30 * R, 0.90 * R)]), 1.4,
                              shade(H, 1.6), outline=False, light_shift=0))
+        elif st == "uniform":
+            # Dienstmuetze mit Schirm nach vorne und Abzeichen
+            cc = self.cap_color
+            P([(-0.96, 0.30), (-1.04, 0.80), (-0.60, 1.16), (0.20, 1.20), (0.84, 0.98), (0.96, 0.64), (0.70, 0.40),
+               (-0.20, 0.34)], r=2.2, col=cc)
+            P([(0.40, 0.44), (1.30, 0.34), (1.32, 0.24), (0.50, 0.26)], r=1.4, col=shade(cc, 0.55))
+            P([(-0.90, 0.40), (0.72, 0.46)], r=1.6, col=shade(cc, 0.75))
+            out.append(Shape(local_poly(c, a, [(0.36 * R, 0.80 * R)]), 2.6, (236, 200, 70, 255), outline=False,
+                             light_shift=0))
+        elif st == "hardhat":
+            cc = self.cap_color
+            P([(-1.04, 0.36), (-0.96, 0.92), (-0.50, 1.28), (0.20, 1.34), (0.80, 1.06), (1.00, 0.52)], r=2.6, col=cc)
+            P([(-1.24, 0.36), (1.26, 0.36), (1.22, 0.24), (-1.20, 0.24)], r=1.4, col=shade(cc, 0.8))
+            out.append(Shape(local_poly(c, a, [(-0.40 * R, 1.10 * R), (0.30 * R, 1.22 * R)]), 1.8, shade(cc, 1.4),
+                             outline=False, light_shift=0))
         elif st == "buzz":
             P([(-0.88, 0.00), (-0.82, 0.60), (-0.40, 0.92), (0.20, 0.94), (0.62, 0.66), (0.70, 0.48),
                (0.20, 0.60), (-0.30, 0.40), (-0.50, 0.00)], r=1.4, ls=2.0)
@@ -453,6 +510,8 @@ class Character:
         layers.append(self._pelvis(j))
         layers += self._torso(j, p)
         layers += self._leg(j, "f", False)
+        if self.coat is not None:
+            layers.append(self._coat(j, p))
         layers += self._head(j, p)
         layers += self._arm(j, "f", p, False)
         # Gelenkpunkte fuer die KI-Pipeline (OpenPose-Export)

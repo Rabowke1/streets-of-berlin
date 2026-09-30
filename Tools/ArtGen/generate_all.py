@@ -114,6 +114,7 @@ def gen_props():
     add_sprite(fx.doener(), "Props", "Pickup_Doener")
     add_sprite(fx.currywurst(), "Props", "Pickup_Currywurst")
     add_sprite(fx.money(), "Props", "Pickup_Money")
+    add_sprite(fx.steel_beam(), "Props", "Prop_Beam_00")
 
 
 def gen_weapons():
@@ -136,6 +137,7 @@ def gen_backgrounds():
     add_sprite(bg.floor_platform(), "Backgrounds", "BG_FloorPlatform")
     add_sprite(bg.lamp_post(), "Backgrounds", "FG_LampPost")
     add_sprite(bg.pillar(), "Backgrounds", "FG_Pillar")
+    add_sprite(fx.ubahn_train(), "Backgrounds", "FX_Train")
     # Stage 2
     add_sprite(bg2.sky_spree(), "Backgrounds", "BG_SkySpree")
     add_sprite(bg2.gallery_tile(0), "Backgrounds", "BG_Gallery_00")

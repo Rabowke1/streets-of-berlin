@@ -19,14 +19,15 @@ ComfyUI im gezeichneten Comic-Stil neu generieren lassen, in exakt den Posen des
 |---|---|
 | Spielfiguren | **Kai** (ausgewogen, viel Energie): 4er-Combo (Jab → Gerade → Uppercut → Kick), Flugkick, Rückwärts-Ellbogen, Spezial *Wirbelwind* (trifft rundum).<br>**Leyla** (schnelle Kickboxerin aus Neukölln, weniger Energie, mehr Reichweite): Jab → Front-Kick → Knie → Dreh-Roundhouse, *Hechtsprung-Kick* schräg nach unten, Esel-Tritt nach hinten, Spezial *Helikopter-Kick* mit Mehrfachtreffern.<br>Beide: Spezialangriff kostet Energie, die man wie in SoR4 durch Treffer zurückholt; Griff mit Knie ×3 oder Wurf; Essen und Waffen aufheben |
 | Gegner | **Kalle / Ronny** (Punks, Haken), **Messer-Micha** (sticht und wirft sein Messer), **Jojo / Deniz** (Skater, Rutschkick), **Zoe / Nina** (Kickboxerinnen, schnelle Kicks, fliegender Roundhouse), **Brecher** (schwer, Super-Armor, Sturmangriff) |
-| Bosse | Stage 1 **Türsteher Rolf** · Stage 2 **Hool-Sven** mit Baseballschläger · Stage 3 **Baulöwe Harald** mit Golfschläger, Sprungkicks und Verstärkung bei 66 %/33 % Energie. Alle mit Wut-Phase unter 50 % |
+| Endgegner | Jeder Boss hat einen Auftritt mit Namen, Spruch und Tipps, eine große Energieleiste unten und eine Wut-Phase unter 50 %.<br>**Stage 1 – Kontrolleur Klaus** (U-Bahnhof Kottbusser Tor, Warnweste und Dienstmütze): *„Fahrscheine, bitte!“*-Sprint, der bei Treffer Punkte als Strafe abzieht; ein Pfiff ruft Kontrolleure; alle paar Sekunden heißt es *„Zurückbleiben, bitte!“*, dann fährt die U8 durch die hintere Spur und räumt alles ab, was dort steht, auch Gegner.<br>**Stage 2 – Die Tür** (Club-Hinterhof, schwarzer Mantel, Gesichts-Tattoos): blockt von vorne; man muss ihn von hinten, per Wurf oder mit dem Spezialangriff erwischen, zu zweit also in die Zange nehmen. *„Heute nicht!“*-Stoß; das *Gästeliste*-Spotlight verfolgt einen Spieler, dann trifft ein Bass-Drop alles im Lichtkegel.<br>**Stage 3 – Baulöwe Harald** (Dach am Alex, goldener Bauhelm): lässt vom Kran Stahlträger auf markierte Stellen fallen (Schatten am Boden), schlägt Golfbälle aus der Distanz und ruft Verstärkung.<br>Zwischengegner: **Security-Rolf** (Stage 1), **Hool-Sven** mit Baseballschläger (Stage 2) |
 | Waffen | **Rohr, Baseballschläger, Messer, Flasche, Golfschläger**: aufheben mit Schlag, zuschlagen mit Schlag, werfen mit Rückschlag. Haltbarkeit pro Waffe, Flaschen zerbrechen, Gegner lassen ihre Waffen beim Umfallen fallen. Die Waffe sitzt über Hand-Anker pro Animations-Frame in der Hand |
 | Kampfsystem | aktive Hit-Frames, Hitstop, Screenshake, Hitstun, Knockdown mit Aufprall-Hüpfer, Jonglieren, geworfene Gegner werfen andere um, Unverwundbarkeit beim Aufstehen, Angriffs-Tokens (maximal 2 Gegner greifen gleichzeitig an) |
 | Stage 1 | *Kreuzberg bei Nacht*: Oranienstraße (Späti, Döner, Brandwand mit Fernsehturm) → U-Bahnhof Kottbusser Tor |
 | Stage 2 | *East Side Gallery*: Mauer-Wandbilder, Oberbaumbrücke mit U1 → Club-Hinterhof mit Lichterketten und Container-Bar |
 | Stage 3 | *Baustelle am Alex*: Rohbau mit Gerüst, Flutlicht, „Harald Immobilien“-Banner → Showdown auf dem Dach über der Stadt |
 | Ablauf | je Stage 6 Kampfabschnitte mit Kamera-Sperre und „GO →“-Pfeil, Stage-Wechsel mit Punkte-Übernahme, Abspann |
-| Menüs | Titelmenü, **Figurenauswahl** (Werte + Moves), **Optionen**: Musik an/aus + Lautstärke, Sounds an/aus + Lautstärke, **Steuerung anpassen** (2 Tasten + 1 Gamepad-Knopf pro Aktion, Tausch bei Doppelbelegung, Standard wiederherstellen), Pause-Menü (Weiter / Optionen / Zum Titel). In der .exe außerdem **Vollbild** und **Beenden**. Alles wird gespeichert |
+| 2 Spieler | Koop zu zweit: **zwei Gamepads** oder **Tastatur + Gamepad**. Unter *2 Spieler* bestätigt Spieler 1 mit seinem Gerät, Spieler 2 drückt Start/A auf einem zweiten Gerät; jeder wählt dann mit seinem Gerät die eigene Figur (Kai oder Leyla). Jeder hat eigene Energie, Leben und Punkte; die Kamera hält beide im Bild, Gegner verteilen sich auf beide und halten zu zweit mehr aus |
+| Menüs | Titelmenü (1 Spieler / 2 Spieler), **Figurenauswahl** (Werte + Moves), **Optionen**: Musik an/aus + Lautstärke, Sounds an/aus + Lautstärke, **Steuerung anpassen** (2 Tasten + 1 Gamepad-Knopf pro Aktion, Tausch bei Doppelbelegung, Standard wiederherstellen), Pause-Menü (Weiter / Optionen / Zum Titel). In der .exe außerdem **Vollbild** und **Beenden**. Alles wird gespeichert |
 | Extras | zerstörbare Mülltonnen/Obstkisten mit Döner (volle Heilung), Currywurst und Geld, Combo-Zähler, Punkte, 3 Leben mit Wiedereinstieg, Game Over, Stage Clear, Zeitlupe beim Boss-KO |
 
 ## Schnellstart
@@ -68,6 +69,10 @@ immer mit Pfeilen/D-Pad, *Enter*/A und *Esc*/B bedienen, im Browser auch per Mau
 | Rückschlag (nach hinten) / Waffe werfen | I | B / ○ |
 | Start / Pause | Enter / P (Esc pausiert immer) | Start |
 
+**Zu zweit:** Allein steuert man mit allen Geräten gleichzeitig. Zu zweit gehört die Tastatur (samt Touch) dem Spieler,
+der sich damit angemeldet hat, und jedes Gamepad seinem Spieler. Die Belegung aus *Optionen → Steuerung* gilt für
+die Tastatur bzw. für alle Gamepads.
+
 **Griff:** in einen Gegner hineinlaufen. Dann *Schlag* = Knie (das dritte wirft um), *weg drücken + Schlag* = Wurf,
 *Sprung* = loslassen. Die Combo läuft nur weiter, wenn die Schläge treffen – sonst beginnt sie wieder beim Jab.
 
@@ -82,13 +87,15 @@ python -m http.server 8000 --directory web       # dann http://localhost:8000 ö
 ```
 
 URL-Parameter: `?stage=2` (direkt in Stage 2/3 starten), `?char=leyla` (Figur vorwählen), `?mute`,
-`?autoplay&god&speed=8` (Bot spielt selbst).
+`?autoplay&god&speed=8` (Bot spielt selbst), `?players=2` (mit `autoplay` spielen zwei Bots zusammen).
 
 **Automatischer Playtest** (headless Chromium über Playwright): Laden im abgeschotteten iframe, Titelmenü und
 Figurenauswahl per Tastatur, Laufen und Schlagen; dann Optionsmenü (Musik/Sounds aus, Lautstärke, Schlag-Taste auf *U*
 umbelegen), Spiel mit Leyla inklusive Spezialangriff und Pause-Menü, Prüfung der gespeicherten Einstellungen nach dem
-Neuladen. Zum Schluss spielt ein Bot mit Kai und mit Leyla alle drei Stages bis zum Abspann durch; dabei wird auf
-JavaScript-Fehler geprüft.
+Neuladen. Danach ein Koop-Start mit Tastatur + simuliertem Gamepad: Anmelden, Figurenwahl, und die Prüfung, dass
+jedes Gerät nur seinen Spieler bewegt. Zum Schluss spielen Bots mit Kai, mit Leyla und zu zweit alle drei Stages bis
+zum Abspann. Dabei wird geprüft, dass jede Boss-Mechanik ausgelöst wurde (U-Bahn, Spotlight/Bass-Drop, Kran) und
+keine JavaScript-Fehler auftreten.
 
 ```bash
 npm i playwright                                  # einmalig
@@ -156,9 +163,11 @@ web/                    das Spiel (läuft im Browser und in der .exe)
  ├─ index.html          Seite mit Canvas 1600×900 (wird auf Fenstergröße skaliert)
  ├─ js/main.js          Laden, feste 60-Hz-Spiellogik, URL-Parameter
  ├─ js/game.js          Ablauf (Titel/Intro/Spiel/Clear/GameOver/Abspann), Stages, Kampfabschnitte & Wellen,
- │                      Kamera, Punkte, Combo, Angriffs-Tokens, HUD, Eingabe, Audio, Vollbild, Test-Bot
+ │                      Kamera, Punkte, Combo, Angriffs-Tokens, HUD, Eingabe je Gerät (Tastatur/Gamepads),
+ │                      Boss-Stage-Mechaniken (U-Bahn, Spotlight), Boss-Intro/-Leiste, Audio, Vollbild, Test-Bot
  ├─ js/entities.js      Fighter-Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe,
- │                      Waffen; Player (Profile Kai/Leyla), Enemy-KI, Props, Pickups, Projektile, Effekte
+ │                      Waffen; Player (Profile Kai/Leyla, Leben/Punkte/Gerät), Enemy-KI mit Zielwahl
+ │                      zwischen den Spielern und bossBrain (Klaus, Die Tür, Harald), Golfball, Stahlträger
  ├─ js/data.js          Balancing: Figuren, Angriffe, Gegner, Waffen, Stages
  ├─ js/menu.js          Titel, Figurenauswahl, Optionen, Steuerung (Neubelegen), Pause – Tastatur/Gamepad/Maus/Touch
  ├─ js/settings.js      Einstellungen + Tastenbelegung (localStorage)
@@ -188,5 +197,5 @@ werden zuerst gezeichnet.
 - Die frühere Unreal-Engine-Fassung (C++) ist entfernt, bleibt aber in der Git-Historie erhalten (bis Commit `687aaf4`).
 - Eine weitere Figur braucht: Eintrag in `Tools/ArtGen/characters.py` (Aussehen + Animationen) und ein Profil in
   `web/js/data.js` (`PLAYERS`). Figurenauswahl, HUD und Portrait laufen automatisch über den Namen.
-- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler gleichzeitig, Star-Moves, weitere Stages
+- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zwei Spieler an einer Tastatur, Online-Koop, Star-Moves, weitere Stages
   (Tempelhofer Feld, Berghain-Schlange 😉), Figuren-LoRAs für die KI-Pipeline.

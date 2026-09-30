@@ -384,6 +384,8 @@ export class Player extends Fighter {
     this.move2 = { x: 0, y: 0 }; this.buf = { attack: 0, jump: 0, special: 0, back: 0 };
     this.comboStep = 0; this.inCombo = false; this.fromGrab = false; this.throwReleased = false; this.jumpAtkUsed = false;
     this.knees = 0; this.grabCd = 0; this.walkInto = 0; this.recoverable = 0;
+    // Koop: jeder Spieler hat eigene Leben, Punkte und ein Eingabegeraet ('all', 'kb' oder 'padN')
+    this.index = 0; this.lives = 3; this.score = 0; this.device = 'all'; this.respawnT = -1; this.out = false;
     this.enter('idle');
   }
   press(k) { this.buf[k] = 0.18; }
@@ -533,7 +535,7 @@ export class Player extends Fighter {
   }
   onHurt() { this.recoverable = 0; this.comboStep = 0; this.inCombo = false; this.fromGrab = false; }
   landed() { this.jumpAtkUsed = false; super.landed(); }
-  onDied() { this.game.onPlayerDied(); }
+  onDied() { this.game.onPlayerDied(this); }
   celebrate() { this.releaseGrab(); this.enter('victory'); }
   dropIn() {
     this.health = this.maxHealth; this.recoverable = 0; this.h = 600; this.vz = -200; this.vx = 0; this.jumpAtkUsed = true;
@@ -559,8 +561,28 @@ export class Enemy extends Fighter {
     this.getupInvuln = 0.4;
     this.entering = false; this.think = 0; this.cd = rand(0.4, 1.4); this.side = 1; this.dOff = 0; this.wait = rand(200, 300);
     this.token = false; this.enraged = false; this.summoned = 0; this.throwCd = rand(2, 4);
+    this.target = null; this.retarget = 0;
+    // Boss-Mechaniken (siehe bossBrain): Zeitgeber je Faehigkeit
+    this.brain = p.brain || null; this.bt = { a: rand(3, 5), b: rand(5, 7), c: rand(8, 10) }; this.guarding = false; this.guardT = 0;
     if (p.weapon) this.takeWeapon(p.weapon, 999);
     this.enter('idle');
+  }
+  /** Ziel: naechster lebender Spieler (bleibt eine Weile dabei, damit Gegner nicht staendig wechseln) */
+  pickTarget(dt) {
+    const g = this.game;
+    this.retarget -= dt;
+    const valid = (p) => p && !p.dead && !p.out && p.alive && p.state !== 'victory';
+    if (valid(this.target) && this.retarget > 0) return this.target;
+    let best = null, bd = 1e9;
+    for (const p of g.players) {
+      if (!valid(p)) continue;
+      // Leicht bevorzugt: wer weniger Gegner an sich hat
+      const crowd = g.enemies().filter((e) => e !== this && e.target === p).length;
+      const d = Math.abs(p.x - this.x) + Math.abs(p.depth - this.depth) * 2 + crowd * 120 + (p.downed ? 400 : 0);
+      if (d < bd) { bd = d; best = p; }
+    }
+    this.target = best; this.retarget = rand(2, 4);
+    return best;
   }
   setEntering(v) { this.entering = v; this.clampView = !v; }
   melee(strong) {
@@ -601,7 +623,7 @@ export class Enemy extends Fighter {
     if (this.attack.anim === 'weapon_throw' && this.frame >= 1 && this.weapon) this.throwWeapon();
   }
   control(dt) {
-    const g = this.game, pl = g.player;
+    const g = this.game, pl = this.pickTarget(dt);
     const walk = (vx, vd) => {
       this.vx = vx; this.vd = vd;
       const moving = Math.abs(vx) > 5 || Math.abs(vd) > 5;
@@ -618,7 +640,9 @@ export class Enemy extends Fighter {
     if (Math.abs(dx) > 8) this.facing = sign(dx);
     if (!this.enraged && this.boss && this.health < this.maxHealth * 0.5) {
       this.enraged = true; this.walkSpeed *= 1.3; this.depthSpeed *= 1.3; this.cdBase *= 0.7;
+      g.popup('WUT!', this.x, this.depth, 260, '#ff4060');
     }
+    if (this.brain && this.bossBrain(dt, pl, walk)) return;
     // Boss ruft Verstaerkung
     if (this.profile.summon && this.summoned < 2 && this.health < this.maxHealth * (this.summoned === 0 ? 0.66 : 0.33)) {
       this.summoned++;
@@ -668,6 +692,129 @@ export class Enemy extends Fighter {
   attackFinished() {
     this.cd = this.cdBase * rand(0.8, 1.35);
     if (this.token) { this.game.releaseToken(this); this.token = false; }
+    const a = this.attack;
+    if (a && a.onEnd) a.onEnd(this);
+  }
+
+  // --- Boss-Mechaniken -----------------------------------------------------------
+  /** Liefert true, wenn der Boss in diesem Frame selbst gehandelt hat. */
+  bossBrain(dt, pl, walk) {
+    const g = this.game, bt = this.bt, rage = this.enraged ? 0.65 : 1;
+    for (const k in bt) bt[k] -= dt;
+    const busy = !['idle', 'walk'].includes(this.state);
+    if (busy) return false;
+    const adx = Math.abs(pl.x - this.x), add = Math.abs(pl.depth - this.depth);
+
+    if (this.brain === 'klaus') {
+      // Pfiff: ruft Kontrolleure (bei 70 % und 35 % Energie)
+      const lim = [0.7, 0.35][this.summoned];
+      if (lim && this.health < this.maxHealth * lim) {
+        this.summoned++;
+        g.popup('PFIIIFF!', this.x, this.depth, 250, '#fff');
+        g.note('whistle');
+        this.begin(atk({ anim: 'whistle', start: 99, end: 99, dmg: 0, fps: 4, whoosh: false }));
+        for (let i = 0; i < 2; i++) g.spawnEnemy('Kontrolli', i ? g.viewMin - 80 : g.viewMax + 80, rand(40, 200));
+        g.sfx('SFX_Go', 0.9, 0);
+        return true;
+      }
+      // "Fahrschein, bitte!": unblockbarer Sprint, der Punkte kostet
+      if (bt.a <= 0 && adx > 160 && adx < 600 && add < 20) {
+        bt.a = rand(5, 7) * rage;
+        g.popup('FAHRSCHEIN, BITTE!', this.x, this.depth, 260, '#ffd24a');
+        g.note('ticket check');
+        this.begin(atk({ anim: 'attack2', start: 0, end: 3, loop: true, dur: 1.1, dmg: 14, rmax: 90, type: 'kd', kb: 420,
+          launch: 520, lunge: this.enraged ? 760 : 640, fps: 13, depth: 34, stop: 0.12, fine: 600 }));
+        return true;
+      }
+      // U-Bahn: startet die Zug-Warnung (die Stage erledigt den Rest)
+      if (bt.c <= 0 && !g.train) { bt.c = rand(12, 15) * rage; g.startTrain(this); }
+      return false;
+    }
+
+    if (this.brain === 'tuer') {
+      // Deckung im Wechsel mit Angriffen; von vorne abgeblockt, nur von hinten/Wuerfe/Spezial verwundbar
+      this.guardT -= dt;
+      if (this.guardT <= 0) { this.guarding = !this.guarding; this.guardT = this.guarding ? rand(2.5, 3.5) * (this.enraged ? 0.7 : 1) : rand(2.5, 3.5); }
+      if (!this.guarding && this.animKey === `${this.sprite}/${this.sprite}_guard`) this.enter('idle');
+      // Spotlight: Gaesteliste – Bass-Drop auf den markierten Spieler
+      if (bt.c <= 0 && !g.spot) {
+        bt.c = rand(8, 10) * rage;
+        g.popup('GÄSTELISTE?', this.x, this.depth, 270, '#ff60c0');
+        this.begin(atk({ anim: 'point', start: 99, end: 99, dmg: 0, fps: 3, whoosh: false }));
+        g.startSpot(pl);
+        return true;
+      }
+      // "Heute nicht!": breiter Stoss
+      if (bt.a <= 0 && adx < 140 && add < 40) {
+        bt.a = rand(2.5, 4) * rage; this.guarding = false; this.guardT = 1.2;
+        g.popup('HEUTE NICHT!', this.x, this.depth, 260, '#fff');
+        g.note('shove');
+        this.begin(atk({ anim: 'shove', start: 1, end: 1, dmg: 12, rmax: 150, depth: 60, type: 'kd', kb: 560, launch: 320, fps: 7, stop: 0.14 }));
+        return true;
+      }
+      if (this.guarding) {
+        // langsam vorruecken in Deckung
+        const dx = pl.x - this.x;
+        this.facing = sign(dx) || this.facing;
+        const vx = adx > 120 ? sign(dx) * this.walkSpeed * 0.45 : 0;
+        const vd = add > 8 ? clamp((pl.depth - this.depth) * 3, -this.depthSpeed * 0.5, this.depthSpeed * 0.5) : 0;
+        this.vx = vx; this.vd = vd;
+        if (this.animKey !== `${this.sprite}/${this.sprite}_guard`) this.play(this.sprite, this.sprite + '_guard', 3, true);
+        this.state = 'walk';
+        return true;
+      }
+      return false;
+    }
+
+    if (this.brain === 'harald') {
+      // Kran: Stahltraeger fallen auf markierte Stellen
+      if (bt.c <= 0) {
+        bt.c = rand(8, 10) * rage;
+        g.popup('KRAN, LOS!', this.x, this.depth, 270, '#ffd24a');
+        g.note('crane');
+        this.begin(atk({ anim: 'point', start: 99, end: 99, dmg: 0, fps: 3, whoosh: false }));
+        const spots = g.players.filter((p) => p.alive && !p.out).map((p) => [p.x, p.depth]);
+        const n = this.enraged ? 4 : 3;
+        while (spots.length < n) spots.push([rand(g.viewMin + 150, g.viewMax - 150), rand(W.DepthMin + 20, W.DepthMax - 20)]);
+        spots.forEach(([x, d], i) => g.add(new FallingBeam(g, x, d, 1.3 + i * 0.25)));
+        return true;
+      }
+      // Golfabschlag aus der Distanz
+      if (bt.b <= 0 && adx > 320 && adx < 900 && add < 16) {
+        bt.b = rand(3, 5) * rage;
+        this.facing = sign(pl.x - this.x) || this.facing;
+        g.popup('FORE!', this.x, this.depth, 250, '#fff');
+        g.note('golf');
+        this.begin(atk({ anim: 'weapon_swing', start: 99, end: 99, dmg: 0, fps: 10, whoosh: true,
+          onEnd: (b) => { const ball = new GolfBall(g, b); g.add(ball); } }));
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  receiveHit(att, a, dir) {
+    // Tuersteher in Deckung: Treffer von vorne werden abgeblockt (Wuerfe, Spezial und Rueckenangriffe nicht)
+    if (this.guarding && att && att.team === 'player' && this.isHittable(att.team) && !a.invuln && !this.thrown) {
+      const fromFront = sign(att.x - this.x) === this.facing;
+      if (fromFront) {
+        const g = this.game;
+        g.effect('FX_HitSpark', this.x + this.facing * 30, this.depth, 130, -this.facing, 22, 0.7);
+        g.sfx('SFX_Thud', 0.7, 0.1);
+        if (!(this.blockPopT > g.stats.frames)) { this.blockPopT = g.stats.frames + 50; g.popup('GEBLOCKT', this.x, this.depth, 240, '#9fe8ff'); }
+        if (att instanceof Fighter && att.h <= 0) att.vx = sign(att.x - this.x) * 260;
+        return false;
+      }
+    }
+    return super.receiveHit(att, a, dir);
+  }
+  onAttackHit(t, a) {
+    // Kontrolleur: erwischt = Strafe
+    if (a.fine && t instanceof Player) {
+      const fine = Math.min(t.score, a.fine);
+      t.score -= fine;
+      this.game.popup(fine > 0 ? `${fine / 10} € STRAFE!` : 'OHNE FAHRSCHEIN!', t.x, t.depth, 230, '#ff6060');
+    }
   }
   onHurt() {
     this.cd = Math.max(this.cd, 0.5); this.entering = false; this.clampView = true;
@@ -704,7 +851,7 @@ export class Prop extends Entity {
     g.effect('FX_HitSpark', this.x - dir * 20, this.depth, 70, dir, 22);
     if (this.hits > 0 && a.type === 'light') { g.sfx('SFX_HitLight', 0.7); return true; }
     this.broken = true; this.setFrame(1);
-    g.sfx('SFX_Break', 0.9); g.score += 50; g.effect('FX_Dust', this.x, this.depth, 0, dir, 14);
+    g.sfx('SFX_Break', 0.9); g.addScore(att, 50); g.effect('FX_Dust', this.x, this.depth, 0, dir, 14);
     if (this.drop) {
       const it = this.drop in WEAPONS ? new WeaponItem(g, this.drop) : new Pickup(g, this.drop);
       it.x = this.x; it.depth = this.depth - 2; it.h = 1; it.vz = 520; it.vx = dir * 110;
@@ -740,9 +887,9 @@ export class Pickup extends Item {
     if (this.collected) return;
     this.collected = true;
     const g = this.game;
-    if (this.type === 'Doener') { pl.health = pl.maxHealth; g.score += 200; }
-    else if (this.type === 'Currywurst') { pl.health = Math.min(pl.maxHealth, pl.health + 45); g.score += 100; }
-    else if (this.type === 'Money') g.score += 1000;
+    if (this.type === 'Doener') { pl.health = pl.maxHealth; g.addScore(pl, 200); }
+    else if (this.type === 'Currywurst') { pl.health = Math.min(pl.maxHealth, pl.health + 45); g.addScore(pl, 100); }
+    else if (this.type === 'Money') g.addScore(pl, 1000);
     g.sfx('SFX_Pickup', 0.9, 0);
     this.destroy();
   }
@@ -804,4 +951,59 @@ export class Effect extends Entity {
     if (!this.frames.length) this.dead = true;
   }
   tick() { if (this.animDone) this.destroy(); }
+}
+
+// ---------------------------------------------------------------------------
+// Boss-Objekte
+// ---------------------------------------------------------------------------
+/** Haralds Golfball: fliegt geradeaus, trifft Spieler */
+export class GolfBall extends Entity {
+  constructor(game, owner) {
+    super(game);
+    this.owner = owner; this.team = owner.team; this.facing = owner.facing;
+    this.x = owner.x + owner.facing * 70; this.depth = owner.depth; this.h = 95; this.vx = owner.facing * 950;
+    this.shadow = 0.25; this.travel = 0; this.frames = []; this.ball = true;
+  }
+  tick(dt) {
+    this.x += this.vx * dt; this.travel += Math.abs(this.vx * dt);
+    const a = atk({ dmg: 11, type: 'kd', kb: 280, launch: 380, rmin: -30, rmax: 30, hmin: -60, hmax: 40, stop: 0.08, depth: 26 });
+    for (const t of this.game.players) {
+      if (t.dead || !t.isHittable(this.team)) continue;
+      const fake = { x: this.x, depth: this.depth, h: this.h, facing: this.facing };
+      if (Fighter.prototype.overlaps.call(fake, t, a) && t.receiveHit(this.owner, a, this.facing)) { this.destroy(); return; }
+    }
+    if (this.travel > 1400) this.destroy();
+  }
+}
+
+/** Stahltraeger vom Kran: Warnschatten, dann Einschlag */
+export class FallingBeam extends Entity {
+  constructor(game, x, depth, delay) {
+    super(game);
+    this.x = x; this.depth = depth; this.delay = delay; this.t = 0; this.h = 900; this.landed = false; this.shadow = 0;
+    this.frames = ['Prop_Beam_00']; this.folder = 'Props'; this.fps = 0; this.front = 0;
+  }
+  get warn() { return !this.landed ? clamp(this.t / this.delay, 0, 1) : 0; }
+  tick(dt) {
+    const g = this.game;
+    this.t += dt;
+    if (!this.landed) {
+      if (this.t > this.delay) {
+        this.h = Math.max(0, 900 * (1 - (this.t - this.delay) / 0.28));
+        if (this.h <= 0) {
+          this.landed = true; this.t = 0;
+          g.shake(10, 0.25); g.sfx('SFX_Break', 1, 0.05); g.sfx('SFX_Thud', 1, 0.05);
+          g.effect('FX_Dust', this.x, this.depth, 0, 1, 14, 1.6);
+          const a = atk({ dmg: 22, type: 'kd', kb: 300, launch: 520, stop: 0.12 });
+          for (const f of g.fighters()) {
+            if (f.boss || !f.alive || f.h > 60) continue;
+            if (Math.abs(f.x - this.x) < 125 && Math.abs(f.depth - this.depth) < 30) {
+              const fake = { team: 'hazard', x: this.x, h: 0, facing: 1 };
+              f.receiveHit(fake, f.team === 'enemy' ? { ...a, dmg: 30 } : a, sign(f.x - this.x) || 1);
+            }
+          }
+        }
+      } else this.h = 900;
+    } else if (this.t > 1.6) this.destroy();
+  }
 }
