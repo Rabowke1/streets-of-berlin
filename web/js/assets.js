@@ -8,8 +8,10 @@ export class Assets {
     this.ctx = null;
   }
   async load(onProgress) {
-    this.index = await (await fetch(this.base + 'atlas.json')).json();
-    this.anchors = await (await fetch(this.base + 'anchors.json')).json();
+    // Im Buendel (bundle.js) sind die Daten eingebettet: kein fetch() noetig (wichtig in abgeschotteten Frames)
+    const embedded = window.__SOB_DATA || {};
+    this.index = embedded['atlas.json'] || await (await fetch(this.base + 'atlas.json')).json();
+    this.anchors = embedded['anchors.json'] || await (await fetch(this.base + 'anchors.json')).json();
     const jobs = [];
     for (const [folder, a] of Object.entries(this.index.atlases)) jobs.push(['atlas', folder, a.file]);
     for (const [name, b] of Object.entries(this.index.backgrounds)) jobs.push(['bg', name, b.file]);
@@ -28,11 +30,20 @@ export class Assets {
   }
   async loadSounds(actx) {
     this.ctx = actx;
+    this.soundEls = {};
+    // In abgeschotteten Frames (Origin "null") scheitert fetch() ohne CORS-Header -> direkt <audio> nutzen
+    const opaque = (self.origin || location.origin) === 'null';
     await Promise.all(Object.entries(this.index.sounds).map(async ([name, file]) => {
       try {
+        if (opaque) throw new Error('opaque origin');
         const buf = await (await fetch(this.base + file)).arrayBuffer();
         this.sounds[name] = await actx.decodeAudioData(buf);
-      } catch (e) { console.warn('Sound', name, e); }
+      } catch (e) {
+        // Rueckfall ohne fetch (z.B. im Artifact-Viewer): <audio>-Elemente brauchen keine CORS-Header
+        const el = new Audio(this.base + file);
+        el.preload = 'auto';
+        this.soundEls[name] = el;
+      }
     }));
   }
   /** Alle Frame-Namen <prefix>_00, _01, ... eines Ordners */

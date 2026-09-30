@@ -13,10 +13,13 @@ import argparse
 import json
 import os
 import shutil
+import sys
 import wave
 
 import numpy as np
 from PIL import Image
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 GEN = os.path.join(ROOT, "Art", "Generated")
@@ -123,6 +126,8 @@ def main():
     shutil.copy(os.path.join(ROOT, "Content", "Data", "anchors.json"), os.path.join(OUT, "anchors.json"))
     with open(os.path.join(OUT, "atlas.json"), "w", encoding="utf-8") as f:
         json.dump(atlas_index, f, separators=(",", ":"))
+    import bundle
+    bundle.build()
     print("web/assets: %d Atlanten, %d Hintergruende, %d Sounds, %.1f MB" % (
         len(atlas_index["atlases"]), len(atlas_index["backgrounds"]), len(atlas_index["sounds"]), total / 1e6))
 

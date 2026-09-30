@@ -40,7 +40,15 @@ export class Game {
     if (!e.dead) this.add(e);
   }
   sfx(name, vol = 1, pitchVar = 0.08) {
-    if (!this.audio || !this.assets.sounds[name] || this.opts.mute) return;
+    if (!this.audio || this.opts.mute) return;
+    const el = this.assets.soundEls && this.assets.soundEls[name];
+    if (el && !this.assets.sounds[name]) {
+      const c = el.cloneNode();
+      c.volume = Math.min(1, vol * 0.8);
+      c.play().catch(() => {});
+      return;
+    }
+    if (!this.assets.sounds[name]) return;
     const src = this.audio.createBufferSource();
     src.buffer = this.assets.sounds[name];
     src.playbackRate.value = 1 + rand(-pitchVar, pitchVar);
@@ -56,10 +64,20 @@ export class Game {
     try {
       this.audio = new (window.AudioContext || window.webkitAudioContext)();
       await this.assets.loadSounds(this.audio);
+      // Sounds laden asynchron: Musik nachholen, falls die Stage schon laeuft
+      if (this.stage && !this.music && ['intro', 'playing'].includes(this.flow)) this.playMusic();
     } catch (e) { console.warn('Audio nicht verfuegbar', e); }
   }
   playMusic() {
-    if (!this.audio || this.music || !this.assets.sounds.MUS_Stage1) return;
+    if (!this.audio || this.music) return;
+    const el = this.assets.soundEls && this.assets.soundEls.MUS_Stage1;
+    if (el && !this.assets.sounds.MUS_Stage1) {
+      el.loop = true; el.volume = 0.45; el.currentTime = 0;
+      el.play().catch(() => {});
+      this.music = { stop: () => el.pause() };
+      return;
+    }
+    if (!this.assets.sounds.MUS_Stage1) return;
     this.music = this.audio.createBufferSource();
     this.music.buffer = this.assets.sounds.MUS_Stage1; this.music.loop = true;
     this.musicGain = this.audio.createGain(); this.musicGain.gain.value = 0.45;
