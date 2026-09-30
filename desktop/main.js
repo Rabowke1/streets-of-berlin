@@ -19,6 +19,16 @@ const query = queryArg ? queryArg.slice('--sob-query='.length) : '';
 
 let win = null;
 
+function notifyFullscreen() {
+  if (win && !win.isDestroyed()) win.webContents.send('sob:fullscreen-changed', win.isFullScreen());
+}
+function setFullscreen(on) {
+  if (!win) return;
+  win.setFullScreen(on);
+  notifyFullscreen();
+  setTimeout(notifyFullscreen, 300);
+}
+
 function createWindow() {
   win = new BrowserWindow({
     width: 1280,
@@ -44,13 +54,15 @@ function createWindow() {
   win.webContents.on('before-input-event', (event, input) => {
     if (input.type !== 'keyDown') return;
     if (input.key === 'F11' || (input.alt && input.key === 'Enter')) {
-      win.setFullScreen(!win.isFullScreen());
+      setFullscreen(!win.isFullScreen());
       event.preventDefault();
     }
   });
-  const notify = () => win.webContents.send('sob:fullscreen-changed', win.isFullScreen());
-  win.on('enter-full-screen', notify);
-  win.on('leave-full-screen', notify);
+  // Vollbild-Zustand an die Seite melden. Unter Windows kommen enter/leave-full-screen nicht verlaesslich an,
+  // deshalb zusaetzlich nach jeder Groessenaenderung und direkt nach dem Umschalten.
+  win.on('enter-full-screen', notifyFullscreen);
+  win.on('leave-full-screen', notifyFullscreen);
+  win.on('resize', notifyFullscreen);
 
   // Keine fremden Seiten oder Popups
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -75,9 +87,9 @@ if (!app.requestSingleInstanceLock()) {
     });
 
     ipcMain.on('sob:quit', () => app.quit());
-    ipcMain.on('sob:set-fullscreen', (_event, on) => { if (win) win.setFullScreen(!!on); });
+    ipcMain.on('sob:set-fullscreen', (_event, on) => setFullscreen(!!on));
     // Umschalten entscheidet das Fenster selbst: der Zustand in der Seite kommt unter Windows verzoegert an
-    ipcMain.on('sob:toggle-fullscreen', () => { if (win) win.setFullScreen(!win.isFullScreen()); });
+    ipcMain.on('sob:toggle-fullscreen', () => { if (win) setFullscreen(!win.isFullScreen()); });
 
     createWindow();
   });
