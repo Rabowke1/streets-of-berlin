@@ -8,7 +8,7 @@ public class StreetsOfBerlin : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", "Paper2D"
+			"Core", "CoreUObject", "Engine", "InputCore", "Paper2D", "Json"
 		});
 
 		if (Target.bBuildEditor)

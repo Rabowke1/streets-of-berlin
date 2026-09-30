@@ -3,6 +3,8 @@
 #include "BrawlerEnemy.h"
 #include "BrawlerGameMode.h"
 #include "BrawlerPickup.h"
+#include "BrawlerStageData.h"
+#include "BrawlerWeaponItem.h"
 #include "EngineUtils.h"
 
 namespace
@@ -276,6 +278,19 @@ void ABrawlerPlayer::TickGroundControl(float DeltaSeconds)
 	{
 		BackBuffer = 0.f;
 		bInComboAttack = false;
+		if (HasWeapon())
+		{
+			// Mit Waffe: Rueckschlag-Taste wirft die Waffe
+			FBrawlerAttack Throw;
+			Throw.Anim = TEXT("weapon_throw");
+			Throw.ActiveStart = 99;
+			Throw.ActiveEnd = 99;
+			Throw.Damage = 0.f;
+			Throw.FPS = 12.f;
+			Throw.bWhoosh = false;
+			StartAttack(Throw);
+			return;
+		}
 		StartAttack(BackAttack());
 		return;
 	}
@@ -285,6 +300,16 @@ void ABrawlerPlayer::TickGroundControl(float DeltaSeconds)
 		AttackBuffer = 0.f;
 		if (TryPickup())
 		{
+			return;
+		}
+		if (HasWeapon())
+		{
+			bInComboAttack = false;
+			if (FMath::Abs(MoveInput.X) > 0.2f)
+			{
+				Facing = FMath::Sign(MoveInput.X);
+			}
+			StartAttack(BrawlerData::MakeWeaponAttack(GetWeapon()));
 			return;
 		}
 		StartCombo(0);
@@ -311,8 +336,8 @@ void ABrawlerPlayer::TickGroundControl(float DeltaSeconds)
 		EnterState(EFighterState::Idle);
 	}
 
-	// In einen Gegner hineinlaufen -> Griff
-	if (bMoving && FMath::Abs(MoveInput.X) > 0.5f)
+	// In einen Gegner hineinlaufen -> Griff (nicht mit Waffe in der Hand)
+	if (bMoving && FMath::Abs(MoveInput.X) > 0.5f && !HasWeapon())
 	{
 		WalkIntoTimer += DeltaSeconds;
 		if (WalkIntoTimer > 0.12f && TryGrab())
@@ -394,17 +419,43 @@ void ABrawlerPlayer::StartSpecial()
 
 bool ABrawlerPlayer::TryPickup()
 {
-	for (TActorIterator<ABrawlerPickup> It(GetWorld()); It; ++It)
+	// Naechsten Gegenstand (Essen, Geld oder Waffe) unter der Figur suchen
+	ABrawlerEntity* Best = nullptr;
+	float BestDist = 1e9f;
+	for (TActorIterator<ABrawlerEntity> It(GetWorld()); It; ++It)
 	{
-		ABrawlerPickup* Pickup = *It;
-		if (Pickup->CanCollect() && FMath::Abs(Pickup->PosX - PosX) < 60.f && FMath::Abs(Pickup->Depth - Depth) < 26.f)
+		ABrawlerEntity* E = *It;
+		const ABrawlerPickup* Pickup = Cast<ABrawlerPickup>(E);
+		const ABrawlerWeaponItem* Item = Cast<ABrawlerWeaponItem>(E);
+		if ((Pickup && !Pickup->CanCollect()) || (Item && !Item->CanCollect()) || (!Pickup && !Item))
 		{
-			Pickup->Collect(this);
-			EnterState(EFighterState::Pickup);
-			return true;
+			continue;
+		}
+		const float Dist = FMath::Abs(E->PosX - PosX);
+		if (Dist < 64.f && FMath::Abs(E->Depth - Depth) < 28.f && Dist < BestDist)
+		{
+			Best = E;
+			BestDist = Dist;
 		}
 	}
-	return false;
+	if (!Best)
+	{
+		return false;
+	}
+	if (ABrawlerWeaponItem* Item = Cast<ABrawlerWeaponItem>(Best))
+	{
+		if (HasWeapon())
+		{
+			DropWeapon(false);
+		}
+		Item->Collect(this);
+	}
+	else if (ABrawlerPickup* Pickup = Cast<ABrawlerPickup>(Best))
+	{
+		Pickup->Collect(this);
+	}
+	EnterState(EFighterState::Pickup);
+	return true;
 }
 
 bool ABrawlerPlayer::TryGrab()
@@ -509,6 +560,7 @@ void ABrawlerPlayer::DropIn()
 	VelX = 0.f;
 	bJumpAttackUsed = true;
 	MakeInvulnerable(2.5f);
+	Weapon = NAME_None;
 	EnterState(EFighterState::Jump);
 
 	// Gegner in der Naehe werden umgeworfen (wie beim Wiedereinstieg in SoR)

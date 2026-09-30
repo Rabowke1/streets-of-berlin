@@ -1,6 +1,7 @@
 #include "BrawlerStage.h"
 
 #include "BrawlerAssets.h"
+#include "BrawlerStageData.h"
 #include "BrawlerTypes.h"
 #include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
@@ -43,39 +44,47 @@ void ABrawlerStage::AddLayer(const FString& SpriteName, float BaseX, float Cente
 	L.Y = Y;
 }
 
-void ABrawlerStage::Build()
+void ABrawlerStage::Build(const FStageDef& Def)
 {
 	using namespace Brawler;
 
-	// Himmel mit Fernsehturm (weit hinten, langsame Parallaxe)
-	AddLayer(TEXT("BG_Sky"), 2150.f, FloorTopZ + 350.f, -3000.f, 0.15f, SortSky);
-
-	// Fassaden: Unterkante bei FloorTopZ, 560 hoch
-	const float WallZ = FloorTopZ + 280.f;
-	AddLayer(TEXT("BG_Street_00"), 1024.f, WallZ, -1500.f, 1.f, SortWall);
-	AddLayer(TEXT("BG_Street_01"), 3072.f, WallZ, -1500.f, 1.f, SortWall);
-	for (int32 i = 0; i < 3; ++i)
+	for (FStageLayer& L : Layers)
 	{
-		AddLayer(TEXT("BG_UBahn_00"), 5120.f + i * 2048.f, WallZ, -1500.f, 1.f, SortWall);
+		if (L.Component)
+		{
+			L.Component->DestroyComponent();
+		}
 	}
+	Layers.Reset();
 
-	// Boden: Oberkante bei FloorTopZ, 420 hoch, 1024 breite Kacheln
-	const float FloorZ = FloorTopZ - 210.f;
-	for (int32 i = 0; i < 10; ++i)
+	const float HalfW = ScreenWidth * 0.5f;
+	for (const FStageArea& Area : Def.Areas)
 	{
-		const float X = 512.f + i * 1024.f;
-		AddLayer(X < 4096.f ? TEXT("BG_FloorStreet") : TEXT("BG_FloorPlatform"), X, FloorZ, -1400.f, 1.f, SortFloor);
-	}
-
-	// Vordergrund (vor den Figuren, schnellere Parallaxe)
-	const float FgZ = CameraZ;
-	for (const float X : { 1500.f, 2900.f, 3800.f })
-	{
-		AddLayer(TEXT("FG_LampPost"), X, FgZ, 600.f, 1.25f, SortForeground);
-	}
-	for (const float X : { 4900.f, 6100.f, 7300.f })
-	{
-		AddLayer(TEXT("FG_Pillar"), X, FgZ, 600.f, 1.25f, SortForeground);
+		// Himmel: Parallaxe 0.15, Basis = Mitte des Kamerabereichs dieses Abschnitts
+		if (!Area.Sky.IsEmpty())
+		{
+			const float Lo = FMath::Max(Area.StartX + HalfW, HalfW);
+			const float Hi = FMath::Min(Area.EndX - HalfW, StageEndX - HalfW);
+			AddLayer(Area.Sky, (Lo + Hi) * 0.5f, FloorTopZ + 350.f, -3000.f, 0.15f, SortSky);
+		}
+		// Fassaden: Unterkante bei FloorTopZ, 2048 breit, 560 hoch
+		for (int32 i = 0; i < Area.Walls.Num(); ++i)
+		{
+			AddLayer(Area.Walls[i], Area.StartX + 1024.f + i * 2048.f, FloorTopZ + 280.f, -1500.f, 1.f, SortWall);
+		}
+		// Boden: 1024 breite Kacheln, Oberkante bei FloorTopZ
+		for (float X = Area.StartX; X < Area.EndX; X += 1024.f)
+		{
+			AddLayer(Area.Floor, X + 512.f, FloorTopZ - 210.f, -1400.f, 1.f, SortFloor);
+		}
+		// Vordergrund (vor den Figuren, schnellere Parallaxe)
+		if (!Area.Foreground.IsEmpty())
+		{
+			for (const float X : Area.ForegroundX)
+			{
+				AddLayer(Area.Foreground, X, CameraZ, 600.f, 1.25f, SortForeground);
+			}
+		}
 	}
 }
 

@@ -15,3 +15,8 @@ Build/
 # Python
 __pycache__/
 *.pyc
+
+# KI-Pipeline: Arbeitsdateien (Steuerbilder, Rohbilder)
+Art/AIPoses/
+node_modules/
+playtest-out/

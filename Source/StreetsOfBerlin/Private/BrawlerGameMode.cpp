@@ -9,6 +9,8 @@
 #include "BrawlerPlayerController.h"
 #include "BrawlerProp.h"
 #include "BrawlerStage.h"
+#include "BrawlerWeaponItem.h"
+#include "EngineUtils.h"
 #include "StreetsOfBerlin.h"
 #include "Components/AudioComponent.h"
 #include "Engine/World.h"
@@ -29,94 +31,11 @@ ABrawlerGameMode::ABrawlerGameMode()
 }
 
 // ---------------------------------------------------------------------------
-// Stage-Daten: Kaempfe, Gegnerwellen, Kisten
-// ---------------------------------------------------------------------------
-void ABrawlerGameMode::BuildStageData()
-{
-	Encounters.Reset();
-	Props.Reset();
-
-	auto Group = [](std::initializer_list<const TCHAR*> Names, int32 WhenAlive, float Delay)
-	{
-		FSpawnGroup G;
-		for (const TCHAR* N : Names)
-		{
-			G.Enemies.Add(FName(N));
-		}
-		G.WhenAliveAtMost = WhenAlive;
-		G.MaxDelay = Delay;
-		return G;
-	};
-
-	auto AddEncounter = [this](float Trigger, float Lock, TArray<FSpawnGroup> Groups, bool bBoss = false)
-	{
-		FEncounter E;
-		E.TriggerX = Trigger;
-		E.LockCenterX = Lock;
-		E.Groups = MoveTemp(Groups);
-		E.bBoss = bBoss;
-		Encounters.Add(E);
-	};
-
-	// --- Oranienstrasse -----------------------------------------------------
-	AddEncounter(560.f, 900.f, {
-		Group({ TEXT("Kalle"), TEXT("Kalle") }, 0, 0.f),
-		Group({ TEXT("Ronny") }, 1, 10.f),
-		Group({ TEXT("Kalle"), TEXT("Jojo") }, 1, 12.f) });
-
-	AddEncounter(1760.f, 2100.f, {
-		Group({ TEXT("Jojo"), TEXT("Kalle"), TEXT("Ronny") }, 0, 0.f),
-		Group({ TEXT("Deniz"), TEXT("Kalle") }, 1, 12.f) });
-
-	AddEncounter(2960.f, 3300.f, {
-		Group({ TEXT("Brecher") }, 0, 0.f),
-		Group({ TEXT("Ronny"), TEXT("Jojo") }, 1, 6.f),
-		Group({ TEXT("Kalle"), TEXT("Deniz") }, 1, 12.f) });
-
-	// --- U-Bahnhof Kottbusser Tor ------------------------------------------
-	AddEncounter(4560.f, 4900.f, {
-		Group({ TEXT("Kalle"), TEXT("Ronny"), TEXT("Deniz") }, 0, 0.f),
-		Group({ TEXT("Jojo"), TEXT("Jojo") }, 1, 10.f),
-		Group({ TEXT("Brecher") }, 1, 14.f) });
-
-	AddEncounter(5860.f, 6200.f, {
-		Group({ TEXT("Brecher"), TEXT("Kalle") }, 0, 0.f),
-		Group({ TEXT("Deniz"), TEXT("Ronny"), TEXT("Jojo") }, 1, 10.f),
-		Group({ TEXT("Brecher") }, 1, 14.f) });
-
-	// --- Boss ----------------------------------------------------------------
-	AddEncounter(7050.f, Brawler::StageEndX - Brawler::ScreenWidth * 0.5f, {
-		Group({ TEXT("Rolf") }, 0, 0.f),
-		Group({ TEXT("Kalle"), TEXT("Ronny") }, 1, 15.f),
-		Group({ TEXT("Jojo"), TEXT("Deniz") }, 1, 22.f) }, true);
-
-	auto AddProp = [this](const TCHAR* Type, float X, float Depth, const TCHAR* Drop)
-	{
-		FPropSpawn P;
-		P.Type = FName(Type);
-		P.X = X;
-		P.Depth = Depth;
-		P.Drop = Drop ? FName(Drop) : NAME_None;
-		Props.Add(P);
-	};
-	AddProp(TEXT("TrashCan"), 1050.f, 222.f, TEXT("Currywurst"));
-	AddProp(TEXT("Crate"), 1520.f, 205.f, TEXT("Money"));
-	AddProp(TEXT("TrashCan"), 2650.f, 225.f, TEXT("Doener"));
-	AddProp(TEXT("Crate"), 3560.f, 210.f, TEXT("Currywurst"));
-	AddProp(TEXT("TrashCan"), 4450.f, 225.f, TEXT("Money"));
-	AddProp(TEXT("Crate"), 5600.f, 200.f, TEXT("Doener"));
-	AddProp(TEXT("TrashCan"), 6700.f, 222.f, TEXT("Currywurst"));
-	AddProp(TEXT("Crate"), 6950.f, 90.f, TEXT("Doener"));
-}
-
-// ---------------------------------------------------------------------------
 // Ablauf
 // ---------------------------------------------------------------------------
 void ABrawlerGameMode::StartPlay()
 {
 	Super::StartPlay();
-
-	BuildStageData();
 
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -124,7 +43,7 @@ void ABrawlerGameMode::StartPlay()
 	Stage = GetWorld()->SpawnActor<ABrawlerStage>(ABrawlerStage::StaticClass(), FTransform::Identity, Params);
 	if (Stage)
 	{
-		Stage->Build();
+		Stage->Build(GetStageDef());
 	}
 
 	Camera = GetWorld()->SpawnActor<ABrawlerCamera>(ABrawlerCamera::StaticClass(), FTransform::Identity, Params);
@@ -171,8 +90,21 @@ void ABrawlerGameMode::OnStartPressed()
 	case EBrawlerFlow::Title:
 		StartGame();
 		break;
-	case EBrawlerFlow::GameOver:
 	case EBrawlerFlow::StageClear:
+		if (FlowTime > 1.5f)
+		{
+			if (StageIndex + 1 < GetStageCount())
+			{
+				StartStage(StageIndex + 1);
+			}
+			else
+			{
+				SetFlow(EBrawlerFlow::Ending);
+			}
+		}
+		break;
+	case EBrawlerFlow::GameOver:
+	case EBrawlerFlow::Ending:
 		if (FlowTime > 1.5f)
 		{
 			UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this)));
@@ -187,13 +119,52 @@ void ABrawlerGameMode::StartGame()
 {
 	Score = 0;
 	Lives = 3;
+	StartStage(0);
+}
+
+void ABrawlerGameMode::ClearStageActors()
+{
+	TArray<AActor*> ToDestroy;
+	for (TActorIterator<ABrawlerEntity> It(GetWorld()); It; ++It)
+	{
+		ToDestroy.Add(*It);
+	}
+	for (AActor* A : ToDestroy)
+	{
+		A->Destroy();
+	}
+	Enemies.Reset();
+	AttackTokens.Reset();
+	Player = nullptr;
+}
+
+void ABrawlerGameMode::StartStage(int32 Index)
+{
+	StageIndex = FMath::Clamp(Index, 0, GetStageCount() - 1);
+	const FStageDef& Def = GetStageDef();
+
+	ClearStageActors();
 	NextEncounter = 0;
 	ActiveEncounter = INDEX_NONE;
+	CameraLockX = -1.f;
+	CameraX = Brawler::ScreenWidth * 0.5f;
+	bBossActive = false;
+	GoArrowTimer = 0.f;
+	RespawnTimer = -1.f;
+	LastHitEnemy.Reset();
+	ComboHits = 0;
+	UGameplayStatics::SetGlobalTimeDilation(this, 1.f);
+
+	if (Stage)
+	{
+		Stage->Build(Def);
+		Stage->UpdateParallax(CameraX);
+	}
 
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	Params.bDeferConstruction = true;
-	for (const FPropSpawn& P : Props)
+	for (const FPropSpawn& P : Def.Props)
 	{
 		if (ABrawlerProp* Prop = GetWorld()->SpawnActor<ABrawlerProp>(ABrawlerProp::StaticClass(), FTransform::Identity, Params))
 		{
@@ -202,17 +173,28 @@ void ABrawlerGameMode::StartGame()
 			Prop->FinishSpawning(FTransform::Identity);
 		}
 	}
-
-	SpawnPlayer(260.f, 110.f, false);
-
-	if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
+	for (const FWeaponSpawn& W : Def.Weapons)
 	{
-		if (USoundBase* Track = Assets->GetSound(TEXT("MUS_Stage1")))
+		if (ABrawlerWeaponItem* Item = GetWorld()->SpawnActor<ABrawlerWeaponItem>(ABrawlerWeaponItem::StaticClass(), FTransform::Identity, Params))
 		{
-			Music = UGameplayStatics::SpawnSound2D(this, Track, 0.5f);
+			Item->Init(W.Type);
+			Item->SetBeltPosition(W.X, W.Depth, 0.f);
+			Item->FinishSpawning(FTransform::Identity);
 		}
 	}
 
+	SpawnPlayer(260.f, 110.f, false);
+
+	if (!Music || !Music->IsPlaying())
+	{
+		if (UBrawlerAssets* Assets = UBrawlerAssets::Get(this))
+		{
+			if (USoundBase* Track = Assets->GetSound(TEXT("MUS_Stage1")))
+			{
+				Music = UGameplayStatics::SpawnSound2D(this, Track, 0.5f);
+			}
+		}
+	}
 	SetFlow(EBrawlerFlow::Intro);
 }
 
@@ -305,6 +287,7 @@ void ABrawlerGameMode::UpdateCamera(float DeltaSeconds)
 	{
 		// Nur vorwaerts scrollen (wie im Original)
 		Target = FMath::Max(CameraX, Player->PosX + 120.f);
+		const TArray<FEncounter>& Encounters = GetStageDef().Encounters;
 		if (NextEncounter < Encounters.Num())
 		{
 			Target = FMath::Min(Target, Encounters[NextEncounter].LockCenterX);
@@ -366,6 +349,7 @@ void ABrawlerGameMode::UpdateEncounters(float DeltaSeconds)
 		return;
 	}
 
+	const TArray<FEncounter>& Encounters = GetStageDef().Encounters;
 	if (ActiveEncounter == INDEX_NONE)
 	{
 		if (NextEncounter < Encounters.Num() && Player->PosX >= Encounters[NextEncounter].TriggerX)
@@ -435,7 +419,7 @@ void ABrawlerGameMode::SpawnGroup(const FSpawnGroup& Group)
 	for (const FName& Type : Group.Enemies)
 	{
 		// Abwechselnd von rechts und links, Boss immer von rechts
-		const bool bRight = (Index % 2 == 0) || Type == TEXT("Rolf");
+		const bool bRight = (Index % 2 == 0) || ABrawlerEnemy::GetProfile(Type).bBoss;
 		const float X = bRight ? GetViewMaxX() + 80.f + Index * 40.f : GetViewMinX() - 80.f - Index * 40.f;
 		const float Depth = FMath::FRandRange(Brawler::DepthMin + 20.f, Brawler::DepthMax - 20.f);
 		SpawnEnemy(Type, X, Depth);

@@ -8,6 +8,11 @@
 #include "Engine/World.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/PackageName.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonReader.h"
+#include "Serialization/JsonSerializer.h"
 
 UBrawlerAssets* UBrawlerAssets::Get(const UObject* WorldContext)
 {
@@ -99,4 +104,85 @@ UMaterialInterface* UBrawlerAssets::GetSpriteMaterial()
 		SpriteMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Paper2D/TranslucentUnlitSpriteMaterial.TranslucentUnlitSpriteMaterial"));
 	}
 	return SpriteMaterial;
+}
+
+void UBrawlerAssets::LoadAnchors()
+{
+	bAnchorsLoaded = true;
+	const FString Path = FPaths::ProjectContentDir() / TEXT("Data/anchors.json");
+	FString Text;
+	if (!FFileHelper::LoadFileToString(Text, *Path))
+	{
+		UE_LOG(LogStreetsOfBerlin, Warning, TEXT("anchors.json nicht gefunden (%s) - Waffen werden nicht in der Hand gezeichnet."), *Path);
+		return;
+	}
+
+	TSharedPtr<FJsonObject> Root;
+	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Text);
+	if (!FJsonSerializer::Deserialize(Reader, Root) || !Root.IsValid())
+	{
+		UE_LOG(LogStreetsOfBerlin, Warning, TEXT("anchors.json konnte nicht gelesen werden."));
+		return;
+	}
+
+	const TSharedPtr<FJsonObject>* Frames = nullptr;
+	if (Root->TryGetObjectField(TEXT("frames"), Frames))
+	{
+		for (const auto& Pair : (*Frames)->Values)
+		{
+			const TArray<TSharedPtr<FJsonValue>>* Arr = nullptr;
+			if (Pair.Value->TryGetArray(Arr) && Arr->Num() >= 3)
+			{
+				HandAnchors.Add(Pair.Key, FVector((*Arr)[0]->AsNumber(), (*Arr)[1]->AsNumber(), (*Arr)[2]->AsNumber()));
+			}
+		}
+	}
+
+	const TSharedPtr<FJsonObject>* Weapons = nullptr;
+	if (Root->TryGetObjectField(TEXT("weapons"), Weapons))
+	{
+		for (const auto& Pair : (*Weapons)->Values)
+		{
+			const TSharedPtr<FJsonObject>* W = nullptr;
+			if (!Pair.Value->TryGetObject(W))
+			{
+				continue;
+			}
+			const TArray<TSharedPtr<FJsonValue>>* Size = nullptr;
+			const TArray<TSharedPtr<FJsonValue>>* Grip = nullptr;
+			if ((*W)->TryGetArrayField(TEXT("size"), Size) && (*W)->TryGetArrayField(TEXT("grip"), Grip) && Size->Num() >= 2 && Grip->Num() >= 2)
+			{
+				WeaponGrips.Add(FName(*Pair.Key), FVector4((*Size)[0]->AsNumber(), (*Size)[1]->AsNumber(), (*Grip)[0]->AsNumber(), (*Grip)[1]->AsNumber()));
+			}
+		}
+	}
+}
+
+bool UBrawlerAssets::GetHandAnchor(const FString& FrameName, FVector& OutAnchor)
+{
+	if (!bAnchorsLoaded)
+	{
+		LoadAnchors();
+	}
+	if (const FVector* Found = HandAnchors.Find(FrameName))
+	{
+		OutAnchor = *Found;
+		return true;
+	}
+	return false;
+}
+
+bool UBrawlerAssets::GetWeaponGrip(FName Weapon, FVector2D& OutSize, FVector2D& OutGrip)
+{
+	if (!bAnchorsLoaded)
+	{
+		LoadAnchors();
+	}
+	if (const FVector4* Found = WeaponGrips.Find(Weapon))
+	{
+		OutSize = FVector2D(Found->X, Found->Y);
+		OutGrip = FVector2D(Found->Z, Found->W);
+		return true;
+	}
+	return false;
 }

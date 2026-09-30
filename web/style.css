@@ -1,0 +1,53 @@
+/* Streets of Berlin – Seitenrahmen und Touch-Steuerung.
+   Bewusst eine einzige dunkle Optik (Arcade bei Nacht), unabhaengig vom System-Theme. */
+:root {
+  --night: #09070f;
+  --ink: #f4eefc;
+  --neon: #ff3c96;
+  --sodium: #ffc72e;
+  --glass: rgba(255, 255, 255, 0.10);
+  --glass-edge: rgba(255, 255, 255, 0.28);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--night); color: var(--ink); overflow: hidden;
+  font: 600 14px/1.3 "Arial Black", "Helvetica Neue", Arial, sans-serif;
+}
+#stage {
+  position: relative; height: 100%; display: flex; align-items: center; justify-content: center;
+  padding-inline: 0; box-sizing: border-box;
+}
+canvas {
+  display: block; max-width: 100%; background: #000; outline: none;
+  box-shadow: 0 0 80px rgba(255, 60, 150, 0.12);
+}
+canvas:focus-visible { box-shadow: 0 0 0 2px var(--sodium); }
+#status {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  padding-inline: 16px; text-align: center; letter-spacing: 0.06em; color: var(--sodium);
+}
+
+/* Touch-Steuerung */
+.touchpad { position: absolute; inset: 0; pointer-events: none; user-select: none; -webkit-user-select: none; touch-action: none; }
+.touchpad .stick {
+  position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 132px; height: 132px; border-radius: 50%; background: var(--glass); border: 2px solid var(--glass-edge);
+  pointer-events: auto; display: flex; align-items: center; justify-content: center;
+}
+.touchpad .knob { width: 56px; height: 56px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transition: transform 40ms linear; }
+.touchpad .buttons {
+  position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: grid; grid-template-columns: repeat(2, 72px); gap: 10px; pointer-events: auto;
+}
+.touchpad button {
+  height: 60px; border-radius: 30px; border: 2px solid var(--glass-edge); background: var(--glass); color: var(--ink);
+  font: inherit; font-size: 12px; letter-spacing: 0.08em; pointer-events: auto; touch-action: none;
+}
+.touchpad button.big { background: rgba(255, 60, 150, 0.35); border-color: var(--neon); }
+.touchpad button.down { background: rgba(255, 199, 46, 0.5); }
+.touchpad .start {
+  position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  width: 96px; height: 36px; font-size: 11px;
+}
+@media (prefers-reduced-motion: reduce) { .touchpad .knob { transition: none; } }

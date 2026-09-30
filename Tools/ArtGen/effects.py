@@ -247,3 +247,45 @@ def title_logo():
     d.line([(W - 420, 520), (W + 420, 520)], fill=(255, 40, 80, 255), width=10)
     _ = f1
     return img.resize((W * RES, H * RES), Image.LANCZOS)
+
+
+# ---------------------------------------------------------------------------
+# Waffen (waagerecht, Griff links). WEAPONS[name] = (Breite, Hoehe, Griff-x, Griff-y) in Welt-Units
+# ---------------------------------------------------------------------------
+WEAPONS = {
+    "Pipe": (120, 28, 14, 14),
+    "Bat": (130, 32, 14, 16),
+    "Knife": (64, 24, 10, 13),
+    "Bottle": (70, 30, 12, 15),
+    "Golf": (140, 40, 12, 12),
+}
+
+
+def weapon(name):
+    W, H, gx, gy = WEAPONS[name]
+    img, d = _canvas(W, H)
+    S = SS
+    if name == "Pipe":
+        _outlined(d, [(8 * S, 14 * S), (112 * S, 13 * S)], 5 * S, (140, 144, 156, 255))
+        d.line([(12 * S, 11 * S), (108 * S, 10 * S)], fill=(225, 228, 238, 255), width=2 * S)
+        _outlined(d, [(104 * S, 13 * S)], 7 * S, (110, 114, 126, 255))
+    elif name == "Bat":
+        _outlined(d, [(8 * S, 16 * S), (40 * S, 16 * S), (122 * S, 14 * S), (122 * S, 19 * S), (40 * S, 17 * S)],
+                  4 * S, (196, 150, 96, 255))
+        _outlined(d, [(10 * S, 16 * S), (30 * S, 16 * S)], 5 * S, (50, 40, 36, 255))  # Griffband
+        d.line([(44 * S, 13 * S), (118 * S, 11 * S)], fill=(236, 200, 150, 255), width=3 * S)
+    elif name == "Knife":
+        _outlined(d, [(6 * S, 13 * S), (24 * S, 13 * S)], 5 * S, (40, 36, 40, 255))
+        _outlined(d, [(26 * S, 8 * S), (58 * S, 12 * S), (26 * S, 17 * S)], 1.5 * S, (210, 214, 224, 255))
+        d.line([(28 * S, 10 * S), (54 * S, 12 * S)], fill=(255, 255, 255, 255), width=1 * S)
+    elif name == "Bottle":
+        _outlined(d, [(8 * S, 15 * S), (26 * S, 15 * S)], 3.5 * S, (60, 130, 60, 255))
+        _outlined(d, [(28 * S, 8 * S), (62 * S, 8 * S), (62 * S, 22 * S), (28 * S, 22 * S)], 4 * S,
+                  (60, 140, 64, 255))
+        d.rectangle([34 * S, 10 * S, 52 * S, 20 * S], fill=(240, 220, 150, 255))
+        d.line([(30 * S, 9 * S), (58 * S, 9 * S)], fill=(170, 230, 160, 255), width=2 * S)
+    elif name == "Golf":
+        _outlined(d, [(6 * S, 12 * S), (128 * S, 16 * S)], 2.5 * S, (170, 174, 186, 255))
+        _outlined(d, [(6 * S, 12 * S), (30 * S, 13 * S)], 4 * S, (30, 30, 34, 255))
+        _outlined(d, [(124 * S, 12 * S), (134 * S, 30 * S), (122 * S, 34 * S)], 3 * S, (200, 204, 214, 255))
+    return downsample(img)

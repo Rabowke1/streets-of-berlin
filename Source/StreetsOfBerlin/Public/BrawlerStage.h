@@ -4,6 +4,8 @@
 #include "GameFramework/Actor.h"
 #include "BrawlerStage.generated.h"
 
+struct FStageDef;
+
 class UPaperSpriteComponent;
 
 USTRUCT()
@@ -32,7 +34,8 @@ class STREETSOFBERLIN_API ABrawlerStage : public AActor
 public:
 	ABrawlerStage();
 
-	void Build();
+	/** Baut die Kulisse einer Stage (vorherige Layer werden entfernt) */
+	void Build(const FStageDef& Def);
 	void UpdateParallax(float CameraX);
 
 private:

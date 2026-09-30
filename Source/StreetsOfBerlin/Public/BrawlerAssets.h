@@ -38,6 +38,11 @@ public:
 	USoundBase* GetSound(const FString& Name);
 	UMaterialInterface* GetSpriteMaterial();
 
+	/** Hand-Anker eines Figuren-Frames: X/Y (Welt-Units ueber dem Fusspunkt), Z = Unterarm-Winkel in Grad */
+	bool GetHandAnchor(const FString& FrameName, FVector& OutAnchor);
+	/** Groesse und Griffpunkt (von links oben) eines Waffen-Sprites in Welt-Units */
+	bool GetWeaponGrip(FName Weapon, FVector2D& OutSize, FVector2D& OutGrip);
+
 private:
 	UPROPERTY()
 	TMap<FString, FBrawlerAnimFrames> AnimCache;
@@ -49,6 +54,11 @@ private:
 	TObjectPtr<UMaterialInterface> SpriteMaterial;
 
 	TSet<FString> Missing;
+
+	void LoadAnchors();
+	bool bAnchorsLoaded = false;
+	TMap<FString, FVector> HandAnchors;
+	TMap<FName, FVector4> WeaponGrips;
 
 	UObject* LoadCached(const FString& ObjectPath, UClass* Class);
 };

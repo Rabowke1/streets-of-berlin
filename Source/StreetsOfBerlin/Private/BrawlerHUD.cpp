@@ -4,6 +4,7 @@
 #include "BrawlerEnemy.h"
 #include "BrawlerGameMode.h"
 #include "BrawlerPlayer.h"
+#include "BrawlerStageData.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "Engine/Font.h"
@@ -136,6 +137,7 @@ void ABrawlerHUD::DrawHUD()
 		Text(TEXT("Laufen: WASD / Pfeile / Stick     Schlag: J / X     Sprung: K / A"), 800.f, 640.f, 0.9f, White, true);
 		Text(TEXT("Spezial: L / Y (kostet Energie)     Rückschlag: I / B     Pause: Enter / Start"), 800.f, 680.f, 0.9f, White, true);
 		Text(TEXT("In Gegner hineinlaufen = Griff  ->  Schlag = Knie,  weg + Schlag = Wurf"), 800.f, 720.f, 0.9f, White, true);
+		Text(TEXT("Waffen: Schlag = aufheben / zuschlagen,  Rueckschlag = werfen"), 800.f, 760.f, 0.9f, Yellow, true);
 		return;
 	}
 
@@ -145,6 +147,13 @@ void ABrawlerHUD::DrawHUD()
 		FighterPanel(Player, false, Player->GetRecoverableHealth());
 		Text(FString::Printf(TEXT("x%d"), FMath::Max(0, GM->GetLives() - 1)), 30.f, 118.f, 1.1f, Yellow);
 		Text(FString::Printf(TEXT("%07d"), GM->GetScore()), 136.f, 84.f, 1.1f, White);
+		if (Player->HasWeapon())
+		{
+			if (const FWeaponDef* W = BrawlerData::GetWeapon(Player->GetWeapon()))
+			{
+				Text(FString::Printf(TEXT("%s x%d"), *W->DisplayName, Player->GetWeaponDurability()), 552.f, 50.f, 0.9f, FLinearColor(0.6f, 0.9f, 1.f, 1.f));
+			}
+		}
 	}
 
 	// --- Gegner-Panel ------------------------------------------------------
@@ -180,16 +189,26 @@ void ABrawlerHUD::DrawHUD()
 	switch (GM->GetFlow())
 	{
 	case EBrawlerFlow::Intro:
-		Text(TEXT("STAGE 1"), 800.f, 330.f, 2.2f, Yellow, true);
-		Text(TEXT("KREUZBERG BEI NACHT"), 800.f, 400.f, 1.6f, White, true);
+		Text(GM->GetStageDef().Name, 800.f, 330.f, 2.2f, Yellow, true);
+		Text(GM->GetStageDef().Title, 800.f, 400.f, 1.6f, White, true);
 		break;
 	case EBrawlerFlow::StageClear:
 		Rect(0.f, 0.f, 1600.f, 900.f, FLinearColor(0.f, 0.f, 0.f, FMath::Clamp(T * 0.3f, 0.f, 0.5f)));
-		Text(TEXT("STAGE CLEAR!"), 800.f, 300.f, 3.f, Yellow, true);
+		Text(GM->GetStageDef().Name + TEXT(" CLEAR!"), 800.f, 300.f, 3.f, Yellow, true);
 		Text(FString::Printf(TEXT("PUNKTE: %d"), GM->GetScore()), 800.f, 420.f, 1.6f, White, true);
 		if (T > 2.f && bBlink)
 		{
-			Text(TEXT("ENTER / START"), 800.f, 520.f, 1.2f, White, true);
+			Text(GM->GetStageIndex() + 1 < GM->GetStageCount() ? TEXT("ENTER / START: WEITER") : TEXT("ENTER / START"), 800.f, 520.f, 1.2f, White, true);
+		}
+		break;
+	case EBrawlerFlow::Ending:
+		Rect(0.f, 0.f, 1600.f, 900.f, FLinearColor(0.f, 0.f, 0.f, 0.7f));
+		Text(TEXT("BERLIN IST GERETTET!"), 800.f, 260.f, 2.6f, Yellow, true);
+		Text(TEXT("Harald Immobilien ist pleite - die Mieten bleiben bezahlbar."), 800.f, 360.f, 1.2f, White, true);
+		Text(FString::Printf(TEXT("ENDPUNKTE: %d"), GM->GetScore()), 800.f, 440.f, 1.6f, White, true);
+		if (T > 1.5f && bBlink)
+		{
+			Text(TEXT("ENTER / START: TITEL"), 800.f, 540.f, 1.2f, White, true);
 		}
 		break;
 	case EBrawlerFlow::GameOver:

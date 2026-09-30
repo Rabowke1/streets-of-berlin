@@ -4,8 +4,13 @@ Ein 2D-Beat-'em-Up für die **Unreal Engine 5** im Stil von *Streets of Rage 4*.
 Spiellogik in C++ (Paper2D), dazu **prozedural erzeugte Grafiken** (Figuren, Gegner, Level, Effekte, UI) und
 **Sounds und Musik**. Alles lässt sich per Skript neu erzeugen.
 
+Zusätzlich gibt es eine **spielbare Browser-Version** (`web/`) mit denselben Grafiken und derselben Spiellogik sowie
+eine **KI-Pipeline** (`Tools/AIGen`), mit der sich die Figuren über ComfyUI im gezeichneten Comic-Stil neu
+generieren lassen, in exakt den Posen des Spiels.
+
 ![Szene](Art/Generated/Preview_Scene.png)
-![Straße](Art/Generated/Preview_Street2.png)
+![East Side Gallery](Art/Generated/Preview_Gallery.png)
+![Baustelle am Alex](Art/Generated/Preview_Construction.png)
 ![U-Bahn](Art/Generated/Preview_UBahn.png)
 
 ## Inhalt
@@ -13,9 +18,14 @@ Spiellogik in C++ (Paper2D), dazu **prozedural erzeugte Grafiken** (Figuren, Geg
 | Bereich | Umfang |
 |---|---|
 | Spielfigur | **Kai**: 4er-Combo (Jab → Gerade → Uppercut → Kick), Sprungkick, Rückwärts-Ellbogen, Spezialangriff (kostet Energie, die man wie in SoR4 durch Treffer zurückholt), Griff mit Knie ×3 oder Wurf, Essen aufheben |
-| Gegner | **Kalle / Ronny** (Punks, Haken), **Jojo / Deniz** (Skater, Rutschkick), **Brecher** (schwer, Super-Armor, Sturmangriff), Boss **Türsteher Rolf** (Wut-Phase unter 50 % Energie) |
+| Gegner | **Kalle / Ronny** (Punks, Haken), **Messer-Micha** (sticht und wirft sein Messer), **Jojo / Deniz** (Skater, Rutschkick), **Zoe / Nina** (Kickboxerinnen, schnelle Kicks, fliegender Roundhouse), **Brecher** (schwer, Super-Armor, Sturmangriff) |
+| Bosse | Stage 1 **Türsteher Rolf** · Stage 2 **Hool-Sven** mit Baseballschläger · Stage 3 **Baulöwe Harald** mit Golfschläger, Sprungkicks und Verstärkung bei 66 %/33 % Energie. Alle mit Wut-Phase unter 50 % |
+| Waffen | **Rohr, Baseballschläger, Messer, Flasche, Golfschläger**: aufheben mit Schlag, zuschlagen mit Schlag, werfen mit Rückschlag. Haltbarkeit pro Waffe, Flaschen zerbrechen, Gegner lassen ihre Waffen beim Umfallen fallen. Die Waffe sitzt über Hand-Anker pro Animations-Frame in der Hand |
 | Kampfsystem | aktive Hit-Frames, Hitstop, Screenshake, Hitstun, Knockdown mit Aufprall-Hüpfer, Jonglieren, geworfene Gegner werfen andere um, Unverwundbarkeit beim Aufstehen, Angriffs-Tokens (maximal 2 Gegner greifen gleichzeitig an) |
-| Stage 1 | *Kreuzberg bei Nacht*: Oranienstraße (Späti, Döner, Brandwand mit Fernsehturm) → U-Bahnhof Kottbusser Tor → Bosskampf. 6 Kampfabschnitte mit Kamera-Sperre, „GO →“-Pfeil |
+| Stage 1 | *Kreuzberg bei Nacht*: Oranienstraße (Späti, Döner, Brandwand mit Fernsehturm) → U-Bahnhof Kottbusser Tor |
+| Stage 2 | *East Side Gallery*: Mauer-Wandbilder, Oberbaumbrücke mit U1 → Club-Hinterhof mit Lichterketten und Container-Bar |
+| Stage 3 | *Baustelle am Alex*: Rohbau mit Gerüst, Flutlicht, „Harald Immobilien“-Banner → Showdown auf dem Dach über der Stadt |
+| Ablauf | je Stage 6 Kampfabschnitte mit Kamera-Sperre und „GO →“-Pfeil, Stage-Wechsel mit Punkte-Übernahme, Abspann |
 | Extras | zerstörbare Mülltonnen/Obstkisten mit Döner (volle Heilung), Currywurst und Geld, Combo-Zähler, Punkte, 3 Leben mit Wiedereinstieg, Titelbild, Pause, Game Over, Stage Clear, Zeitlupe beim Boss-KO |
 
 ## Schnellstart
@@ -26,7 +36,7 @@ Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit 
 1. `StreetsOfBerlin.uproject` doppelklicken und die Frage „Module neu kompilieren?“ mit **Ja** beantworten
    (oder Rechtsklick → *Generate Visual Studio project files* und in Visual Studio `Development Editor` bauen).
 2. Beim ersten Editor-Start importiert `Content/Python/init_unreal.py` automatisch alle Assets aus
-   `Art/Generated` (≈280 Sprites, 10 Sounds) und legt die Map `/Game/Maps/Stage1` an. Das dauert beim ersten Mal
+   `Art/Generated` (≈540 Sprites, 10 Sounds) und legt die Map `/Game/Maps/Stage1` an. Das dauert beim ersten Mal
    ein paar Minuten, danach wird nur noch geprüft.
 3. Falls die Map beim Start noch leer oder nicht geöffnet ist: `Content/Maps/Stage1` öffnen.
 4. **Play** drücken (am besten *Standalone Game* oder *New Editor Window*, 16:9).
@@ -42,11 +52,44 @@ Voraussetzungen: **Unreal Engine 5.5** (5.4 funktioniert in der Regel auch) mit 
 | Schlag / Aufheben | J | X (Xbox) / □ |
 | Sprung (+ Schlag = Sprungkick) | K / Leertaste | A / ✕ |
 | Spezialangriff | L | Y / △ |
-| Rückschlag (nach hinten) | I | B / ○ |
+| Rückschlag (nach hinten) / Waffe werfen | I | B / ○ |
 | Start / Pause | Enter / P | Start |
 
 **Griff:** in einen Gegner hineinlaufen. Dann *Schlag* = Knie (das dritte wirft um), *weg drücken + Schlag* = Wurf,
 *Sprung* = loslassen. Die Combo läuft nur weiter, wenn die Schläge treffen – sonst beginnt sie wieder beim Jab.
+
+## Browser-Version
+
+Die Browser-Version (`web/`) ist eine Portierung der Spiellogik nach JavaScript/Canvas mit denselben Grafiken.
+Damit lässt sich das Spiel sofort ohne Unreal spielen und automatisch testen.
+
+```bash
+python Tools/WebBuild/build_web.py               # Texturatlanten + Hintergründe nach web/assets (≈7 MB)
+python -m http.server 8000 --directory web       # dann http://localhost:8000 öffnen
+```
+
+URL-Parameter: `?stage=2` (direkt in Stage 2/3 starten), `?mute`, `?autoplay&god&speed=8` (Bot spielt selbst).
+
+**Automatischer Playtest** (headless Chromium über Playwright): Titel, Start per Tastatur, Laufen und Schlagen,
+danach spielt ein Bot alle drei Stages bis zum Abspann durch und prüft auf JavaScript-Fehler.
+
+```bash
+npm i playwright                                  # einmalig
+python -m http.server 8765 --directory web &
+node Tools/WebBuild/playtest.mjs --out playtest-out
+```
+
+## KI-Figuren (ComfyUI)
+
+`Tools/AIGen` erzeugt aus jeder Spielpose ein OpenPose-Skelett, eine Strichzeichnung und eine Maske und lässt
+ComfyUI (SDXL + ControlNet, optional LoRA) die Frames im Comic-Stil malen. Danach wird freigestellt, auf die
+Silhouette ausgerichtet und nach `Art/Custom` geschrieben. Details und Tipps zur Einheitlichkeit:
+[`Tools/AIGen/README.md`](Tools/AIGen/README.md).
+
+```bash
+python Tools/AIGen/generate.py --char Kai --anim idle --checkpoint MEIN_SDXL.safetensors
+python -m unittest Tools/AIGen/tests/test_pipeline.py -v   # Test ohne GPU gegen einen Fake-ComfyUI-Server
+```
 
 ## Grafiken & Sounds neu erzeugen
 
@@ -77,6 +120,7 @@ Versionen automatisch (Größen und Tipps: [`Art/Custom/README.md`](Art/Custom/R
 | `bgkit.py` | Mal-Werkzeuge: Verläufe, Putz-/Materialrauschen, weiches Licht (Glow, Lichtkegel, Schatten), Nacht-Grading mit leuchtenden Flächen, Neon-Schrift, Graffiti, Ziegel, Plakate |
 | `puppet.py` | 2D-Puppet-Renderer: Figuren aus Körperteilen, dicke Konturen, Cel-Shading mit violetten Schatten, Glanzkante, Neon-Randlicht, Stoff-Details |
 | `characters.py` | Aussehen aller Figuren + sämtliche Animationsposen (Gelenkwinkel pro Frame) |
+| `backgrounds2.py` | Stage 2 (East Side Gallery mit eigenen Wandbildern, Oberbaumbrücke, Club-Hinterhof) und Stage 3 (Baustelle, Kräne, Fernsehturm, Dach mit Stadtpanorama) |
 | `backgrounds.py` | Gemalte Kulisse: Nachthimmel mit Wolken, Mond, Fernsehturm und Skyline im Dunst; Altbauten mit Stuck, Balkonen, beleuchteten Wohnungen, Schmutzfahnen; Späti, Döner, Kiosk, Club, Litfaßsäule, U-Bahn-Eingang; nasser Gehweg mit Neon-Spiegelungen; U-Bahnhof mit Fliesen, Leuchtröhren, Werbung, Gleisbett |
 | `effects.py` | Trefferfunken, Staub, Spezial-Ring, Schatten, Tonnen/Kisten, Döner/Currywurst/Geld, GO-Pfeil, Logo |
 | `audio.py` | Synthetisierte Treffer-, Wurf-, KO-, Pickup-Sounds und ein Synthwave-Musikloop |
@@ -88,21 +132,25 @@ Animationssatz (`player`, `punk`, `skater`, `heavy`) zuweisen. In C++ genügt da
 ## Architektur (C++, `Source/StreetsOfBerlin`)
 
 ```
-ABrawlerGameMode        Ablauf (Titel/Intro/Spiel/Clear/GameOver), Kampfabschnitte & Wellen,
+ABrawlerGameMode        Ablauf (Titel/Intro/Spiel/Clear/GameOver/Abspann), Stage-Wechsel, Kampfabschnitte & Wellen,
                         Kamera, Punkte, Combo, Angriffs-Tokens, Effekte & Sounds
- ├─ ABrawlerStage       Kulissen-Layer mit Parallaxe (Himmel 0.15, Fassaden/Boden 1.0, Vordergrund 1.25)
+ ├─ ABrawlerStage       Kulissen-Layer je Stage-Abschnitt mit Parallaxe (Himmel 0.15, Fassaden/Boden 1.0, Vordergrund 1.25)
  ├─ ABrawlerCamera      orthografische Kamera, 2D-taugliches Post-Processing
  └─ ABrawlerHUD         Canvas-HUD: Portraits, Energiebalken (gelb + grün rückgewinnbar), Combo, GO, Menüs
 
 ABrawlerEntity          Belt-Scroll-Position (X, Tiefe, Höhe), Sprite-Animation, Schatten, Tiefensortierung, Hitstop
- ├─ ABrawlerFighter     Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe
+ ├─ ABrawlerFighter     Zustandsmaschine, Angriffe mit aktiven Frames, Treffer, Knockdown, Griffe/Würfe, Waffe in der Hand
  │   ├─ ABrawlerPlayer  Eingabepuffer, Combo-Kette, Spezial, Griff-Steuerung
- │   └─ ABrawlerEnemy   KI (Betreten, Einkreisen, Token, Stil-Spezialangriffe), Profile
+ │   └─ ABrawlerEnemy   KI (Betreten, Einkreisen, Token, Stil-Spezialangriffe, Messerwurf, Boss-Verstärkung), Profile
  ├─ ABrawlerProp        zerstörbare Objekte mit Drops
  ├─ ABrawlerPickup      Essen / Geld
+ ├─ ABrawlerWeaponItem  Waffe am Boden
+ ├─ ABrawlerProjectile  geworfene Waffe
  └─ ABrawlerEffect      einmalige Sprite-Effekte
 
+BrawlerData             Stages (Abschnitte, Wellen, Kisten, Waffen) und Waffenwerte (BrawlerStageData.cpp)
 UBrawlerAssets          lädt Sprites/Texturen/Sounds per Namenskonvention (/Game/Sprites/<Ordner>/<Name>_NN)
+                        und die Hand-/Waffen-Anker aus Content/Data/anchors.json
 UBrawlerEditorLibrary   (nur Editor) erzeugt Paper2D-Sprites für das Import-Skript
 ABrawlerPlayerController fragt Tastatur/Gamepad direkt ab
 ```
@@ -112,11 +160,15 @@ ABrawlerPlayerController fragt Tastatur/Gamepad direkt ab
 orthografisch entlang −Y. Die Zeichenreihenfolge wird über die *Translucency Sort Priority* aus der Tiefe bestimmt.
 
 **Balancing** passiert direkt im Code: Angriffswerte in `BrawlerPlayer.cpp` (`ComboAttack`, `SpecialAttack`, …)
-und `BrawlerEnemy.cpp` (`MakeMelee`, `MakeRush`), Gegnerwerte in `ABrawlerEnemy::GetProfile`, Wellen und
-Kisten in `ABrawlerGameMode::BuildStageData`, Animationsgeschwindigkeiten in `ABrawlerFighter::GetAnimInfo`.
+und `BrawlerEnemy.cpp` (`MakeMelee`, `MakeRush`), Gegnerwerte in `ABrawlerEnemy::GetProfile`, Stages, Wellen,
+Kisten und Waffen in `BrawlerStageData.cpp`, Animationsgeschwindigkeiten in `ABrawlerFighter::GetAnimInfo`.
+Die Browser-Version spiegelt diese Werte in `web/js/data.js`. Wer balanciert, sollte beide Stellen anpassen.
 
 ## Bekannte Punkte / Ideen für später
 
 - Farben wirken zu dunkel/blass? In `ABrawlerCamera` die Post-Process-Werte (`AutoExposureBias`) anpassen.
-- Mögliche Erweiterungen: Waffen (Rohr, Messer), Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler,
-  weitere Stages (Tempelhofer Feld, Späti-Hinterhof, Berghain-Schlange 😉), Star-Moves.
+- Der C++-Code wurde ohne Unreal-Installation geschrieben. Die Spiellogik ist über die Browser-Version automatisch
+  durchgespielt, der C++-Code nur per Syntaxprüfung gegen nachgebildete Engine-Header. Beim ersten Build in Unreal
+  können einzelne API-Details nachzubessern sein.
+- Mögliche Erweiterungen: Blitz-Move (Vorwärts-Vorwärts + Schlag), zweiter Spieler, Star-Moves, weitere Stages
+  (Tempelhofer Feld, Berghain-Schlange 😉), Figuren-LoRAs für die KI-Pipeline.

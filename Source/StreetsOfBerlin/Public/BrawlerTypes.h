@@ -97,7 +97,8 @@ enum class EEnemyStyle : uint8
 	Punk,
 	Skater,
 	Heavy,
-	Boss
+	Kicker,  // Kickboxerin: schnelle Kicks, fliegender Roundhouse
+	Suit     // Anzug-Boss mit Spieler-Moveset (Harald)
 };
 
 /** Beschreibung eines Angriffs (Frames, Reichweite, Wirkung). */
@@ -138,6 +139,10 @@ struct FBrawlerAttack
 	float Duration = 0.f;
 	/** Sound beim Ausholen */
 	bool bWhoosh = true;
+	/** Waffenschlag (verbraucht Haltbarkeit) */
+	FName Weapon;
+	/** Sprungangriff (Gegner springen dabei ab) */
+	bool bJump = false;
 };
 
 /** Frames einer Sprite-Animation */
@@ -165,4 +170,11 @@ struct FEnemyProfile
 	/** Anzahl leichter Treffer, die ohne Hitstun eingesteckt werden (Super-Armor) */
 	int32 Armor = 0;
 	float AttackCooldown = 1.4f;
+	/** Boss: eigene Lebensleiste, Wut-Phase, Stage endet mit seinem Sieg */
+	bool bBoss = false;
+	/** Startwaffe (z.B. Knife, Bat, Golf) */
+	FName Weapon;
+	/** Ruft bei 66 % und 33 % Energie Verstaerkung */
+	TArray<FName> Summons;
+	float ShadowScale = 1.f;
 };

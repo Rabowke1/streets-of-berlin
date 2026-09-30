@@ -82,8 +82,8 @@ void ABrawlerPlayerController::PlayerTick(float DeltaTime)
 	{
 		Move += Stick;
 	}
-	Move.X = FMath::Clamp(Move.X, -1.f, 1.f);
-	Move.Y = FMath::Clamp(Move.Y, -1.f, 1.f);
+	Move.X = FMath::Clamp(Move.X, -1.0, 1.0);
+	Move.Y = FMath::Clamp(Move.Y, -1.0, 1.0);
 	Player->SetMoveInput(Move);
 
 	if (AnyJustPressed({ EKeys::J, EKeys::Gamepad_FaceButton_Left }))

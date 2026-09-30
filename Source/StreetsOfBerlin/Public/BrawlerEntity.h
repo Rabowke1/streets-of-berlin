@@ -71,7 +71,7 @@ protected:
 	virtual void TickEntity(float DeltaSeconds) {}
 
 	void UpdateAnimation(float DeltaSeconds);
-	void UpdateRender();
+	virtual void UpdateRender();
 
 	UPROPERTY(VisibleAnywhere, Category = "Brawler")
 	TObjectPtr<USceneComponent> Root;
